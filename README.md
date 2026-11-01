@@ -1,51 +1,56 @@
-# The Age of Majority · 在线英语课
+# Growing up · Unit 1 在线英语课
 
-MLT908 / EDTM902 小组期末项目的互动学习网站（高二英语，主题 Growing up）。
+MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
+教材：外语教学与研究出版社 普通高中教科书 英语 选择性必修 第二册，Unit 1 Growing up。
 
-一节 90 分钟的课，分 5 个部分：
+线上地址：https://growing-up-five.vercel.app
+
+## 课程结构（共 90 分钟）
 
 | 部分 | 内容 | 时长 | 状态 |
 |---|---|---|---|
-| 1 | Vocabulary：成年相关词汇 | 20 分钟 | 已完成 |
-| 2 | Starting out：成长中的日常两难 | 20 分钟 | 计划中 |
-| 3 | Reading：The Age of Majority | 30 分钟 | 计划中 |
-| 4 | Writing：18 岁的责任 | 20 分钟 | 计划中 |
-| 5 | Teacher's corner：教师专区 | — | 计划中 |
+| Course overview | 单元概述、学习目标、课程路线、奖章 | — | 已完成 |
+| Lesson 1 | Vocabulary：30 个单词（minimum 之前） | 20 分钟 | 已完成 |
+| Lesson 2 | Starting out | 20 分钟 | 待制作 |
+| Lesson 3 | Reading: The Age of Majority | 30 分钟 | 待制作 |
+| Lesson 4 | Writing | 20 分钟 | 待制作 |
+| Teacher's corner | 教师资源 | — | 部分完成 |
+
+Lesson 1 包含：3 组单词（每组 10 个：发音、词形、词性、课文原句、例句、图片或词缀记忆、跟读录音、遮词拼写）、中英连线测验、听音拼写挑战（bonus 奖章）。
 
 ## 文件结构
 
 ```
-index.html        网页骨架：导航、5 个部分的页面结构
-css/styles.css    样式：颜色、字体、布局、手机适配
-js/content.js     课程内容：词汇、题目、故事、分类题（改内容只改这里）
-js/app.js         交互逻辑：发音、配对、填空、进度、计时器
-favicon.svg       浏览器标签页上的小图标
+index.html               网页骨架
+css/styles.css           样式（颜色、字体、布局、手机适配）
+js/data.js               课程内容：单词、例句、目标、奖章（改内容只改这里）
+js/store.js              学习进度（保存在浏览器 localStorage）
+js/audio.js              发音与录音
+js/ui.js                 图标、奖章、弹窗等小组件
+js/shell.js              左侧导航、右上角奖章进度条、页面路由
+js/view-*.js             各个页面
+assets/fonts/            字体文件（本地托管，国内也能加载）
+downloads/               可下载的单词表 PDF
+tools/make-wordlist-pdf.js  修改单词后重新生成 PDF：node tools/make-wordlist-pdf.js
 ```
 
-## 在自己电脑上预览
+## 单词发音
 
-不需要安装任何东西：直接双击 `index.html` 用浏览器打开即可。
+优先顺序：
+1. 本地录音：在 `js/data.js` 某个单词里加 `audio: "audio/words/integrity.mp3"`，就会用这个文件。
+2. 有道词典英式发音（国内可访问）。
+3. 浏览器自带语音（以上都不可用时）。
 
-如果想用本地服务器（更接近线上效果），在项目文件夹里运行：
+## 本地预览
 
-```
-python3 -m http.server 8000
-```
+在项目文件夹里运行 `python3 -m http.server 8000`，然后打开 http://localhost:8000
 
-然后在浏览器打开 http://localhost:8000
+## 上线
 
-## 上线（GitHub + Vercel）
-
-1. 把这个文件夹的代码放进一个 GitHub 仓库。
-2. 用 GitHub 账号登录 https://vercel.com ，选 **Add New… → Project**，导入这个仓库。
-3. Framework Preset 选 **Other**，其他设置都不用改，点 **Deploy**。
-4. 一两分钟后会得到一个 `xxx.vercel.app` 的网址，这就是上线的网站。
-
-之后每次把新代码推送到 GitHub，Vercel 会自动重新部署，网址不变。
+仓库已连接 Vercel：推送到 `main` 分支后会自动重新部署，网址不变。
 
 ## 已知限制
 
-- 学习进度保存在学生自己浏览器的 localStorage 里，换设备会从头开始。
-- 发音用的是浏览器自带的语音合成，不同设备音色不同。
-- 网站放在海外平台上，中国大陆访问可能不稳定；本版本用于课程演示。
-- 讨论区、AI 导学、教师后台需要后端，将在后续版本加入。
+- 学习进度保存在学生自己的浏览器里，换设备会从头开始。
+- vercel.app 域名在中国大陆可能无法访问；如需给大陆学生使用，可另外开启 GitHub Pages 或绑定自定义域名。
+- 讨论区、AI 导学需要后端，将在后续课程中加入。
