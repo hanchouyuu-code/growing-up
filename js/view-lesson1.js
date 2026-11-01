@@ -85,7 +85,6 @@
     }
 
     function visualHtml(w) {
-      if (w.photo) return '<figure class="wc-visual is-photo"><img src="assets/pics/' + w.photo + '.jpg" alt="' + ui.esc(w.photoAlt || "") + '"><figcaption>Textbook image</figcaption></figure>';
       if (w.pic) return '<figure class="wc-visual is-emoji" aria-hidden="true">' + ui.picHtml(w.pic) + "</figure>";
       return "";
     }

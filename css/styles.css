@@ -685,10 +685,10 @@ a.stage:hover .stage-plant img, a.stage:focus-visible .stage-plant img { transfo
 .wc-visual { margin: 0; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .wc-visual.is-photo img { width: clamp(150px, 24vw, 230px); aspect-ratio: 1; object-fit: cover; border-radius: 18px; box-shadow: 0 8px 24px -10px rgba(29, 26, 58, .35); }
 .wc-visual.is-photo figcaption { font-size: .72rem; color: var(--ink-3); margin-top: 6px; }
-.wc-visual.is-emoji { width: clamp(150px, 24vw, 230px); aspect-ratio: 1; border-radius: 18px; background: radial-gradient(circle at 50% 40%, #FFF7E0, var(--sun-50) 60%, #FCEBCB); gap: 4px; padding: 14px; flex-direction: row; flex-wrap: wrap; }
-.pic-emoji { width: clamp(64px, 11vw, 112px); height: auto; }
-.wc-visual.is-emoji .pic-emoji:only-of-type { width: clamp(96px, 15vw, 150px); }
-.pic-sep { font: 700 1.6rem/1 var(--f-display); color: var(--sun-d); }
+.wc-visual.is-emoji { width: clamp(150px, 24vw, 230px); aspect-ratio: 1; border-radius: 18px; background: radial-gradient(circle at 50% 40%, #FFF7E0, var(--sun-50) 60%, #FCEBCB); gap: 6px; padding: 16px; flex-direction: row; flex-wrap: nowrap; }
+.pic-emoji { flex: 1 1 0; min-width: 0; width: auto; max-width: 104px; height: auto; }
+.wc-visual.is-emoji .pic-emoji:only-of-type { flex: none; width: clamp(96px, 15vw, 150px); max-width: none; }
+.pic-sep { flex: none; font: 700 1.4rem/1 var(--f-display); color: var(--sun-d); }
 .wc-dict { border-right: 1px solid var(--line); }
 .dict-ex { font-size: 1.05rem; margin: 0 0 8px; font-style: italic; }
 .wc-src a { display: inline-flex; align-items: center; gap: 3px; font-weight: 700; color: var(--violet); text-decoration: none; margin-left: 6px; }
@@ -718,7 +718,7 @@ a.stage:hover .stage-plant img, a.stage:focus-visible .stage-plant img { transfo
   .dot-ra { width: 34px; padding: 0; justify-content: center; }
   .wc-visual.is-photo img, .wc-visual.is-emoji { width: 104px; }
   .wc-visual.is-emoji { padding: 8px; border-radius: 14px; }
-  .pic-emoji { width: 44px; }
+  .wc-visual.is-emoji { gap: 3px; }
   .wc-visual.is-emoji .pic-emoji:only-of-type { width: 76px; }
   .pic-sep { font-size: 1rem; }
   .wc-dict { border-right: 0; border-bottom: 1px solid var(--line); }

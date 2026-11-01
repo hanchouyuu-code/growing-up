@@ -60,7 +60,6 @@ js/view-*.js               各个页面
 api/leaderboard.js         排行榜服务（Vercel 函数）
 api/tutor.js               AI Tutor 服务（Vercel 函数）
 assets/img/                首页小树苗（取自课本 Starting Out 页）
-assets/pics/               课本图片（驾照、投票、信用卡、蜡烛、Morgan 等）
 assets/emoji/              Twemoji 图片（CC BY 4.0）
 assets/fonts/              字体（本地托管）
 downloads/                 单词表 PDF

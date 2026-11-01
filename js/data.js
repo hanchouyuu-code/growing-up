@@ -112,7 +112,7 @@ var OXU = "https://www.oxfordlearnersdictionaries.com/definition/english/";
 /* Vocabulary: the Unit 1 word list up to (not including) "minimum".
    book  = sentence in the textbook (hl = part to highlight), src = where it appears
    dict  = [example sentence, dictionary, entry link, part to highlight]
-   pic   = picture: emoji (shown as large images) or photo = a textbook photo in assets/pics
+   pic   = picture: emoji, shown as large Twemoji images
    tip   = memory aid: word parts and/or a note
    alt   = other accepted spellings, with a note
    audio = optional local recording, e.g. "audio/words/integrity.mp3" */
@@ -138,7 +138,7 @@ GU.WORDS = [
     book: "Get a driver’s licence.", hl: "licence",
     src: "Understanding Ideas, Activity 1",
     dict: ["He was caught driving a car without a licence.", OALD, OXU + "licence", "licence"],
-    photo: "driver", photoAlt: "A young woman holding car keys beside a car",
+    pic: "🪪 🚗",
     alt: { license: "Correct in American English. The textbook uses the British spelling: <b>licence</b>." },
     tip: { note: "British English: <b>licence</b> (noun). American English: <b>license</b>." } },
   { id: "loan", word: "loan", ipa: "/ləʊn/", pos: "n.", zh: "（银行等的）贷款", zhShort: "贷款",
@@ -153,7 +153,7 @@ GU.WORDS = [
     book: "In most countries, turning 18 marks the start of adulthood.", hl: "adulthood",
     src: "The Age of Majority, introduction",
     dict: ["Her childhood problems persisted into adulthood.", OALD, OXU + "adulthood", "adulthood"],
-    photo: "beach", photoAlt: "Young people jumping together on a beach",
+    pic: "🧒 → 🧑",
     tip: { parts: [["adult", "成年人"], ["hood", "state or period 状态，时期"]],
       note: "Same pattern: <b>childhood</b>, <b>neighbourhood</b>." } },
   { id: "milestone", word: "milestone", ipa: "/ˈmaɪlstəʊn/", pos: "n.", zh: "重大事件，里程碑", zhShort: "里程碑",
@@ -161,7 +161,7 @@ GU.WORDS = [
     book: "But what does reaching this milestone, the age of majority, really mean?", hl: "milestone",
     src: "The Age of Majority, introduction",
     dict: ["This voyage marked an important milestone in the history of exploration.", OALD, OXU + "milestone", "milestone"],
-    photo: "candles", photoAlt: "Birthday candles",
+    pic: "🎂",
     tip: { parts: [["mile", "英里"], ["stone", "石头"]],
       note: "Stones by the road once marked each mile. A milestone is now any important stage in life." } },
   { id: "election", word: "election", ipa: "/ɪˈlekʃ(ə)n/", pos: "n.", zh: "选举", zhShort: "选举",
@@ -169,7 +169,7 @@ GU.WORDS = [
     book: "…I won’t be voting in the next general election.", hl: "election",
     src: "Bethany, paragraph 1",
     dict: ["Elections will be held later this year.", OALD, OXU + "election", "Elections"],
-    photo: "vote", photoAlt: "A hand putting a vote into a ballot box",
+    pic: "🗳️",
     tip: { parts: [["elect", "to choose by voting 选举"], ["ion", "noun suffix 名词后缀"]],
       note: "<b>a general election</b> = 大选" } },
   { id: "wage", word: "wage", ipa: "/weɪdʒ/", pos: "n.", zh: "（按小时、日或周计算的）工资，薪金", zhShort: "工资，薪金",
@@ -300,7 +300,7 @@ GU.WORDS = [
     book: "…getting a credit card might tempt me to spend more money than I have!", hl: "tempt",
     src: "Lin Ning, paragraph 2",
     dict: ["I was tempted to take the day off.", OALD, OXU + "tempt", "tempted"],
-    photo: "cards", photoAlt: "A pile of credit cards",
+    pic: "💳 🛍️",
     tip: { note: "Noun: <b>temptation</b>. Adjective: <b>tempting</b>. <b>tempt somebody to do</b> something." } },
   { id: "librarian", word: "librarian", ipa: "/laɪˈbreəriən/", pos: "n.", zh: "图书馆管理员", zhShort: "图书馆管理员",
     def: "a person who is in charge of or works in a library",
@@ -308,7 +308,7 @@ GU.WORDS = [
     src: "Morgan, paragraph 3",
     dict: ["He worked as librarian at the University of Hull from 1955…", OALD + " (entry: Philip Larkin)",
       "https://www.oxfordlearnersdictionaries.com/us/definition/english/philip-larkin", "librarian"],
-    photo: "morgan", photoAlt: "Morgan, a young librarian, in a library",
+    pic: "🧑 📚",
     tip: { parts: [["librar(y)", "图书馆"], ["ian", "person 人"]],
       note: "Same pattern: music → musician, history → historian." } },
   { id: "household", word: "household", ipa: "/ˈhaʊshəʊld/", pos: "adj.", zh: "家庭的", zhShort: "家庭的",
