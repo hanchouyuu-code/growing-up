@@ -33,23 +33,13 @@ GU.OVERVIEW = {
   ]
 };
 
-/* Introduction video. To add the teacher's video, either
-   - put the file in assets/video/ and set src to "assets/video/intro.mp4", or
-   - set embed to a Bilibili / YouTube embed link.
-   Optional: captions = "assets/video/intro.vtt" */
+/* Introduction video recorded by the teacher.
+   To replace it, put a new file in assets/video/ and change src (and poster). */
 GU.INTRO_VIDEO = {
-  src: "",
+  src: "assets/video/intro.mp4",
+  poster: "assets/video/intro-poster.jpg",
   embed: "",
-  poster: "",
-  captions: "",
-  minutes: 1,
-  transcript: [
-    "Hello, everyone, and welcome to Unit 1, Growing up.",
-    "In most countries, turning eighteen marks the start of adulthood. This milestone is known as the age of majority. Over the next ninety minutes, we will explore what reaching it really means.",
-    "In Lesson 1, you will learn thirty key words from the unit. In Lesson 2, we will look at coming-of-age ceremonies and Rudyard Kipling’s poem <em>If—</em>. In Lesson 3, you will read about three young people, Bethany, Lin Ning and Morgan, and what turning eighteen means, or meant, to them. In Lesson 4, you will write about the responsibilities that come with adulthood.",
-    "Along the way, you can compete with your classmates in the Learning Community and ask the AI Tutor for help at any time.",
-    "Work at your own pace, and remember: growing up is a gradual process. Let’s begin."
-  ]
+  length: "44 seconds"
 };
 
 GU.LESSONS = [

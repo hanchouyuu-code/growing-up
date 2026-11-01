@@ -9,7 +9,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 | 部分 | 内容 | 时长 | 状态 |
 |---|---|---|---|
-| Course Overview | 教材名称（中英）、Unit Overview、Introduction Video、Learning Objectives、课程结构、奖章 | — | 已完成（视频待上传） |
+| Course Overview | 教材名称（中英）、Unit Overview、Introduction Video、Learning Objectives、课程结构、奖章 | — | 已完成 |
 | Lesson 1 | Vocabulary：30 个单词（minimum 之前），3 组，每组含 Set Read-Along | 20 分钟 | 已完成 |
 | Learning Community | Word Battle 排行榜 + AI Tutor | — | 已完成（需在 Vercel 连接两项服务） |
 | Lesson 2 | Starting Out | 20 分钟 | 待制作 |
@@ -38,12 +38,8 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 ## 介绍视频
 
-录好视频后，二选一：
-
-- 把文件放到 `assets/video/intro.mp4`，在 `js/data.js` 的 `GU.INTRO_VIDEO` 里设 `src: "assets/video/intro.mp4"`；
-- 或上传到 B 站 / YouTube，把嵌入链接填进 `embed`。
-
-讲稿已经写在 `GU.INTRO_VIDEO.transcript` 里，页面上会作为 Transcript 显示。
+老师录制的介绍视频在 `assets/video/intro.mp4`（已裁掉录屏边缘、统一音量、压缩为网页格式）。页面上可以调节播放速度（0.75×–1.5×）。
+要替换视频：把新文件放进 `assets/video/`，再修改 `js/data.js` 里 `GU.INTRO_VIDEO` 的 `src` 和 `poster`。
 
 ## 文件结构
 
@@ -61,6 +57,7 @@ api/leaderboard.js         排行榜服务（Vercel 函数）
 api/tutor.js               AI Tutor 服务（Vercel 函数）
 assets/img/                首页小树苗（取自课本 Starting Out 页）
 assets/emoji/              Twemoji 图片（CC BY 4.0）
+assets/video/              介绍视频
 assets/fonts/              字体（本地托管）
 downloads/                 单词表 PDF
 tools/make-wordlist-pdf.js 修改单词后重新生成 PDF：node tools/make-wordlist-pdf.js

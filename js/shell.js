@@ -77,10 +77,11 @@
     document.getElementById("sidebar").innerHTML =
       '<div class="sb-scroll">' +
       '<div class="book">' +
-      '<div class="book-cover" aria-hidden="true"><span>英语</span><small>选择性必修<br>第二册</small></div>' +
-      '<div class="book-meta"><p class="book-pub">' + GU.BOOK.zh.publisher + "</p>" +
-      '<p class="book-title">' + GU.BOOK.zh.title + "</p>" +
-      '<p class="book-en">' + GU.BOOK.en.title + "</p></div>" +
+      '<div class="book-cover" lang="zh-CN" aria-label="' + GU.BOOK.zh.publisher + " " + GU.BOOK.zh.title + '">' +
+      '<span class="bc-pub">外语教学与<br>研究出版社</span><span class="bc-series">普通高中教科书</span>' +
+      '<span class="bc-subject">英语</span><span class="bc-vol">选择性必修<br>第二册</span></div>' +
+      '<div class="book-meta"><p class="book-pub">' + GU.BOOK.en.publisher.replace(" (FLTRP)", "") + "</p>" +
+      '<p class="book-title">' + GU.BOOK.en.title + "</p></div>" +
       "</div>" +
       '<div class="sb-unit"><span>Unit 1</span><h2>Growing up</h2></div>' +
       '<div class="cp"><div class="cp-row"><span>Course Progress</span><b>' + p.pct + '%</b></div>' +

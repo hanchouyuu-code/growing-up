@@ -38,21 +38,26 @@
     var player;
     if (v.embed) {
       player = '<div class="video-frame"><iframe src="' + ui.esc(v.embed) + '" title="Introduction video" allow="fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>';
-    } else if (v.src) {
-      player = '<div class="video-frame"><video controls preload="metadata" playsinline' + (v.poster ? ' poster="' + ui.esc(v.poster) + '"' : "") + ">" +
-        '<source src="' + ui.esc(v.src) + '">' +
-        (v.captions ? '<track kind="captions" srclang="en" label="English" src="' + ui.esc(v.captions) + '" default>' : "") +
-        "</video></div>";
     } else {
-      player = '<div class="video-frame video-pending">' +
-        '<div class="vp-inner"><span class="vp-play" aria-hidden="true">' + ui.icon("play") + "</span>" +
-        "<p><b>Teacher Introduction</b>The recorded introduction will be published here. Its full script is available in the transcript below.</p></div></div>";
+      player = '<div class="video-player"><video id="intro-video" controls preload="metadata" playsinline' + (v.poster ? ' poster="' + ui.esc(v.poster) + '"' : "") + ">" +
+        '<source src="' + ui.esc(v.src) + '" type="video/mp4"></video></div>' +
+        '<div class="video-tools"><div class="seg" role="radiogroup" aria-label="Playback speed"><span class="seg-label"><span class="sl-long">Playback </span>Speed</span>' +
+        [0.75, 1, 1.25, 1.5].map(function (r) { return '<button role="radio" aria-checked="' + (r === 1) + '" data-vrate="' + r + '">' + r + "×</button>"; }).join("") +
+        "</div></div>";
     }
     return '<section class="ov-sec ov-video" aria-labelledby="vid-h">' +
-      '<div class="sec-head"><h2 id="vid-h">Introduction Video</h2><span class="sec-meta">' + ui.icon("clock") + "Approximately " + v.minutes + " minute</span></div>" +
-      player +
-      '<details class="transcript"><summary>Transcript</summary>' + v.transcript.map(function (t) { return "<p>" + t + "</p>"; }).join("") + "</details>" +
-      "</section>";
+      '<div class="sec-head"><h2 id="vid-h">Introduction Video</h2><span class="sec-meta">' + ui.icon("clock") + ui.esc(v.length) + "</span></div>" +
+      player + "</section>";
+  }
+
+  function bindVideo(page) {
+    var video = page.querySelector("#intro-video");
+    if (!video) return;
+    var btns = page.querySelectorAll("[data-vrate]");
+    function sync() { btns.forEach(function (b) { b.setAttribute("aria-checked", Number(b.dataset.vrate) === video.playbackRate ? "true" : "false"); }); }
+    btns.forEach(function (b) { b.addEventListener("click", function () { video.playbackRate = Number(b.dataset.vrate); sync(); }); });
+    video.addEventListener("ratechange", sync);
+    video.addEventListener("play", function () { GU.audio.stop(); });
   }
 
   GU.views.overview = function (page) {
@@ -119,5 +124,6 @@
       "</section>";
 
     page.querySelectorAll(".js-start").forEach(function (a) { a.addEventListener("click", startCourse); });
+    bindVideo(page);
   };
 })();
