@@ -27,7 +27,14 @@
     clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
     book: '<path d="M3 6c3-1 6-1 9 1 3-2 6-2 9-1v13c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 7v13"/>',
     teacher: '<path d="M2.5 9L12 4.5 21.5 9 12 13.5z"/><path d="M6.5 11v4.5c1.5 1.5 3.5 2 5.5 2s4-.5 5.5-2V11"/><path d="M21.5 9v5"/>',
-    sparkle: '<path d="M12 3.5l1.8 5.2 5.2 1.8-5.2 1.8L12 17.5l-1.8-5.2L5 10.5l5.2-1.8z"/>'
+    sparkle: '<path d="M12 3.5l1.8 5.2 5.2 1.8-5.2 1.8L12 17.5l-1.8-5.2L5 10.5l5.2-1.8z"/>',
+    chat: '<path d="M4.5 5.5h15v10h-8l-4.5 3.5v-3.5h-2.5z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/>',
+    trophy: '<path d="M8 4.5h8v4.5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v3.5M8.5 20h7M10 16.5h4V20h-4z"/>',
+    users: '<circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="16.5" cy="9.5" r="2.6"/><path d="M15.5 14.2a4.6 4.6 0 0 1 5 4.8"/>',
+    send: '<path d="M4.5 12L20 4.5 16.5 19.5l-4.5-5.5z"/><path d="M12 14l8-9.5"/>',
+    external: '<path d="M13.5 5.5h5v5"/><path d="M18.5 5.5L11 13"/><path d="M16.5 13.5v5h-11v-11h5"/>',
+    bulb: '<path d="M9 17.5h6M9.8 20.5h4.4"/><path d="M12 3.5a5.8 5.8 0 0 0-3.3 10.6c.6.5 1 1.2 1 2v.4h4.6v-.4c0-.8.4-1.5 1-2A5.8 5.8 0 0 0 12 3.5z"/>',
+    repeat: '<path d="M5 9.5h11.5l-3-3M19 14.5H7.5l3 3"/>'
   };
 
   function icon(name, cls) {
@@ -43,7 +50,10 @@
     ear: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6.5" rx="1.6"/><rect x="17" y="14" width="4" height="6.5" rx="1.6"/>',
     sun: '<path d="M3.5 17.5h17"/><path d="M7 17.5a5 5 0 0 1 10 0"/><path d="M12 6.5V9M5.6 10l1.8 1.8M18.4 10l-1.8 1.8M2.5 14.5h2M19.5 14.5h2"/>',
     book: '<path d="M3 6c3-1 6-1 9 1 3-2 6-2 9-1v13c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 7v13"/>',
-    pen: '<path d="M15 4l5 5L9 20H4v-5z"/><path d="M13 6l5 5"/>'
+    pen: '<path d="M15 4l5 5L9 20H4v-5z"/><path d="M13 6l5 5"/>',
+    sapling: '<path d="M12 21V8"/><path d="M12 3.5l-4 6h2.2l-3.2 4.5h3l-2.5 3.5h9l-2.5-3.5h3L14 9.5h2.2z"/>',
+    roots: '<path d="M12 3.5v9"/><path d="M8 7.5c1.5-2 2.6-2.5 4-2.5s2.5.5 4 2.5"/><path d="M4 13.5h16"/><path d="M12 13.5v3l-3 3.5M12 16.5l3 3.5M12 13.5l-5 2.5M12 13.5l5 2.5"/>',
+    trophy: '<path d="M8 4.5h8v4.5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v3.5M8.5 20h7M10 16.5h4V20h-4z"/>'
   };
 
   function medal(b, earned) {
@@ -106,14 +116,14 @@
     if (!b) return;
     var html = '<div class="celebrate">' +
       '<div class="celebrate-medal">' + rays() + medal(b, true) + "</div>" +
-      '<p class="celebrate-kicker">' + (b.bonus ? "Bonus badge earned" : "Badge earned") + "</p>" +
+      '<p class="celebrate-kicker">' + (b.bonus ? "Bonus Badge Earned" : "Badge Earned") + "</p>" +
       "<h2>" + esc(b.name) + "</h2>" +
       "<p>" + esc(b.desc) + ".</p>" +
       '<div class="celebrate-actions">' +
       (next ? '<a class="btn btn-primary" data-autofocus href="' + next.href + '">' + esc(next.label) + "</a>" : "") +
-      '<button class="btn btn-ghost" data-close>' + (next ? "Stay here" : "Close") + "</button>" +
+      '<button class="btn btn-ghost" data-close>' + (next ? "Remain on This Page" : "Close") + "</button>" +
       "</div></div>";
-    modal(html, { cls: "modal-celebrate", label: "Badge earned", onOpen: function (m, close) {
+    modal(html, { cls: "modal-celebrate", label: "Badge Earned", onOpen: function (m, close) {
       m.querySelectorAll("a.btn").forEach(function (a) { a.addEventListener("click", function () { close(); }); });
     } });
   }
@@ -146,7 +156,22 @@
     return s.slice(0, i) + '<mark class="hl">' + s.slice(i, i + hl.length) + "</mark>" + s.slice(i + hl.length);
   }
 
+  /* Pictures: emoji are drawn as Twemoji SVG images so they look the same, and stay sharp, on every device. */
+  function emojiSrc(e) {
+    var cps = [];
+    for (var ch of e) cps.push(ch.codePointAt(0).toString(16));
+    if (cps.indexOf("200d") < 0) cps = cps.filter(function (c) { return c !== "fe0f"; });
+    return "assets/emoji/" + cps.join("-") + ".svg";
+  }
+  function picHtml(str, alt) {
+    return String(str).split(" ").filter(Boolean).map(function (t) {
+      if (/^[→⇄+]$/.test(t)) return '<span class="pic-sep" aria-hidden="true">' + t + "</span>";
+      return '<img class="pic-emoji" src="' + emojiSrc(t) + '" alt="" draggable="false">';
+    }).join("") + (alt ? '<span class="sr-only">' + esc(alt) + "</span>" : "");
+  }
+
   GU.ui = {
+    emojiSrc: emojiSrc, picHtml: picHtml,
     esc: esc, icon: icon, medal: medal, badgeById: badgeById, toast: toast, modal: modal,
     celebrate: celebrate, shuffle: shuffle, normalize: normalize, highlight: highlight
   };

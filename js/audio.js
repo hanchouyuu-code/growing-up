@@ -1,11 +1,12 @@
 /* Sound: plays a word or sentence.
-   1) a local recording, if the word has an `audio` file path in data.js
-   2) Youdao dictionary audio, British English (works in mainland China)
-   3) the browser's built-in voice, as a fallback */
+   Order of sources (decided per request, so one slow request never switches the whole site to a robotic voice):
+   1) a local recording, if the word has an `audio` path in data.js
+   2) Youdao Dictionary British English audio (the same audio for every page, reachable in mainland China)
+   3) the browser's built-in voice, only if 1 and 2 both fail */
 (function () {
   var current = null;
-  var remoteFailed = false;
   var voice = null;
+  var token = 0;
 
   function pickVoice() {
     if (!("speechSynthesis" in window)) return null;
@@ -24,34 +25,45 @@
   }
 
   function clean(text) {
-    return String(text).replace(/[“”]/g, '"').replace(/[‘’]/g, "'").replace(/…/g, " ").replace(/\s+/g, " ").trim();
+    return String(text).replace(/<[^>]+>/g, "").replace(/[“”]/g, '"').replace(/[‘’]/g, "'")
+      .replace(/…/g, " ").replace(/\s*\/\s*/g, ", ").replace(/\s+/g, " ").trim();
   }
 
-  function tts(text, slow) {
+  function youdao(text) {
+    return "https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(text) + "&type=1";
+  }
+
+  function tts(text, rate) {
     return new Promise(function (resolve, reject) {
       if (!("speechSynthesis" in window)) return reject(new Error("no-tts"));
       speechSynthesis.cancel();
-      var u = new SpeechSynthesisUtterance(clean(text));
+      var u = new SpeechSynthesisUtterance(text);
       u.lang = voice ? voice.lang : "en-GB";
       if (voice) u.voice = voice;
-      u.rate = slow ? 0.65 : 0.9;
+      u.rate = Math.max(0.5, Math.min(1.5, 0.9 * rate));
       u.onend = function () { resolve(); };
       u.onerror = function () { reject(new Error("tts-error")); };
       speechSynthesis.speak(u);
     });
   }
 
-  function playUrl(url, slow) {
+  var cache = {};
+  function getAudio(url) {
+    if (!cache[url]) { var a = new Audio(); a.preload = "auto"; a.src = url; cache[url] = a; }
+    return cache[url];
+  }
+
+  function playUrl(url, rate, myToken) {
     return new Promise(function (resolve, reject) {
-      var a = new Audio();
+      var a = getAudio(url);
       var started = false;
-      var timer = setTimeout(function () { if (!started) { a.pause(); reject(new Error("timeout")); } }, 4000);
-      a.preload = "auto";
-      a.src = url;
-      a.playbackRate = slow ? 0.7 : 1;
+      var timer = setTimeout(function () { if (!started) { a.pause(); reject(new Error("timeout")); } }, 7000);
+      try { a.currentTime = 0; } catch (e) {}
+      a.playbackRate = rate;
       a.onplaying = function () { started = true; clearTimeout(timer); };
-      a.onended = function () { resolve(); };
-      a.onerror = function () { clearTimeout(timer); reject(new Error("audio-error")); };
+      a.onended = function () { clearTimeout(timer); resolve(); };
+      a.onerror = function () { clearTimeout(timer); delete cache[url]; reject(new Error("audio-error")); };
+      a.onpause = function () { if (myToken !== token) { clearTimeout(timer); resolve(); } };
       current = a;
       var p = a.play();
       if (p && p.catch) p.catch(function (e) { clearTimeout(timer); reject(e); });
@@ -59,42 +71,44 @@
   }
 
   function stop() {
+    token++;
     if (current) { try { current.pause(); } catch (e) {} current = null; }
     if ("speechSynthesis" in window) speechSynthesis.cancel();
   }
 
+  var warned = false;
   GU.audio = {
     stop: stop,
+    /* opts: { rate: 1, slow: false, file: "path.mp3" } -> Promise that resolves when playback ends */
     play: function (text, opts) {
       opts = opts || {};
       stop();
+      var my = token;
+      var rate = opts.rate || (opts.slow ? 0.75 : 1);
       var t = clean(text);
-      var chain;
-      if (opts.file) {
-        chain = playUrl(opts.file, opts.slow);
-      } else if (!remoteFailed) {
-        chain = playUrl("https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(t) + "&type=1", opts.slow)
-          .catch(function (e) {
-            if (e && e.name === "NotAllowedError") throw e;
-            remoteFailed = true;
-            return tts(t, opts.slow);
-          });
-      } else {
-        chain = tts(t, opts.slow);
-      }
-      return chain.catch(function (e) {
-        if (opts.file) return tts(t, opts.slow);
-        throw e;
+      var first = opts.file ? playUrl(opts.file, rate, my).catch(function () { return playUrl(youdao(t), rate, my); })
+        : playUrl(youdao(t), rate, my);
+      return first.catch(function (e) {
+        if (my !== token) return;
+        if (e && e.name === "NotAllowedError") throw e;
+        return tts(t, rate);
       }).catch(function () {
-        GU.ui.toast("Sound isn’t available on this device. Check the volume or try another browser.");
+        if (my !== token) return;
+        if (!warned) { warned = true; GU.ui.toast("Audio is unavailable on this device. Check the volume or try another browser."); }
       });
     },
-    playWord: function (w, slow) {
-      return GU.audio.play(w.word, { slow: slow, file: w.audio });
-    }
+    playWord: function (w, slowOrRate) {
+      var o = { file: w.audio };
+      if (typeof slowOrRate === "number") o.rate = slowOrRate; else o.slow = !!slowOrRate;
+      return GU.audio.play(w.word, o);
+    },
+    preload: function (words) {
+      words.forEach(function (w) { getAudio(w.audio || youdao(clean(w.word))); });
+    },
+    token: function () { return token; }
   };
 
-  /* Recorder for "Say it": record your voice and compare it with the model. */
+  /* Recorder for pronunciation practice: record your voice and compare it with the model. */
   var rec = null, chunks = [], stream = null, stopTimer = null;
 
   GU.recorder = {

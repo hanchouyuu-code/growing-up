@@ -10,8 +10,8 @@
   }
 
   function reviewList(ids) {
-    if (!ids.length) return '<p class="res-perfect">' + ui.icon("sparkle") + "No mistakes. Every word right first time.</p>";
-    return '<h3 class="res-h">Words to review</h3><ul class="review">' + ids.map(function (id) {
+    if (!ids.length) return '<p class="res-perfect">' + ui.icon("sparkle") + "No errors: every word was answered correctly at the first attempt.</p>";
+    return '<h3 class="res-h">Words for Review</h3><ul class="review">' + ids.map(function (id) {
       var w = GU.WORDS.filter(function (x) { return x.id === id; })[0];
       return '<li><button class="audio-btn" data-say="' + w.id + '" aria-label="Play ' + ui.esc(w.word) + '">' + ui.icon("speaker") + "</button>" +
         "<b>" + ui.esc(w.word) + '</b><span lang="zh-CN">' + w.zh + "</span></li>";
@@ -42,13 +42,13 @@
 
     function intro() {
       var best = store.score("match");
-      page.innerHTML = head("Matching quiz") +
+      page.innerHTML = head("Word–Meaning Matching") +
         '<section class="intro-card">' +
         '<div class="intro-art" aria-hidden="true">' + matchArt() + "</div>" +
-        "<div><h2>Match each word with its meaning</h2>" +
-        "<p>There are 5 rounds of 6 words. Tap an English word, then tap its Chinese meaning to draw a line between them. If a match is wrong, you’ll see the word’s sentence from the book as a clue.</p>" +
-        (best != null ? '<p class="intro-best">Your best score: <b>' + best + "/30</b></p>" : "") +
-        '<button class="btn btn-primary btn-lg" id="go">Start the quiz</button></div></section>';
+        "<div><h2>Instructions</h2>" +
+        "<p>The activity has five rounds of six words. Select an English word, then select its part of speech and Chinese meaning to draw a line between them. After an incorrect match, the word’s textbook sentence appears as a clue.</p>" +
+        (best != null ? '<p class="intro-best">Best score: <b>' + best + "/30</b></p>" : "") +
+        '<button class="btn btn-primary btn-lg" id="go">Begin the Activity</button></div></section>';
       page.querySelector("#go").addEventListener("click", function () { reset(); store.setScore("match-tries", 1); play(); });
     }
 
@@ -61,18 +61,18 @@
     function play() {
       var ws = roundWords();
       var right = ui.shuffle(ws);
-      page.innerHTML = head("Matching quiz", "Round " + (round + 1) + " of " + rounds) +
+      page.innerHTML = head("Word–Meaning Matching", "Round " + (round + 1) + " of " + rounds) +
         '<div class="round-bar" aria-hidden="true">' + Array.from({ length: rounds }, function (_, i) {
           return '<i class="' + (i < round ? "on" : i === round ? "cur" : "") + '"></i>';
         }).join("") + "</div>" +
-        '<p class="match-help">Tap a word, then tap its meaning.</p>' +
+        '<p class="match-help">Select a word, then select its meaning.</p>' +
         '<div class="board" id="board">' +
         '<svg class="board-lines" id="lines" aria-hidden="true"></svg>' +
         '<ul class="col col-en">' + ws.map(function (w) {
           return '<li><button class="chip" data-side="en" data-id="' + w.id + '">' + ui.esc(w.word) + "</button></li>";
         }).join("") + "</ul>" +
         '<ul class="col col-zh">' + right.map(function (w) {
-          return '<li><button class="chip" lang="zh-CN" data-side="zh" data-id="' + w.id + '">' + w.zhShort + "</button></li>";
+          return '<li><button class="chip chip-zh" data-side="zh" data-id="' + w.id + '"><i class="chip-pos">' + w.pos + '</i> <span lang="zh-CN">' + w.zhShort + "</span></button></li>";
         }).join("") + "</ul>" +
         "</div>" +
         '<div class="match-fb" id="mfb" aria-live="polite"></div>' +
@@ -109,7 +109,7 @@
         en.classList.add("is-wrong"); zh.classList.add("is-wrong");
         clearTimeout(fbTimer);
         fbTimer = setTimeout(function () { en.classList.remove("is-wrong"); zh.classList.remove("is-wrong"); drawLines(); }, 900);
-        fb.innerHTML = '<p class="fb fb-wrong"><b>Not a match.</b> Clue from the book: “' + ui.highlight(w.book, w.hl) + "”</p>";
+        fb.innerHTML = '<p class="fb fb-wrong"><b>Incorrect match.</b> Textbook clue: “' + ui.highlight(w.book, w.hl) + "”</p>";
       }
     }
 
@@ -145,7 +145,7 @@
     function roundDone() {
       var next = page.querySelector("#mnext");
       if (round < rounds - 1) {
-        next.innerHTML = '<p class="fb fb-ok">' + ui.icon("check") + "Round " + (round + 1) + ' complete.</p><button class="btn btn-primary" id="nr">Next round' + ui.icon("right") + "</button>";
+        next.innerHTML = '<p class="fb fb-ok">' + ui.icon("check") + "Round " + (round + 1) + ' completed.</p><button class="btn btn-primary" id="nr">Next Round' + ui.icon("right") + "</button>";
         var btn = next.querySelector("#nr");
         btn.addEventListener("click", function () { round++; play(); });
         btn.focus();
@@ -160,17 +160,17 @@
       store.setScore("match", score);
       var first = store.complete(act.id);
       var got = store.award("match");
-      page.innerHTML = head("Matching quiz", "Finished") +
+      page.innerHTML = head("Word–Meaning Matching", "Completed") +
         '<section class="results">' +
         '<div class="res-score"><span class="res-num">' + score + "</span><span>/30</span></div>" +
-        "<div><h2>" + (score === 30 ? "A perfect score." : score >= 24 ? "Well done." : "Good effort. Keep practising.") + "</h2>" +
-        "<p>You matched " + score + " of 30 words right first time.</p></div>" +
+        "<div><h2>" + (score === 30 ? "Full Marks" : score >= 24 ? "Strong Result" : "Further Practice Recommended") + "</h2>" +
+        "<p>" + score + " of 30 words were matched correctly at the first attempt.</p></div>" +
         "</section>" + reviewList(miss) +
-        '<div class="res-actions"><button class="btn btn-ghost" id="again">' + ui.icon("redo") + "Try again</button>" +
-        '<a class="btn btn-primary" href="#/lesson-1/challenge">Next: Listening challenge' + ui.icon("right") + "</a></div>";
+        '<div class="res-actions"><button class="btn btn-ghost" id="again">' + ui.icon("redo") + "Repeat the Activity</button>" +
+        '<a class="btn btn-primary" href="#/lesson-1/challenge">Proceed to the Dictation Challenge' + ui.icon("right") + "</a></div>";
       bindSay(page);
       page.querySelector("#again").addEventListener("click", function () { reset(); play(); });
-      if (got || first) ui.celebrate("match", { href: "#/lesson-1/challenge", label: "Next: Listening challenge" });
+      if (got || first) ui.celebrate("match", { href: "#/lesson-1/challenge", label: "Proceed to the Dictation Challenge" });
     }
 
     var onResize = function () { drawLines(); };
@@ -187,13 +187,13 @@
 
     function intro() {
       var best = store.score("challenge");
-      page.innerHTML = head('Listening challenge <em class="tag-bonus">Bonus</em>') +
+      page.innerHTML = head('Dictation Challenge <em class="tag-bonus">Bonus</em>') +
         '<section class="intro-card">' +
         '<div class="intro-art" aria-hidden="true">' + earArt() + "</div>" +
-        "<div><h2>Hear it. Spell it.</h2>" +
-        "<p>You’ll hear 10 words from the lesson, one at a time. The word isn’t shown, so you need your ears and your memory. Stuck? Each wrong answer gives you a bigger clue.</p>" +
-        (best != null ? '<p class="intro-best">Your best score: <b>' + best + "/10</b></p>" : "") +
-        '<button class="btn btn-primary btn-lg" id="go">Start the challenge</button></div></section>';
+        "<div><h2>Instructions</h2>" +
+        "<p>Ten words from the lesson are played one at a time, without being shown. Type each word you hear. Every incorrect answer reveals a further clue.</p>" +
+        (best != null ? '<p class="intro-best">Best score: <b>' + best + "/10</b></p>" : "") +
+        '<button class="btn btn-primary btn-lg" id="go">Begin the Challenge</button></div></section>';
       page.querySelector("#go").addEventListener("click", start);
     }
 
@@ -216,12 +216,12 @@
     function show(autoplay) {
       tries = 0;
       var w = list[i];
-      page.innerHTML = head('Listening challenge <em class="tag-bonus">Bonus</em>', "Word " + (i + 1) + " of " + COUNT) +
+      page.innerHTML = head('Dictation Challenge <em class="tag-bonus">Bonus</em>', "Word " + (i + 1) + " of " + COUNT) +
         '<div class="ch-bar" aria-hidden="true"><i style="width:' + (i / COUNT * 100) + '%"></i></div>' +
         '<section class="ch-card">' +
         '<div class="ch-audio"><button class="ch-play" id="play" aria-label="Play the word">' + ui.icon("speaker") + "</button>" +
         '<button class="slow-btn" id="slow" aria-label="Play slowly">Slow</button></div>' +
-        '<p class="ch-label">Listen and type what you hear.</p>' +
+        '<p class="ch-label">Listen and type the word.</p>' +
         '<div class="ch-clue" id="clue" aria-live="polite"></div>' +
         '<form class="spell-form" id="chf" autocomplete="off">' +
         '<label class="sr-only" for="ch-in">Type the word you hear</label>' +
@@ -259,13 +259,13 @@
       if (missed.indexOf(w.id) < 0) missed.push(w.id);
       if (tries === 1) {
         clue.innerHTML = '<p><span class="clue-tag">Clue</span><span lang="zh-CN">' + w.zh + "</span> <i>" + w.pos + '</i></p><p class="pattern">' + blanks(target) + "</p>";
-        fb.innerHTML = '<p class="fb fb-wrong">Not quite. Here’s a clue. Listen again and try once more.</p>';
+        fb.innerHTML = '<p class="fb fb-wrong">Incorrect. A clue has been added. Listen again and try once more.</p>';
       } else if (tries === 2) {
         clue.innerHTML = '<p><span class="clue-tag">Clue</span><span lang="zh-CN">' + w.zh + "</span> <i>" + w.pos + '</i></p><p class="pattern">' + ui.esc(target[0]) + " " + blanks(target.slice(1)) + "</p>";
-        fb.innerHTML = '<p class="fb fb-wrong">Still not right. It starts with <b>' + ui.esc(target[0]) + "</b>.</p>";
+        fb.innerHTML = '<p class="fb fb-wrong">Still incorrect. The word begins with <b>' + ui.esc(target[0]) + "</b>.</p>";
       } else {
         clue.innerHTML = '<p><span class="clue-tag">Answer</span><b>' + ui.esc(w.word) + '</b> <span lang="zh-CN">' + w.zh + "</span></p>";
-        fb.innerHTML = '<p class="fb fb-info">Type it once to finish this word.</p>';
+        fb.innerHTML = '<p class="fb fb-info">Type the word once to continue.</p>';
       }
       inp.select();
       GU.audio.playWord(w);
@@ -275,17 +275,17 @@
       store.setScore("challenge", firstTry);
       var first = store.complete(act.id);
       var got = store.award("challenge");
-      page.innerHTML = head('Listening challenge <em class="tag-bonus">Bonus</em>', "Finished") +
+      page.innerHTML = head('Dictation Challenge <em class="tag-bonus">Bonus</em>', "Finished") +
         '<section class="results">' +
         '<div class="res-score"><span class="res-num">' + firstTry + "</span><span>/10</span></div>" +
-        "<div><h2>" + (firstTry === 10 ? "Sharp ears!" : firstTry >= 7 ? "Great listening." : "Challenge complete.") + "</h2>" +
-        "<p>You spelled " + firstTry + " of 10 words right first time.</p></div>" +
+        "<div><h2>" + (firstTry === 10 ? "Full Marks" : firstTry >= 7 ? "Strong Result" : "Challenge Completed") + "</h2>" +
+        "<p>" + firstTry + " of 10 words were spelled correctly at the first attempt.</p></div>" +
         "</section>" + reviewList(missed) +
-        '<div class="res-actions"><button class="btn btn-ghost" id="again">' + ui.icon("redo") + "Try another 10</button>" +
-        '<a class="btn btn-primary" href="#/lesson-1">Back to Lesson 1' + ui.icon("right") + "</a></div>";
+        '<div class="res-actions"><button class="btn btn-ghost" id="again">' + ui.icon("redo") + "Attempt Ten New Words</button>" +
+        '<a class="btn btn-primary" href="#/community/battle">Proceed to the Word Battle' + ui.icon("right") + "</a></div>";
       bindSay(page);
       page.querySelector("#again").addEventListener("click", start);
-      if (got || first) ui.celebrate("challenge", { href: "#/lesson-2", label: "Go to Lesson 2" });
+      if (got || first) ui.celebrate("challenge", { href: "#/community/battle", label: "Proceed to the Word Battle" });
     }
 
     intro();

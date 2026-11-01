@@ -4,7 +4,7 @@
   var listeners = [];
 
   function blank() {
-    return { overview: false, words: {}, activities: {}, badges: {}, scores: {}, ui: {} };
+    return { overview: false, words: {}, activities: {}, badges: {}, scores: {}, ui: {}, readalong: {}, player: null, battles: [] };
   }
 
   function load() {
@@ -41,6 +41,20 @@
     groupCount: function (g) {
       return GU.groupWords(g).filter(function (w) { return GU.store.wordDone(w.id); }).length;
     },
+
+    readAlongDone: function (g) { return !!state.readalong[g]; },
+    setReadAlong: function (g) { if (!state.readalong[g]) { state.readalong[g] = Date.now(); save(); } },
+
+    player: function (p) {
+      if (p === undefined) return state.player;
+      state.player = p; save();
+    },
+    addBattle: function (rec) {
+      state.battles.unshift(rec);
+      state.battles = state.battles.slice(0, 20);
+      save();
+    },
+    battles: function () { return state.battles || []; },
 
     isDone: function (activityId) { return !!state.activities[activityId]; },
     complete: function (activityId) {

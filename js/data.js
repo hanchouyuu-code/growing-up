@@ -4,21 +4,27 @@ window.GU = window.GU || {};
 GU.views = GU.views || {};
 
 GU.BOOK = {
-  publisher: "外语教学与研究出版社",
-  series: "普通高中教科书",
-  subject: "英语",
-  volume: "选择性必修 第二册",
+  zh: {
+    publisher: "外语教学与研究出版社",
+    title: "普通高中教科书 英语 选择性必修 第二册"
+  },
+  en: {
+    publisher: "Foreign Language Teaching and Research Press (FLTRP)",
+    title: "Senior High School Textbook: English, Selective Compulsory Course, Book 2"
+  },
   unit: "Unit 1",
   unitTitle: "Growing up"
 };
 
-/* Unit overview, adapted from the teacher's book (The Little Prince part removed). */
 GU.OVERVIEW = {
-  theme: "People and self",
-  themeParts: ["Knowing yourself", "Growing as a person", "Becoming your best self"],
+  lede: "A 90-minute online course on the age of majority: the milestone that marks the start of adulthood, and the new freedoms and responsibilities it brings.",
+  theme: "People and Self",
+  themeZh: "人与自我",
+  themeParts: ["Knowing Yourself", "Enriching Yourself", "Improving Yourself"],
+  /* Adapted from the teacher's book. The Little Prince section has been removed. */
   paragraphs: [
-    "This unit is about growing up. You’ll start with lines from Rudyard Kipling’s poem <em>If—</em>, then hear how young people of different ages see growing up and becoming an adult. Along the way, you’ll think about your plans for the future and look back on the moments in your life you’ll never forget.",
-    "Seen from these different angles, growing up brings meaning and responsibility, and sometimes worry and confusion too. The aim is to help you set clear goals for your life and face it with a positive attitude."
+    "This unit explores the theme of growing up. It begins with lines from Rudyard Kipling’s poem <em>If—</em> and moves on to how students of different ages understand growing up and adulthood. It then turns to plans for the future and memorable moments in life.",
+    "By viewing growing up from these different angles, students come to understand its meaning and the responsibilities it brings, and are encouraged to talk about its worries and confusion. The unit aims to help students set firm goals in life and develop a positive attitude towards it."
   ],
   objectives: [
     "work out the structure of the passage and find out the meaning of “the age of majority”;",
@@ -27,259 +33,326 @@ GU.OVERVIEW = {
   ]
 };
 
-/* Lessons and their activities. Each activity counts toward overall progress. */
+/* Introduction video. To add the teacher's video, either
+   - put the file in assets/video/ and set src to "assets/video/intro.mp4", or
+   - set embed to a Bilibili / YouTube embed link.
+   Optional: captions = "assets/video/intro.vtt" */
+GU.INTRO_VIDEO = {
+  src: "",
+  embed: "",
+  poster: "",
+  captions: "",
+  minutes: 1,
+  transcript: [
+    "Hello, everyone, and welcome to Unit 1, Growing up.",
+    "In most countries, turning eighteen marks the start of adulthood. This milestone is known as the age of majority. Over the next ninety minutes, we will explore what reaching it really means.",
+    "In Lesson 1, you will learn thirty key words from the unit. In Lesson 2, we will look at coming-of-age ceremonies and Rudyard Kipling’s poem <em>If—</em>. In Lesson 3, you will read about three young people, Bethany, Lin Ning and Morgan, and what turning eighteen means, or meant, to them. In Lesson 4, you will write about the responsibilities that come with adulthood.",
+    "Along the way, you can compete with your classmates in the Learning Community and ask the AI Tutor for help at any time.",
+    "Work at your own pace, and remember: growing up is a gradual process. Let’s begin."
+  ]
+};
+
 GU.LESSONS = [
   {
-    id: "lesson-1", n: 1, title: "Vocabulary", short: "Words", minutes: 20,
-    blurb: "Learn the 30 key words of the unit: hear them, say them and spell them.",
+    id: "lesson-1", n: 1, title: "Vocabulary", short: "Vocabulary", minutes: 20,
+    blurb: "Thirty key words of the unit, each studied through listening, pronunciation, spelling and a set read-along.",
     activities: [
-      { id: "group-1", title: "Words 1–10", kind: "group", group: 0 },
-      { id: "group-2", title: "Words 11–20", kind: "group", group: 1 },
-      { id: "group-3", title: "Words 21–30", kind: "group", group: 2 },
-      { id: "match", title: "Matching quiz", kind: "match" },
-      { id: "challenge", title: "Listening challenge", kind: "challenge", bonus: true }
+      { id: "group-1", title: "Word Set 1", range: "Words 1–10", kind: "group", group: 0 },
+      { id: "group-2", title: "Word Set 2", range: "Words 11–20", kind: "group", group: 1 },
+      { id: "group-3", title: "Word Set 3", range: "Words 21–30", kind: "group", group: 2 },
+      { id: "match", title: "Word–Meaning Matching", kind: "match" },
+      { id: "challenge", title: "Dictation Challenge", kind: "challenge", bonus: true }
     ]
   },
   {
-    id: "lesson-2", n: 2, title: "Starting out", short: "Starting out", minutes: 20, soon: true,
-    blurb: "Coming-of-age ceremonies and Kipling’s poem <em>If—</em>: what does it take to grow up?"
+    id: "lesson-2", n: 2, title: "Starting Out", short: "Starting Out", minutes: 20, soon: true,
+    blurb: "Coming-of-age ceremonies and Rudyard Kipling’s poem <em>If—</em>: the qualities needed to grow up."
   },
   {
     id: "lesson-3", n: 3, title: "Reading: The Age of Majority", short: "Reading", minutes: 30, soon: true,
-    blurb: "Three young people share what turning 18 means, or meant, to them."
+    blurb: "Three young people explain what turning 18 means, or meant, to them."
   },
   {
     id: "lesson-4", n: 4, title: "Writing", short: "Writing", minutes: 20, soon: true,
-    blurb: "Write about the responsibilities that come with turning 18."
+    blurb: "A short written response on the responsibilities that come with turning 18."
   }
 ];
 
-GU.TEACHER = {
-  id: "teacher", title: "Teacher’s corner",
-  blurb: "Lesson plans, answer keys and extra resources for teachers."
+GU.COMMUNITY = {
+  title: "Learning Community",
+  blurb: "Compete with classmates in timed word battles, and ask the AI Tutor about any word in the unit.",
+  items: [
+    { id: "battle", title: "Word Battle and Leaderboard", short: "Word Battle" },
+    { id: "tutor", title: "AI Tutor", short: "AI Tutor" }
+  ]
 };
 
-/* Badges. Growth theme: seed → sprout → tree. */
+GU.TEACHER = {
+  id: "teacher", title: "Teacher’s Corner",
+  blurb: "Lesson plans, answer keys and supplementary resources for teachers."
+};
+
+/* Badges: a growth sequence from seed to coming of age. */
 GU.BADGES = [
-  { id: "first-step", name: "First step", desc: "Read the course overview", icon: "steps" },
-  { id: "group-1", name: "Seed", desc: "Learn words 1–10", icon: "seed" },
-  { id: "group-2", name: "Sprout", desc: "Learn words 11–20", icon: "sprout" },
-  { id: "group-3", name: "Young tree", desc: "Learn words 21–30", icon: "tree" },
-  { id: "match", name: "Perfect pair", desc: "Finish the matching quiz", icon: "link" },
-  { id: "challenge", name: "Sharp ears", desc: "Bonus: finish the listening challenge", icon: "ear", bonus: true },
-  { id: "lesson-2", name: "New dawn", desc: "Finish Lesson 2", icon: "sun", soon: true },
-  { id: "lesson-3", name: "Close reader", desc: "Finish Lesson 3", icon: "book", soon: true },
-  { id: "lesson-4", name: "Own voice", desc: "Finish Lesson 4", icon: "pen", soon: true }
+  { id: "first-step", name: "Seed", desc: "Completion of the Course Overview", icon: "seed" },
+  { id: "group-1", name: "Sprout", desc: "Completion of Word Set 1", icon: "sprout" },
+  { id: "group-2", name: "Sapling", desc: "Completion of Word Set 2", icon: "sapling" },
+  { id: "group-3", name: "Young Tree", desc: "Completion of Word Set 3", icon: "tree" },
+  { id: "match", name: "Firm Roots", desc: "Completion of the Word–Meaning Matching", icon: "roots" },
+  { id: "challenge", name: "Keen Ear", desc: "Bonus: Completion of the Dictation Challenge", icon: "ear", bonus: true },
+  { id: "battle", name: "Word Champion", desc: "Bonus: Completion of a Word Battle", icon: "trophy", bonus: true },
+  { id: "lesson-2", name: "Branching Out", desc: "Completion of Lesson 2", icon: "sun", soon: true },
+  { id: "lesson-3", name: "In Full Leaf", desc: "Completion of Lesson 3", icon: "book", soon: true },
+  { id: "lesson-4", name: "Coming of Age", desc: "Completion of Lesson 4", icon: "pen", soon: true }
 ];
 
+var OALD = "Oxford Advanced Learner’s Dictionary";
+var OXU = "https://www.oxfordlearnersdictionaries.com/definition/english/";
+
 /* Vocabulary: the Unit 1 word list up to (not including) "minimum".
-   book  = the sentence in the textbook; hl = the part to highlight
-   ex    = another example sentence
-   tip   = memory tip: parts (word building) and/or pic (picture), plus a note
-   alt   = other accepted spellings, with a note */
+   book  = sentence in the textbook (hl = part to highlight), src = where it appears
+   dict  = [example sentence, dictionary, entry link, part to highlight]
+   pic   = picture: emoji (shown as large images) or photo = a textbook photo in assets/pics
+   tip   = memory aid: word parts and/or a note
+   alt   = other accepted spellings, with a note
+   audio = optional local recording, e.g. "audio/words/integrity.mp3" */
 GU.WORDS = [
-  /* ---------- Words 1–10 ---------- */
+  /* ---------- Word Set 1 ---------- */
   { id: "integrity", word: "integrity", ipa: "/ɪnˈteɡrɪti/", pos: "n.", zh: "正直诚实", zhShort: "正直诚实",
     def: "the quality of being honest and having strong moral principles",
     book: "self-belief, confidence, modesty, integrity, honesty, kindness, pride, patience", hl: "integrity",
-    src: "Starting out, Activity 2: qualities in the poem",
-    ex: "She showed real integrity when she handed in the wallet she found.",
-    tip: { parts: [["integr", "whole 完整"], ["ity", "noun 名词"]],
-      note: "Think of an <b>integer</b>, a whole number. A person with integrity is whole: what they say and what they do match." } },
+    src: "Starting Out, Activity 2: qualities named in the poem",
+    dict: ["She behaved with absolute integrity.", OALD, OXU + "integrity", "integrity"],
+    pic: "🤝",
+    tip: { parts: [["integr", "whole 完整"], ["ity", "noun suffix 名词后缀"]],
+      note: "Compare <b>integer</b>, a whole number. A person of integrity is whole: words and actions match." } },
   { id: "virtue", word: "virtue", ipa: "/ˈvɜːtʃuː/", pos: "n.", zh: "美德", zhShort: "美德",
-    def: "a good quality in someone’s character",
+    def: "a particular good quality or habit",
     book: "If you can talk with crowds and keep your virtue,", hl: "virtue",
-    src: "Starting out, the poem If— by Rudyard Kipling",
-    ex: "Patience is a virtue, especially when you’re learning something new.",
-    tip: { pic: "🌟", note: "Honesty, patience and kindness are all virtues. Adjective: <b>virtuous</b>." } },
+    src: "Starting Out, the poem If— by Rudyard Kipling",
+    dict: ["Patience is not one of her virtues, I’m afraid.", OALD, OXU + "virtue", "virtues"],
+    pic: "🌟",
+    tip: { note: "Honesty, patience and kindness are all virtues. Adjective: <b>virtuous</b>." } },
   { id: "licence", word: "licence", ipa: "/ˈlaɪs(ə)ns/", pos: "n.", zh: "执照", zhShort: "执照",
-    def: "an official document that shows you are allowed to do something",
+    def: "an official document that shows permission has been given to do, own or use something",
     book: "Get a driver’s licence.", hl: "licence",
-    src: "Understanding ideas, Activity 1",
-    ex: "You need a licence to open a restaurant.",
-    alt: { license: "Correct in American English. The book uses the British spelling: <b>licence</b>." },
-    tip: { pic: "🪪", note: "British English: <b>licence</b> (noun). American English: <b>license</b>." } },
+    src: "Understanding Ideas, Activity 1",
+    dict: ["He was caught driving a car without a licence.", OALD, OXU + "licence", "licence"],
+    photo: "driver", photoAlt: "A young woman holding car keys beside a car",
+    alt: { license: "Correct in American English. The textbook uses the British spelling: <b>licence</b>." },
+    tip: { note: "British English: <b>licence</b> (noun). American English: <b>license</b>." } },
   { id: "loan", word: "loan", ipa: "/ləʊn/", pos: "n.", zh: "（银行等的）贷款", zhShort: "贷款",
-    def: "money that you borrow, usually from a bank, and pay back later",
+    def: "money that an organization such as a bank lends and somebody borrows",
     book: "Get a bank loan.", hl: "loan",
-    src: "Understanding ideas, Activity 1",
-    ex: "He took out a loan to pay for university.",
-    tip: { pic: "🏦 → 💰 → 🏦", note: "Borrow now, pay back later. <b>take out</b> a loan, <b>pay back</b> a loan." } },
+    src: "Understanding Ideas, Activity 1",
+    dict: ["She took out an $8 000 personal loan.", OALD, OXU + "loan_1", "loan"],
+    pic: "🏦 → 💰",
+    tip: { note: "Borrow now, pay back later: <b>take out</b> a loan, <b>repay</b> a loan." } },
   { id: "adulthood", word: "adulthood", ipa: "/ˈædʌlthʊd/", pos: "n.", zh: "成年", zhShort: "成年",
-    def: "the time of your life when you are an adult",
+    def: "the state of being an adult",
     book: "In most countries, turning 18 marks the start of adulthood.", hl: "adulthood",
     src: "The Age of Majority, introduction",
-    ex: "The move from childhood to adulthood can feel exciting and scary at the same time.",
-    tip: { parts: [["adult", "成年人"], ["hood", "a time or state 时期，状态"]],
+    dict: ["Her childhood problems persisted into adulthood.", OALD, OXU + "adulthood", "adulthood"],
+    photo: "beach", photoAlt: "Young people jumping together on a beach",
+    tip: { parts: [["adult", "成年人"], ["hood", "state or period 状态，时期"]],
       note: "Same pattern: <b>childhood</b>, <b>neighbourhood</b>." } },
   { id: "milestone", word: "milestone", ipa: "/ˈmaɪlstəʊn/", pos: "n.", zh: "重大事件，里程碑", zhShort: "里程碑",
-    def: "a very important event or stage in your life",
+    def: "a very important stage or event in the development of something",
     book: "But what does reaching this milestone, the age of majority, really mean?", hl: "milestone",
     src: "The Age of Majority, introduction",
-    ex: "Getting her first job was an important milestone for her.",
-    tip: { parts: [["mile", "英里"], ["stone", "石头"]], pic: "🪨",
-      note: "Stones by the road used to mark every mile. Today a milestone is any big step in life." } },
+    dict: ["This voyage marked an important milestone in the history of exploration.", OALD, OXU + "milestone", "milestone"],
+    photo: "candles", photoAlt: "Birthday candles",
+    tip: { parts: [["mile", "英里"], ["stone", "石头"]],
+      note: "Stones by the road once marked each mile. A milestone is now any important stage in life." } },
   { id: "election", word: "election", ipa: "/ɪˈlekʃ(ə)n/", pos: "n.", zh: "选举", zhShort: "选举",
-    def: "a time when people vote to choose someone for an official position",
+    def: "the process of choosing a person or group of people for a position by voting",
     book: "…I won’t be voting in the next general election.", hl: "election",
     src: "Bethany, paragraph 1",
-    ex: "Our class held an election to choose a new monitor.",
-    tip: { parts: [["elect", "to choose by voting 选举"], ["ion", "noun 名词"]], pic: "🗳️",
+    dict: ["Elections will be held later this year.", OALD, OXU + "election", "Elections"],
+    photo: "vote", photoAlt: "A hand putting a vote into a ballot box",
+    tip: { parts: [["elect", "to choose by voting 选举"], ["ion", "noun suffix 名词后缀"]],
       note: "<b>a general election</b> = 大选" } },
   { id: "wage", word: "wage", ipa: "/weɪdʒ/", pos: "n.", zh: "（按小时、日或周计算的）工资，薪金", zhShort: "工资，薪金",
-    def: "money you earn for work, usually paid by the hour, day or week",
+    def: "a regular amount of money that you earn for work, usually paid weekly",
     book: "…if you’re old enough to earn a wage and pay taxes…", hl: "wage",
     src: "Bethany, paragraph 1",
-    ex: "The café pays a wage of 25 yuan an hour.",
-    tip: { pic: "⏱️ 💵", note: "A <b>wage</b> is paid by the hour, day or week. A <b>salary</b> is paid every month or year." } },
+    dict: ["We all hope we can find a job that pays a decent wage.", OALD, OXU + "wage_1", "wage"],
+    pic: "⏱️ 💵",
+    tip: { note: "A <b>wage</b> is usually paid by the hour, day or week. A <b>salary</b> is paid every month." } },
   { id: "tax", word: "tax", ipa: "/tæks/", pos: "n.", zh: "税", zhShort: "税",
-    def: "money that you must pay to the government",
+    def: "money that you have to pay to the government so that it can pay for public services",
     book: "…if you’re old enough to earn a wage and pay taxes…", hl: "taxes",
     src: "Bethany, paragraph 1",
-    ex: "Part of every worker’s income goes to tax.",
-    tip: { pic: "🧾 🏛️", note: "<b>pay taxes</b>. income tax = 个人所得税" } },
-  { id: "have-a-say", word: "have a say", ipa: "", pos: "phrase", zh: "有发言权", zhShort: "有发言权",
-    def: "to have the right to give your opinion and help decide something",
+    dict: ["Income tax will be deducted by your employer.", OALD, OXU + "tax_1", "tax"],
+    pic: "🧾 🏛️",
+    tip: { note: "<b>pay taxes</b>; <b>income tax</b> = 个人所得税" } },
+  { id: "have-a-say", word: "have a say", ipa: "", pos: "phr.", zh: "有发言权", zhShort: "有发言权",
+    def: "to have the right to influence something by giving your opinion",
     book: "…you should be allowed to have a say on how the government spends them!", hl: "have a say",
     src: "Bethany, paragraph 1",
-    ex: "Students should have a say in the school rules.",
-    tip: { pic: "🙋 💬", note: "Here <b>say</b> is a noun: the right to give your opinion. <b>have a say in / on</b> something." } },
+    dict: ["We had no say in the decision to sell the company.", OALD, OXU + "say_2", "had no say"],
+    pic: "🙋 💬",
+    tip: { note: "Here <b>say</b> is a noun: the right to give your opinion. <b>have a say in / on</b> something." } },
 
-  /* ---------- Words 11–20 ---------- */
-  { id: "behind-the-wheel", word: "behind the wheel", ipa: "", pos: "phrase", zh: "在驾驶汽车", zhShort: "在驾驶汽车",
+  /* ---------- Word Set 2 ---------- */
+  { id: "behind-the-wheel", word: "behind the wheel", ipa: "", pos: "phr.", zh: "在驾驶汽车", zhShort: "在驾驶汽车",
     def: "driving a car",
     book: "My mum worries about me being behind the wheel.", hl: "behind the wheel",
     src: "Bethany, paragraph 1",
-    ex: "Never use your phone when you’re behind the wheel.",
-    tip: { pic: "🚗", note: "The <b>wheel</b> is the steering wheel (方向盘). If you’re behind it, you’re driving." } },
+    dict: ["Never get behind the wheel if you’re too tired.", OALD, OXU + "wheel_1", "behind the wheel"],
+    pic: "🚗",
+    tip: { note: "The <b>wheel</b> is the steering wheel (方向盘). The person behind it is driving." } },
   { id: "ambulance", word: "ambulance", ipa: "/ˈæmbjʊləns/", pos: "n.", zh: "救护车", zhShort: "救护车",
-    def: "a vehicle that takes sick or injured people to hospital",
+    def: "a vehicle with special equipment for taking sick or injured people to hospital",
     book: "As an ambulance driver, she’s seen a lot of car accidents involving teenagers…", hl: "ambulance",
     src: "Bethany, paragraph 1",
-    ex: "Call an ambulance! Someone has been hurt.",
-    tip: { pic: "🚑", note: "On the front of many ambulances the word is written backwards, so drivers ahead can read it in their mirrors." } },
+    dict: ["The ambulance crew rushed her to the hospital.", OALD, OXU + "ambulance", "ambulance"],
+    pic: "🚑",
+    tip: { note: "On the front of many ambulances the word is written backwards, so that drivers ahead can read it in their mirrors." } },
   { id: "legal", word: "legal", ipa: "/ˈliːɡ(ə)l/", pos: "adj.", zh: "合法的", zhShort: "合法的",
-    def: "allowed by law",
+    def: "allowed or required by law",
     book: "…the legal age for getting a driving licence should be 21.", hl: "legal",
     src: "Bethany, paragraph 1",
-    ex: "It isn’t legal to drive without a licence.",
-    tip: { pic: "⚖️", note: "Opposite: <b>illegal</b> (il- = not). <b>the legal age</b> = 法定年龄" } },
+    dict: ["The legal age for drinking alcohol in the US is 21.", OALD, OXU + "legal-age", "legal age"],
+    pic: "⚖️",
+    tip: { note: "Opposite: <b>illegal</b> (il- = not). <b>the legal age</b> = 法定年龄" } },
   { id: "mature", word: "mature", ipa: "/məˈtʃʊə/", pos: "adj.", zh: "成熟的，明白事理的", zhShort: "成熟的",
-    def: "behaving in a sensible way, like an adult",
+    def: "(of a young person) behaving in a sensible way, like an adult",
     book: "But I think I’m already mature enough to understand that driving a car also means taking responsibility…", hl: "mature",
     src: "Bethany, paragraph 1",
-    ex: "He’s only 16, but he’s very mature for his age.",
-    tip: { pic: "🍎", note: "Fruit can be mature (ripe) too. Opposite: <b>immature</b>. Noun: <b>maturity</b>." } },
+    dict: ["Jane is very mature for her age.", OALD, OXU + "mature_1", "mature"],
+    pic: "🍎",
+    tip: { note: "Fruit can be mature (ripe) too. Opposite: <b>immature</b>. Noun: <b>maturity</b>." } },
   { id: "instantly", word: "instantly", ipa: "/ˈɪnstəntli/", pos: "adv.", zh: "立即，马上", zhShort: "立即，马上",
-    def: "immediately; at once",
+    def: "immediately",
     book: "I expected to feel instantly different…", hl: "instantly",
     src: "Lin Ning, paragraph 2",
-    ex: "She recognised her old friend instantly.",
-    tip: { parts: [["instant", "立即的"], ["ly", "adverb 副词"]], pic: "🍜",
-      note: "Like <b>instant</b> noodles: ready right away." } },
+    dict: ["Her voice is instantly recognizable.", OALD, OXU + "instantly", "instantly"],
+    pic: "⚡ 🍜",
+    tip: { parts: [["instant", "立即的"], ["ly", "adverb suffix 副词后缀"]],
+      note: "Like <b>instant</b> noodles: ready at once." } },
   { id: "childhood", word: "childhood", ipa: "/ˈtʃaɪldhʊd/", pos: "n.", zh: "童年，儿童时代", zhShort: "童年",
-    def: "the time of your life when you are a child",
+    def: "the period of somebody’s life when they are a child",
     book: "…as if I had closed the door on my childhood and stepped into a whole new adult world.", hl: "childhood",
     src: "Lin Ning, paragraph 2",
-    ex: "She spent her childhood in a small village by the sea.",
-    tip: { parts: [["child", "孩子"], ["hood", "a time or state 时期，状态"]],
+    dict: ["She had a happy childhood.", OALD, OXU + "childhood", "childhood"],
+    pic: "🧸",
+    tip: { parts: [["child", "孩子"], ["hood", "state or period 状态，时期"]],
       note: "Learn it as a pair: <b>childhood</b> and <b>adulthood</b>." } },
   { id: "obey", word: "obey", ipa: "/əʊˈbeɪ/", pos: "v.", zh: "服从；遵守", zhShort: "服从；遵守",
-    def: "to do what a rule, law or person tells you to do",
+    def: "to do what you are told or expected to do",
     book: "When I woke up the next day, there were still rules to obey and lessons to attend.", hl: "obey",
     src: "Lin Ning, paragraph 2",
-    ex: "All drivers must obey the traffic rules.",
-    tip: { pic: "🚦", note: "<b>obey</b> the rules / the law. Opposite: <b>disobey</b>." } },
+    dict: ["People have a moral duty to obey the law.", OALD, OXU + "obey", "obey"],
+    pic: "🚦",
+    tip: { note: "<b>obey</b> the rules / the law. Opposite: <b>disobey</b>. Noun: <b>obedience</b>." } },
   { id: "subtle", word: "subtle", ipa: "/ˈsʌtl/", pos: "adj.", zh: "难以察觉的；微妙的", zhShort: "微妙的",
-    def: "small and not easy to notice",
+    def: "not very obvious or easy to notice",
     book: "In fact, the change has been more subtle and gradual than I imagined.", hl: "subtle",
     src: "Lin Ning, paragraph 2",
-    ex: "There’s a subtle difference between these two words.",
-    tip: { pic: "🤫", note: "The <b>b</b> is silent: you say /ˈsʌtl/ but write su<b>b</b>tle." } },
+    dict: ["There are subtle differences between the two versions.", OALD, OXU + "subtle", "subtle"],
+    pic: "🤫",
+    tip: { note: "The <b>b</b> is silent: you say /ˈsʌtl/ but write su<b>b</b>tle." } },
   { id: "gradual", word: "gradual", ipa: "/ˈɡrædʒuəl/", pos: "adj.", zh: "逐渐的，逐步的", zhShort: "逐渐的",
-    def: "happening slowly, over a period of time",
+    def: "happening slowly over a long period; not sudden",
     book: "In fact, the change has been more subtle and gradual than I imagined.", hl: "gradual",
     src: "Lin Ning, paragraph 2",
-    ex: "Learning a language is a gradual process.",
-    tip: { parts: [["grad", "step 步"], ["ual", "adjective 形容词"]], pic: "📶",
-      note: "Like grades at school: one step at a time. Adverb: <b>gradually</b>." } },
+    dict: ["Recovery from the disease is very gradual.", OALD, OXU + "gradual", "gradual"],
+    pic: "🌱 → 🌳",
+    tip: { parts: [["grad", "step 步"], ["ual", "adjective suffix 形容词后缀"]],
+      note: "From Latin <i>gradus</i>, a step: one step at a time. Adverb: <b>gradually</b>." } },
   { id: "selfish", word: "selfish", ipa: "/ˈselfɪʃ/", pos: "adj.", zh: "自私的", zhShort: "自私的",
-    def: "caring only about yourself and not about other people",
+    def: "caring only about yourself rather than about other people",
     book: "Instead of being the selfish teenager I used to be, I have begun to feel more aware of other people…", hl: "selfish",
     src: "Lin Ning, paragraph 2",
-    ex: "It was selfish of him to eat the whole cake.",
+    dict: ["It was selfish of him to leave all the work to you.", OALD, OXU + "selfish", "selfish"],
+    pic: "🙅",
     tip: { parts: [["self", "自己"], ["ish", "having the quality of …的"]],
-      note: "Opposite: <b>unselfish</b>." } },
+      note: "Opposite: <b>unselfish</b> or <b>selfless</b>." } },
 
-  /* ---------- Words 21–30 ---------- */
-  { id: "organ-donation", word: "organ donation", ipa: "", pos: "phrase", zh: "器官捐献", zhShort: "器官捐献",
-    def: "giving a part of your body, such as your heart or kidneys, to help someone else",
+  /* ---------- Word Set 3 ---------- */
+  { id: "organ-donation", word: "organ donation", ipa: "", pos: "phr.", zh: "器官捐献", zhShort: "器官捐献",
+    def: "giving permission for a part of your body to be used to replace someone else’s organ",
     book: "…I will be signing an organ donation agreement this time tomorrow.", hl: "organ donation",
     src: "Lin Ning, paragraph 2",
-    ex: "Organ donation can save many lives.",
-    tip: { parts: [["organ", "器官"], ["donation", "捐献"]], pic: "❤️",
-      note: "Verb: <b>donate</b>. donate blood, donate organs." } },
+    dict: ["The number of patients awaiting organ donations has soared.", "Cambridge Advanced Learner’s Dictionary",
+      "https://dictionary.cambridge.org/dictionary/english/organ-donation", "organ donations"],
+    pic: "🫀",
+    tip: { parts: [["organ", "器官"], ["donation", "捐献"]],
+      note: "Verb: <b>donate</b>. A person who donates is a <b>donor</b>." } },
   { id: "approval", word: "approval", ipa: "/əˈpruːvəl/", pos: "n.", zh: "赞成，同意", zhShort: "赞成，同意",
-    def: "agreement that something is good or acceptable",
+    def: "agreement to, or permission for, something",
     book: "Of course I asked my parents for their approval first.", hl: "approval",
     src: "Lin Ning, paragraph 2",
-    ex: "You need your teacher’s approval to leave class early.",
-    tip: { parts: [["approv(e)", "赞成"], ["al", "noun 名词"]], pic: "👍",
+    dict: ["She desperately wanted to win her parents’ approval.", OALD, OXU + "approval", "approval"],
+    pic: "👍",
+    tip: { parts: [["approv(e)", "赞成"], ["al", "noun suffix 名词后缀"]],
       note: "Drop the <b>e</b>: approve → approval. Same pattern: arrive → arrival." } },
   { id: "steady", word: "steady", ipa: "/ˈstedi/", pos: "adj.", zh: "稳定的", zhShort: "稳定的",
-    def: "regular and not changing much",
+    def: "not changing and not interrupted; regular",
     book: "…I currently don’t have a steady income…", hl: "steady",
     src: "Lin Ning, paragraph 2",
-    ex: "After university, she found a steady job at a bank.",
-    tip: { pic: "📈", note: "<b>a steady job</b>, <b>a steady income</b>. Adverb: <b>steadily</b>." } },
+    dict: ["The new position would provide him with a steady income.", OALD, OXU + "steady_1", "steady"],
+    pic: "📈",
+    tip: { note: "<b>a steady job</b>, <b>a steady income</b>. Adverb: <b>steadily</b>." } },
   { id: "tempt", word: "tempt", ipa: "/tempt/", pos: "v.", zh: "诱惑，引诱", zhShort: "诱惑，引诱",
-    def: "to make someone want to do something, especially something they shouldn’t do",
+    def: "to make somebody want to do or have something, even if they know it is wrong",
     book: "…getting a credit card might tempt me to spend more money than I have!", hl: "tempt",
     src: "Lin Ning, paragraph 2",
-    ex: "The smell of fresh bread tempted me into the shop.",
-    tip: { pic: "🍰", note: "Noun: <b>temptation</b>. Adjective: <b>tempting</b>, as in “That cake looks tempting!”" } },
+    dict: ["I was tempted to take the day off.", OALD, OXU + "tempt", "tempted"],
+    photo: "cards", photoAlt: "A pile of credit cards",
+    tip: { note: "Noun: <b>temptation</b>. Adjective: <b>tempting</b>. <b>tempt somebody to do</b> something." } },
   { id: "librarian", word: "librarian", ipa: "/laɪˈbreəriən/", pos: "n.", zh: "图书馆管理员", zhShort: "图书馆管理员",
-    def: "a person who works in a library",
+    def: "a person who is in charge of or works in a library",
     book: "My librarian’s salary means that I’ll be living at home with my parents for a while longer.", hl: "librarian",
     src: "Morgan, paragraph 3",
-    ex: "The librarian helped me find a book about space.",
-    tip: { parts: [["librar(y)", "图书馆"], ["ian", "person 人"]], pic: "📚",
+    dict: ["He worked as librarian at the University of Hull from 1955…", OALD + " (entry: Philip Larkin)",
+      "https://www.oxfordlearnersdictionaries.com/us/definition/english/philip-larkin", "librarian"],
+    photo: "morgan", photoAlt: "Morgan, a young librarian, in a library",
+    tip: { parts: [["librar(y)", "图书馆"], ["ian", "person 人"]],
       note: "Same pattern: music → musician, history → historian." } },
   { id: "household", word: "household", ipa: "/ˈhaʊshəʊld/", pos: "adj.", zh: "家庭的", zhShort: "家庭的",
-    def: "connected with a home and the people who live in it",
+    def: "connected with looking after a house and the people living in it",
     book: "Because I contribute to the household bills…", hl: "household",
     src: "Morgan, paragraph 3",
-    ex: "Everyone in our family shares the household chores.",
-    tip: { parts: [["house", "房子"], ["hold", "to hold 容纳"]], pic: "🏠",
+    dict: ["household bills / chores / goods", "Oxford Advanced American Dictionary",
+      "https://www.oxfordlearnersdictionaries.com/definition/american_english/household", "household"],
+    pic: "🏠 🧾",
+    tip: { parts: [["house", "房子"], ["hold", "to hold 容纳"]],
       note: "<b>household bills</b>, <b>household chores</b> (家务)." } },
   { id: "commute", word: "commute", ipa: "/kəˈmjuːt/", pos: "n.", zh: "每天上班的路程", zhShort: "每天上班的路程",
-    def: "the journey you make to work or school every day",
+    def: "the journey that a person makes when they travel to work",
     book: "…my commute to work is quite expensive…", hl: "commute",
     src: "Morgan, paragraph 3",
-    ex: "My dad has a long commute: over an hour each way.",
-    tip: { pic: "🏠 ⇄ 🏢", note: "Home to work and back, every day. A person who commutes is a <b>commuter</b>." } },
+    dict: ["I have only a short commute to work.", OALD, "https://www.oxfordlearnersdictionaries.com/us/definition/english/commute_2", "commute"],
+    pic: "🏠 ⇄ 🏢",
+    tip: { note: "Also a verb: to <b>commute</b> to work. A person who commutes is a <b>commuter</b>." } },
   { id: "deposit", word: "deposit", ipa: "/dɪˈpɒzɪt/", pos: "n.", zh: "订金", zhShort: "订金",
-    def: "the first part of a payment, which shows you will pay the rest",
+    def: "a sum of money that is given as the first part of a larger payment",
     book: "I know I could get a bank loan to pay the deposit on my very own apartment…", hl: "deposit",
     src: "Morgan, paragraph 3",
-    ex: "We paid a deposit to book the hotel room.",
-    tip: { parts: [["de", "down 向下"], ["posit", "put 放"]], pic: "🔑",
-      note: "Money you put down first to hold something for you." } },
+    dict: ["We’ve put down a 5 per cent deposit on the house.", OALD, OXU + "deposit_1", "deposit"],
+    pic: "🔑 💰",
+    tip: { parts: [["de", "down 向下"], ["posit", "put 放"]],
+      note: "Money you <b>put down</b> first to secure something." } },
   { id: "commitment", word: "commitment", ipa: "/kəˈmɪtmənt/", pos: "n.", zh: "投入，花费", zhShort: "投入，花费",
-    def: "something you have agreed to do that takes your time or money",
+    def: "a thing that you have promised or agreed to do, or that you have to do",
     book: "…but I don’t feel ready to make that kind of commitment…", hl: "commitment",
     src: "Morgan, paragraph 3",
-    ex: "Learning to play the piano takes time and commitment.",
-    tip: { parts: [["commit", "承诺，投入"], ["ment", "noun 名词"]],
-      note: "Spelling: commi<b>tt</b>ment has a double <b>t</b>, but only one <b>m</b> in the middle." } },
+    dict: ["I don’t want to take on any more commitments.", OALD, "https://www.oxfordlearnersdictionaries.com/us/definition/english/commitment", "commitments"],
+    pic: "📝",
+    tip: { parts: [["commit", "承诺，投入"], ["ment", "noun suffix 名词后缀"]],
+      note: "Spelling: commi<b>tt</b>ment has a double <b>t</b> but a single <b>m</b> in the middle." } },
   { id: "suitable", word: "suitable", ipa: "/ˈsuːtəb(ə)l/", pos: "adj.", zh: "合适的", zhShort: "合适的",
-    def: "right for a particular purpose or situation",
+    def: "right or appropriate for a particular purpose or occasion",
     book: "Choose another suitable title for the passage and give your reasons.", hl: "suitable",
-    src: "Understanding ideas, Activity 3",
-    ex: "These shoes aren’t suitable for running.",
-    tip: { parts: [["suit", "to be right for 适合"], ["able", "adjective 形容词"]],
-      note: "<b>be suitable for</b> something." } }
+    src: "Understanding Ideas, Activity 3",
+    dict: ["This programme is not suitable for children.", OALD, OXU + "suitable", "suitable"],
+    pic: "👔",
+    tip: { parts: [["suit", "to be right for 适合"], ["able", "adjective suffix 形容词后缀"]],
+      note: "<b>be suitable for</b> somebody or something." } }
 ];
 
 GU.GROUP_SIZE = 10;
 GU.groupWords = function (g) { return GU.WORDS.slice(g * GU.GROUP_SIZE, (g + 1) * GU.GROUP_SIZE); };
+GU.wordById = function (id) { for (var i = 0; i < GU.WORDS.length; i++) if (GU.WORDS[i].id === id) return GU.WORDS[i]; return null; };
