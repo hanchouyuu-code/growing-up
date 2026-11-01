@@ -102,12 +102,6 @@
 
       videoBlock() +
 
-      '<section class="ov-sec ov-goals" aria-labelledby="lo-h">' +
-      '<div class="sec-head"><h2 id="lo-h">Learning Objectives</h2></div>' +
-      "<p>By the end of the course, students should be able to:</p>" +
-      '<ol class="goals">' + GU.OVERVIEW.objectives.map(function (o) { return "<li>" + o + "</li>"; }).join("") + "</ol>" +
-      "</section>" +
-
       '<section class="ov-sec ov-route" aria-labelledby="cs-h">' +
       '<div class="sec-head"><h2 id="cs-h">Course Structure</h2><span class="sec-meta">' + ui.icon("clock") + "90 minutes in total</span></div>" +
       '<ol class="route">' + lessons + "</ol>" +
