@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An interactive online English lesson for Senior 2 students on the topic Growing up: The Age of Majority.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>The Age of Majority Online Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the lesson</a>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">18</span>
+      <div>
+        <p class="eyebrow">Senior 2 English · Unit: Growing up</p>
+        <p class="brand-title">The Age of Majority</p>
+      </div>
+    </div>
+    <div class="top-tools">
+      <div class="course-progress">
+        <span class="cp-label">Course progress</span>
+        <span class="cp-bar" role="progressbar" aria-label="Course progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="cpBar"><span id="cpFill"></span></span>
+        <span class="cp-num" id="cpNum">0 / 4 parts</span>
+      </div>
+      <label class="switch" for="zhToggle"><input type="checkbox" id="zhToggle"><span class="switch-ui" aria-hidden="true"></span><span lang="zh-CN">中文提示</span></label>
+      <button class="btn small" id="helpBtn" type="button">Tech help</button>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="rail" aria-label="Lesson parts">
+    <p class="rail-label">Lesson · 90 minutes</p>
+    <ol class="rail-list" id="railStudent"></ol>
+    <p class="rail-label">For teachers</p>
+    <ol class="rail-list" id="railTeacher"></ol>
+    <div class="rail-help">
+      <span>Stuck on a task? Switch on <span lang="zh-CN" style="font-family:var(--font-zh)">中文提示</span> for hints in Chinese.</span>
+    </div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <!-- ============ PART 1: VOCABULARY ============ -->
+    <section class="view" data-view="vocab" aria-labelledby="vocabTitle">
+      <div class="mod-head">
+        <p class="eyebrow">Part 1 · 20 minutes</p>
+        <h1 id="vocabTitle">Words for turning 18</h1>
+        <p class="lede">Before you read <cite>The Age of Majority</cite>, learn 12 words people use to talk about adult rights, money and responsibilities.</p>
+        <p class="zh-hint" lang="zh-CN">阅读课文前，先学习 12 个和成年、金钱、责任有关的关键词。</p>
+        <p class="goal"><strong>Goal:</strong> I can recognise, say and use 12 key words about becoming an adult.</p>
+        <div class="mod-tools">
+          <ol class="tracker" id="tracker" aria-label="Steps in Part 1"></ol>
+          <div class="timer" id="timer">
+            <span class="timer-label">Suggested time</span>
+            <span class="timer-out" id="timerOut" aria-live="off">20:00</span>
+            <button type="button" class="btn small" id="timerBtn">Start timer</button>
+            <button type="button" class="linkbtn" id="timerReset">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+
+        <!-- Step 1 -->
+        <section class="step" id="step-warm" aria-labelledby="h-warm">
+          <header class="step-head">
+            <span class="step-n">1</span>
+            <div><h2 id="h-warm">Warm-up: How old do you need to be?</h2><p class="step-meta">3 min · Recall what you already know</p></div>
+            <span class="done-chip"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Done</span>
+          </header>
+          <div>
+            <p class="instr">Choose the minimum age for each activity in China. If your answer is wrong, read the hint and try again.</p>
+            <p class="zh-hint" lang="zh-CN">选择在中国做每件事的最低年龄。选错了可以看提示再试一次。</p>
+          </div>
+          <div class="warm" id="warmList"></div>
+          <div class="bridge" id="warmBridge" hidden>
+            <p><strong>All three answers point to one idea.</strong> At 18 you reach the <mark>age of majority</mark>: the law treats you as an adult. In Step 2 you will learn the words people use to talk about it.</p>
+            <p class="zh-hint" lang="zh-CN">18 岁是法定成年年龄。接下来学习和成年有关的词汇。</p>
+          </div>
+        </section>
+
+        <!-- Step 2 -->
+        <section class="step" id="step-learn" aria-labelledby="h-learn">
+          <header class="step-head">
+            <span class="step-n">2</span>
+            <div><h2 id="h-learn">Learn the words</h2><p class="step-meta">7 min · Listen, guess the meaning, then check</p></div>
+            <span class="done-chip"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Done</span>
+          </header>
+          <div>
+            <p class="instr">Listen to each word and say it aloud. Guess what it means, then press <strong>Show meaning</strong> to check. Tick <strong>I know this word</strong> when you feel sure. Open all 12 cards to finish this step.</p>
+            <p class="zh-hint" lang="zh-CN">先听、跟读，猜一猜意思，再点 Show meaning 核对。打开全部 12 张卡片即完成本步骤。</p>
+          </div>
+          <div class="learn-bar">
+            <div class="learn-bar-group" id="rateGroup">
+              <span class="bar-label" id="rateLabel">Audio speed</span>
+              <div class="seg" role="group" aria-labelledby="rateLabel">
+                <button type="button" data-rate="1" aria-pressed="true">Normal</button>
+                <button type="button" data-rate="0.7" aria-pressed="false">Slow</button>
+              </div>
+            </div>
+            <span class="note-line" id="noAudio" hidden>Audio is not available in this browser. Use the phonetic spelling under each word.</span>
+            <span class="counts" id="counts" aria-live="polite">Opened 0 / 12 · I know 0 / 12</span>
+            <div class="learn-bar-group">
+              <button type="button" class="btn small" id="copyList">Copy word list</button>
+              <button type="button" class="btn small" id="dlList">Download word list</button>
+            </div>
+          </div>
+          <h3 class="sub-h">Turning 18: milestones and rights <span class="tag">6 words</span></h3>
+          <div class="cards" id="cardsA"></div>
+          <h3 class="sub-h">Adult life: money and responsibility <span class="tag">6 words</span></h3>
+          <div class="cards" id="cardsB"></div>
+        </section>
+
+        <!-- Step 3 -->
+        <section class="step" id="step-practise" aria-labelledby="h-practise">
+          <header class="step-head">
+            <span class="step-n">3</span>
+            <div><h2 id="h-practise">Practise</h2><p class="step-meta">6 min · Match the meanings, then complete a story</p></div>
+            <span class="done-chip"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Done</span>
+          </header>
+
+          <h3 class="sub-h">A. Match each word to its meaning</h3>
+          <div>
+            <p class="instr">Tap a word, then tap its meaning. Finish both sets.</p>
+            <p class="zh-hint" lang="zh-CN">先点一个单词，再点它的英文释义。两组都要完成。</p>
+          </div>
+          <div class="set-tabs" role="group" aria-label="Choose a set">
+            <button type="button" class="tabbtn" data-set="A" aria-pressed="true">Set 1 · Milestones and rights</button>
+            <button type="button" class="tabbtn" data-set="B" aria-pressed="false">Set 2 · Money and responsibility</button>
+            <button type="button" class="linkbtn" id="matchAgain">Shuffle and try again</button>
+          </div>
+          <div class="match" id="match">
+            <div class="match-col"><p class="match-col-h">Words</p><div class="match-col" id="matchWords"></div></div>
+            <div class="match-col"><p class="match-col-h">Meanings</p><div class="match-col" id="matchDefs"></div></div>
+          </div>
+          <p class="feedback" id="matchFb" aria-live="polite"></p>
+
+          <h3 class="sub-h">B. Complete Lin Xiao’s story</h3>
+          <div>
+            <p class="instr">Choose the best word for each gap, then press <strong>Check my answers</strong>. You can change your answers and check again.</p>
+            <p class="zh-hint" lang="zh-CN">为每个空选择最合适的词，然后点 Check my answers。答错可以修改后再检查。</p>
+          </div>
+          <div class="story" id="story"></div>
+          <div class="row">
+            <button type="button" class="btn primary" id="checkStory">Check my answers</button>
+            <span class="score" id="storyScore" aria-live="polite"></span>
+          </div>
+          <ul class="fb-list" id="storyFb"></ul>
+        </section>
+
+        <!-- Step 4 -->
+        <section class="step" id="step-sort" aria-labelledby="h-sort">
+          <header class="step-head">
+            <span class="step-n">4</span>
+            <div><h2 id="h-sort">Right or responsibility?</h2><p class="step-meta">3 min · Use the words to think about adult life</p></div>
+            <span class="done-chip"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Done</span>
+          </header>
+          <div class="sort-key">
+            <span><b>Right</b> = something the law allows you to do <span class="zh-hint" lang="zh-CN">（权利）</span></span>
+            <span><b>Responsibility</b> = something you must do <span class="zh-hint" lang="zh-CN">（责任）</span></span>
+          </div>
+          <div class="sort" id="sortList"></div>
+        </section>
+
+        <!-- Step 5 -->
+        <section class="step" id="step-reflect" aria-labelledby="h-reflect">
+          <header class="step-head">
+            <span class="step-n">5</span>
+            <div><h2 id="h-reflect">Reflect</h2><p class="step-meta">1 min · Use the new words to talk about yourself</p></div>
+            <span class="done-chip"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Done</span>
+          </header>
+          <div>
+            <p class="instr">Finish the two sentences. Try to use at least one new word. Tap a word below to add it where your cursor is.</p>
+            <p class="zh-hint" lang="zh-CN">补全两个句子，尽量用上至少一个新词。点下面的词可以直接插入。</p>
+          </div>
+          <div class="frame">
+            <div class="frame-line">
+              <label for="s1">When I turn 18, I’m looking forward to …</label>
+              <input type="text" id="s1" autocomplete="off" placeholder="e.g. getting my driving licence">
+            </div>
+            <div class="frame-line">
+              <label for="s2">I know I will also need to …</label>
+              <input type="text" id="s2" autocomplete="off" placeholder="e.g. manage my money and pay my own bills">
+            </div>
+            <div class="chips" id="chips" aria-label="Word bank"></div>
+          </div>
+          <fieldset class="conf" id="conf">
+            <legend>How confident do you feel with these 12 words?</legend>
+            <label><input type="radio" name="conf" value="sure" id="conf-sure"> I can use most of these words.</label>
+            <label><input type="radio" name="conf" value="some" id="conf-some"> I know some of them. I need a little more practice.</label>
+            <label><input type="radio" name="conf" value="review" id="conf-review"> I need to go back to the word cards.</label>
+          </fieldset>
+          <div class="row">
+            <button type="button" class="btn primary" id="finishBtn" disabled>Finish Part 1</button>
+            <span class="note-line" id="finishNote">Write both sentences and choose how confident you feel.</span>
+          </div>
+          <div class="result" id="result" hidden aria-live="polite"></div>
+        </section>
+
+      </div>
+    </section>
+
+    <!-- ============ PART 2 (planned) ============ -->
+    <section class="view" data-view="starting-out" aria-labelledby="soTitle" hidden>
+      <div class="mod-head">
+        <p class="eyebrow">Part 2 · 20 minutes</p>
+        <h1 id="soTitle">Starting out</h1>
+        <p class="lede">Everyday dilemmas about growing up, and how they compare with your own life.</p>
+      </div>
+      <div class="planned">
+        <span class="pill">Planned · built in the next round</span>
+        <h2>What this part will include</h2>
+        <ul>
+          <li>Short video or picture scenarios about everyday dilemmas of growing up, with captions and a transcript. <span class="gp">Ped GP2a · Tech GP2a</span></li>
+          <li>Questions that compare the scenarios with students’ own lives. <span class="gp">Ped GP2b</span></li>
+          <li>Small-group sharing with sentence starters, answered by text or audio. Personal stories are optional. <span class="gp">Social GP1, GP2, GP4c</span></li>
+        </ul>
+        <p class="design-note">Design note for the team: bring the Starting out video or images from the textbook and the questions you want to ask.</p>
+      </div>
+    </section>
+
+    <!-- ============ PART 3 (planned) ============ -->
+    <section class="view" data-view="reading" aria-labelledby="rdTitle" hidden>
+      <div class="mod-head">
+        <p class="eyebrow">Part 3 · 30 minutes</p>
+        <h1 id="rdTitle">Reading: The Age of Majority</h1>
+        <p class="lede">Read what each speaker feels about turning 18, and find the reasons and evidence in the text.</p>
+      </div>
+      <div class="planned">
+        <span class="pill">Planned</span>
+        <h2>What this part will include</h2>
+        <ul>
+          <li>The passage in short sections that students open one at a time, with key words highlighted. <span class="gp">Ped GP1a, GP4b · Tech GP1a</span></li>
+          <li>A feelings, reasons and evidence chart for each speaker, with a sentence frame. <span class="gp">Ped GP1b</span></li>
+          <li>Comprehension checks with explanatory feedback and retries. <span class="gp">Ped GP1c · Tech GP5a</span></li>
+          <li>An AI tutor that asks evidence-seeking questions, with teacher-written hints as a backup. <span class="gp">Tech GP3b, GP3c</span></li>
+        </ul>
+        <p class="design-note">Design note for the team: paste the passage text, the comprehension questions and the answer key.</p>
+      </div>
+    </section>
+
+    <!-- ============ PART 4 (planned) ============ -->
+    <section class="view" data-view="writing" aria-labelledby="wrTitle" hidden>
+      <div class="mod-head">
+        <p class="eyebrow">Part 4 · 20 minutes</p>
+        <h1 id="wrTitle">Writing: Responsibilities at 18</h1>
+        <p class="lede">Write a short response about the responsibilities that come with turning 18.</p>
+      </div>
+      <div class="planned">
+        <span class="pill">Planned</span>
+        <h2>What this part will include</h2>
+        <ul>
+          <li>A short writing task about responsibilities at eighteen. <span class="gp">Ped GP2c</span></li>
+          <li>Draft first, then feedback from peers (with sentence starters) and the AI tutor. <span class="gp">Ped GP3a, GP3b · Social GP1b</span></li>
+          <li>Revise, submit and reflect. <span class="gp">Ped GP3c, GP5c</span></li>
+        </ul>
+        <p class="design-note">Design note for the team: decide the writing prompt, word count and marking rubric.</p>
+      </div>
+    </section>
+
+    <!-- ============ PART 5 (planned) ============ -->
+    <section class="view" data-view="teacher" aria-labelledby="tcTitle" hidden>
+      <div class="mod-head">
+        <p class="eyebrow">For teachers</p>
+        <h1 id="tcTitle">Teacher’s corner</h1>
+        <p class="lede">Everything the teacher needs to run, support and review this lesson.</p>
+      </div>
+      <div class="planned">
+        <span class="pill">Planned</span>
+        <h2>What this part will include</h2>
+        <ul>
+          <li>Lesson plan with timing for all four parts.</li>
+          <li>Answer keys and teacher-written hints for every task, including Part 1.</li>
+          <li>Discussion guide: welcome message, guiding questions and a model synthesis. <span class="gp">Social GP3a</span></li>
+          <li>Notes on how students should use the AI tutor. <span class="gp">Social GP3c</span></li>
+        </ul>
+        <p class="design-note">Design note for the team: list anything the teacher should see that students should not.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<dialog id="helpDialog" aria-labelledby="helpTitle">
+  <div class="dlg">
+    <h2 id="helpTitle">Tech help</h2>
+    <ul>
+      <li><strong>No sound?</strong> Check your volume, then try Chrome, Edge or Safari. You can always use the phonetic spelling under each word.</li>
+      <li><strong>Lost your progress?</strong> Progress is saved in this browser on this device only. A different phone or computer starts fresh.</li>
+      <li><strong>Page looks crowded on a phone?</strong> Turn your phone sideways, or use a laptop.</li>
+      <li><strong>Still stuck?</strong> Tell your English teacher in the class group.</li>
+    </ul>
+    <div class="dlg-actions">
+      <button type="button" class="linkbtn" id="resetBtn">Start Part 1 again</button>
+      <button type="button" class="btn primary" id="helpClose">Close</button>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/content.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
