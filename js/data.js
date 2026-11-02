@@ -68,10 +68,10 @@ GU.LESSONS = [
     ]
   },
   {
-    id: "lesson-3", n: 3, title: "Understanding Ideas: The Age of Majority", short: "Understanding Ideas", minutes: 40,
+    id: "lesson-3", n: 3, title: "Understanding Ideas: The Age of Majority", short: "Understanding Ideas", minutes: 40, practice: true,
     blurb: "Three young people explain what turning 18 means, or meant, to them: the passage with its recording, a video lecture and an analysis of the text.",
     activities: [
-      { id: "l3-lead", title: "Lead-in: Adult Rights and a First Look at the Passage", short: "Lead-in", kind: "l3lead", minutes: 6, label: "Activity 1", steps: ["l3a-rights", "l3a-type"] },
+      { id: "l3-lead", title: "Pre-reading", short: "Pre-reading", kind: "l3lead", minutes: 6, label: "Activity 1", steps: ["l3a-rights", "l3a-type"] },
       { id: "l3-read", title: "Listening and Reading: The Age of Majority", short: "Listening and Reading", kind: "l3read", minutes: 12, label: "Activity 2", steps: ["l3b-listen", "l3b-expr"] },
       { id: "l3-video", title: "Video Lecture: A Close Reading of the Passage", short: "Video Lecture", kind: "l3video", minutes: 10, label: "Activity 3", steps: ["l3c-watch", "l3c-qa"] },
       { id: "l3-text", title: "Text Analysis: Title, Details and Viewpoints", short: "Text Analysis", kind: "l3text", minutes: 12, label: "Activity 4", steps: ["l3d-title", "l3d-detail", "l3d-fact"] }
@@ -82,6 +82,40 @@ GU.LESSONS = [
     blurb: "A short written response on the responsibilities that come with turning 18."
   }
 ];
+
+/* Word Battle and AI Tutor: the same tools, introduced in two places (after the vocabulary lesson and the reading lesson). */
+GU.PRACTICE = {
+  "lesson-1": {
+    crumb: "Lesson 1: Vocabulary", href: "#/lesson-1", tag: "Vocabulary Practice", battle: "#/community/battle", tutor: "#/community/tutor",
+    title: "Practise with Classmates and the AI Tutor",
+    blurb: "Compete with classmates in timed word battles, and ask the AI Tutor about any word in the unit.",
+    battleCard: "Fifteen timed questions on the thirty words. Accuracy decides your place on the class leaderboard, and time breaks ties.",
+    tutorCard: "Ask about any word in the unit: word forms, collocations, fixed phrases, meanings and examples. The tutor answers and then sets a short practice question.",
+    panelChips: ["What are the word forms of mature?", "Collocations with commitment", "How is “have a say” used?", "Wage or salary: what is the difference?"],
+    chips: ["What are the word forms of mature?", "Collocations with commitment", "Phrases with have a say", "Wage or salary: what is the difference?", "Quiz me"],
+    greeting: "<p>Hello. I am the AI Tutor for Unit 1, Growing up.</p><p>Ask me about any of the thirty words: word forms, collocations, phrases, meanings or examples. Type <i>quiz me</i> for a practice question.</p>",
+    placeholder: "Ask about any word in the unit",
+    status: "Answers vocabulary questions about Unit 1",
+    tutorLede: "The AI Tutor answers questions on the thirty words of Unit 1, including word forms, collocations, fixed phrases, meanings and examples, and then sets a short practice task.",
+    battleLede: "Fifteen questions on the thirty words of Unit 1, in four formats: meaning, word, listening and textbook context. The class leaderboard ranks players by accuracy, then by time."
+  },
+  "lesson-3": {
+    crumb: "Lesson 3: Understanding Ideas", href: "#/lesson-3", tag: "Reading Practice", battle: "#/lesson-3/battle", tutor: "#/lesson-3/tutor",
+    title: "Further Practice: Word Battle and AI Tutor",
+    blurb: "Consolidate the key words of the passage in a timed battle with classmates, and consult the AI Tutor on the passage and its key expressions.",
+    battleCard: "Fifteen timed questions on the thirty key words of the unit, most of which appear in the passage. Accuracy decides your place on the class leaderboard.",
+    tutorCard: "Ask about the passage and its key expressions: meanings, usage, difficult sentences and the speakers’ views. The tutor answers and then sets a short practice question.",
+    panelChips: ["What does “have a say” mean in Bethany’s paragraph?", "How is “contribute to” used?", "Why does Lin Ning call the change “subtle and gradual”?", "What does Morgan mean by “attitude than age”?"],
+    chips: ["What does “have a say” mean in Bethany’s paragraph?", "How is “contribute to” used?", "Why does Lin Ning call the change “subtle and gradual”?", "What does Morgan mean by “attitude than age”?", "Quiz me"],
+    greeting: "<p>Hello. I am the AI Tutor for Unit 1, Growing up.</p><p>Ask me about <i>The Age of Majority</i>: its key expressions, difficult sentences or the three speakers’ views. Type <i>quiz me</i> for a practice question.</p>",
+    placeholder: "Ask about the passage or a key expression",
+    status: "Answers questions about the passage and its key expressions",
+    tutorLede: "The AI Tutor answers questions on <em>The Age of Majority</em>, including its key expressions, difficult sentences and the three speakers’ views, and then sets a short practice task.",
+    battleLede: "Fifteen questions on the thirty key words of Unit 1, most of which appear in <em>The Age of Majority</em>, in four formats: meaning, word, listening and textbook context. The class leaderboard ranks players by accuracy, then by time."
+  }
+};
+GU.practiceId = "lesson-1";
+GU.practice = function () { return GU.PRACTICE[GU.practiceId] || GU.PRACTICE["lesson-1"]; };
 
 GU.totalMinutes = function () { return GU.LESSONS.reduce(function (t, l) { return t + l.minutes; }, 0); };
 

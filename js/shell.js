@@ -65,11 +65,12 @@
           return '<li><a href="' + href + '"' + cur(href) + ">" + statusDot(activityState(a)) +
             "<span>" + a.title + (a.range ? ' <small class="nl-range">' + a.range + "</small>" : "") + (a.bonus ? ' <em class="tag-bonus">Bonus</em>' : "") + (opt ? ' <em class="tag-opt">Optional</em>' : "") + "</span></a></li>";
         }).join("") + "</ul>";
-        /* Word Battle and the AI Tutor sit directly under the vocabulary module, in their own visual zone. */
-        if (l.id === "lesson-1") {
+        /* Word Battle and the AI Tutor sit under the vocabulary and reading lessons, in their own visual zone. */
+        var P = GU.PRACTICE[l.id];
+        if (P) {
           items += '<div class="nav-community">' +
-            '<a class="nc-item" href="#/community/battle"' + cur("#/community/battle") + ">" + ui.icon("trophy") + "<span>Word Battle</span></a>" +
-            '<a class="nc-item" href="#/community/tutor"' + cur("#/community/tutor") + ">" + ui.icon("chat") + "<span>AI Tutor</span></a>" +
+            '<a class="nc-item" href="' + P.battle + '"' + cur(P.battle) + ">" + ui.icon("trophy") + "<span>Word Battle</span></a>" +
+            '<a class="nc-item" href="' + P.tutor + '"' + cur(P.tutor) + ">" + ui.icon("chat") + "<span>AI Tutor</span></a>" +
             "</div>";
         }
       }
@@ -142,7 +143,7 @@
   /* Floating AI Tutor button: available throughout the vocabulary module and the community. */
   function renderFab(view) {
     var fab = document.getElementById("tutor-fab");
-    var show = /^(lesson1|group|match|challenge|l3read)$/.test(view);
+    var show = /^(lesson1|group|match|challenge|lesson3|l3lead|l3read|l3video|l3text)$/.test(view);
     fab.hidden = !show;
     if (!fab.dataset.bound) {
       fab.dataset.bound = "1";
@@ -168,6 +169,7 @@
     else if (parts[0] === "community" && !parts[1]) { location.replace("#/community/battle"); return; }
     else if (parts[0] === "community" && parts[1] === "battle") view = "battle";
     else if (parts[0] === "community" && parts[1] === "tutor") view = "tutorPage";
+    else if (GU.PRACTICE[parts[0]] && (parts[1] === "battle" || parts[1] === "tutor")) view = parts[1] === "battle" ? "battle" : "tutorPage";
     else if (/^lesson-[234]$/.test(parts[0])) {
       /* Lessons 2–4: a landing page, then one page per activity (the view is named after the activity kind). */
       var L = GU.LESSONS.filter(function (x) { return x.id === parts[0]; })[0];
@@ -180,6 +182,8 @@
     else if (parts[0] === "teacher") view = "teacher";
     else { location.replace("#/overview"); return; }
 
+    /* Which lesson the Word Battle and AI Tutor belong to on this page */
+    GU.practiceId = parts[0] === "lesson-3" ? "lesson-3" : "lesson-1";
     page.innerHTML = "";
     page.className = "page page-" + view;
     document.body.dataset.view = view;

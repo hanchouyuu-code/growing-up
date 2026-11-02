@@ -112,7 +112,8 @@ module.exports = async function handler(req, res) {
   if (!messages) return res.status(400).json({ error: "A question is required." });
   if (await rateLimited(req)) return res.status(429).json({ error: "Hourly question limit reached. Please try again later." });
 
-  const system = systemPrompt(typeof body.word === "string" ? body.word : null);
+  const system = systemPrompt(typeof body.word === "string" ? body.word : null) +
+    (body.context === "lesson-3" ? "\nThe student is now working on Lesson 3, the reading passage The Age of Majority. Focus on the passage, its key expressions and the speakers' views, and quote the passage where it helps." : "");
   try {
     let reply = "";
     if (anthropicKey) {

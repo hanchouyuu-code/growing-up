@@ -65,10 +65,11 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 ## Lesson 3 说明
 
 - **课程首页**：以课文引言的诗句形式导入（逐行淡入），三位人物照片半透明印在右侧。
-- **Activity 1 导入**：课本 Activity 1 的六项权利勾选（16 / 18 / 21 岁，答案与法律依据在 `GU.L3.rights`），随后是读前的文本类型判断（文章版式图 + 选择题，答案 magazine）。
-- **Activity 2 课文**：全文 34 句及逐句中文翻译（本课程翻译）；录音 `assets/audio/age-of-majority.m4a`（约 3 分 22 秒，Kokoro 生成：引言旁白女声，Bethany 英式女声，Lin Ning 英式男声，Morgan 美式男声），逐句高亮、点句单独播放、可调速。人物照片半透明印在各自段落旁。33 个 key expressions 在正文高亮，点击可看中文、释义、牛津词典例句，或直接问 AI Tutor。第二步为 Key Expressions Quiz（每轮 8 题，补全课文句子或选择中文意思），下方接 Word Battle 与 AI Tutor。AI Tutor 已加入课文全文和 key expressions，可回答相关问题；本页右下角也有 AI Tutor 按钮。
+- **Activity 1 Pre-reading**：Legal Ages for Adult Rights（课本 Activity 1 的六项权利勾选（16 / 18 / 21 岁，答案与法律依据在 `GU.L3.rights`）），随后是 Text Structure（文章版式图 + 选择题，答案 magazine）。
+- **Activity 2 课文**：全文 34 句及逐句中文翻译（本课程翻译）；录音 `assets/audio/age-of-majority.m4a`（约 3 分 22 秒，Kokoro 生成：引言旁白女声，Bethany 英式女声，Lin Ning 英式男声，Morgan 美式男声），逐句高亮、点句单独播放、可调速。人物照片半透明印在各自段落旁。33 个 key expressions 在正文高亮，点击可看中文、释义、牛津词典例句，或直接问 AI Tutor。第二步为 Key Expression Review（每轮 8 题，补全课文句子或选择中文意思），下方接 Word Battle 与 AI Tutor（Further Practice）。AI Tutor 已加入课文全文和 key expressions，可回答相关问题；本页右下角也有 AI Tutor 按钮。
 - **Activity 3 精讲视频**：B 站 BV1TiyKYUEwE（爱学英语的Vivian，约 27 分钟），笔记区 + 师生问答区。
-- **Activity 4 文本分析**：标题选择、三人信息填表、事实与观点。
+- **Activity 4 文本分析**：Title Selection、Detailed Reading（三人信息填表）、Fact and Opinion。
+- **Word Battle 与 AI Tutor**：左侧导航在 Vocabulary 和 Understanding Ideas 下各有一组入口（`#/community/...` 与 `#/lesson-3/battle`、`#/lesson-3/tutor`）。同一个排行榜；AI Tutor 在 Lesson 3 中以课文和 key expressions 为重点，提示问题、开场白和教师提示模式都按课分别设置（`GU.PRACTICE`），两课的对话记录分开保存。
 - **人物照片**：`assets/img/speakers/`，取自课本页面截图。重新生成录音：`python3 tools/make-passage-audio.py passage.json <模型目录> assets/audio/age-of-majority.m4a`，把输出的 cues 填回 `GU.L3.passage.cues`。
 - **课程总时长**：20 + 15 + 40 + 20 = 95 分钟。
 

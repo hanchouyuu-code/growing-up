@@ -49,10 +49,10 @@
       '<section aria-labelledby="act-h"><h2 id="act-h" class="block-h">Learning Activities</h2><ul class="acts">' + acts + "</ul></section>";
   };
   var DESC = {
-    "l3-lead": "The ages at which young people in China gain adult rights, and a first look at how the passage is laid out.",
+    "l3-lead": "The legal ages at which young people in China gain adult rights, and the structure of the passage.",
     "l3-read": "The recorded passage with a voice for each speaker, sentence-by-sentence translation, key expressions and a quiz.",
     "l3-video": "A video explanation of the passage, with space for notes and a question-and-answer board with the teacher.",
-    "l3-text": "Choosing a title, reading for details about each speaker and telling facts from opinions."
+    "l3-text": "Title selection, detailed reading of each speaker’s paragraph, and the distinction between fact and opinion."
   };
 
   /* ---------- Activity 1: Lead-in ---------- */
@@ -60,7 +60,7 @@
     var a = act("l3-lead");
     var R = D.rights;
     var steps = [
-      { key: "l3a-rights", title: "Rights and Ages", mount: function (el, done) {
+      { key: "l3a-rights", title: "Legal Ages for Adult Rights", mount: function (el, done) {
         var saved = store.answer("l3a-rights") || {};
         el.innerHTML =
           '<p class="q-prompt">' + R.prompt + "</p>" +
@@ -102,11 +102,11 @@
         el.querySelector("[data-check]").addEventListener("click", function () { check(false); });
         if (store.step("l3a-rights") && Object.keys(saved).length) check(true);
       } },
-      { key: "l3a-type", title: "Text Type", mount: function (el, done) {
-        choiceQuestion(el, D.typeQ, "l3a-type", done, '<p class="step-intro">Before you read, look at how the passage is laid out on the page.</p>' + textTypeDiagram());
+      { key: "l3a-type", title: "Text Structure", mount: function (el, done) {
+        choiceQuestion(el, D.typeQ, "l3a-type", done, '<p class="step-intro">Before reading, examine how the passage is laid out on the page.</p>' + textTypeDiagram());
       } }
     ];
-    return stepper(page, a, steps, "This activity looks at the rights that come with turning 18 in China and gives a first look at how the passage is laid out.");
+    return stepper(page, a, steps, "The legal ages at which young people in China gain adult rights, and the structure of the passage.");
   };
 
   /* ---------- Activity 2: Listening and Reading ---------- */
@@ -135,15 +135,15 @@
     var reader = null;
     var steps = [
       { key: "l3b-listen", title: "Listening and Reading", mount: function (el, done) { reader = passageReader(el, D.passage, done); return reader.stop; } },
-      { key: "l3b-expr", title: "Key Expressions Quiz", mount: function (el, done) {
-        el.innerHTML = '<p class="step-intro">Eight quick questions on the key expressions of the passage: choose the right expression for a sentence from the passage, or choose its meaning.</p>' +
+      { key: "l3b-expr", title: "Key Expression Review", mount: function (el, done) {
+        el.innerHTML = '<p class="step-intro">Eight questions on the key expressions of the passage: complete sentences from the passage with the appropriate expression, or identify the meaning of an expression.</p>' +
           '<div class="kq-slot"></div>' +
           '<details class="kx-all"><summary>' + ui.icon("book") + "All " + D.passage.expressions.length + " key expressions</summary>" +
           '<div class="kx-grid">' + expressionList().map(exprCard).join("") + "</div></details>" +
           '<div class="kq-zone"></div>';
         bindSay(el);
         exprQuiz(el.querySelector(".kq-slot"), done);
-        GU.communityPanel(el.querySelector(".kq-zone"));
+        GU.communityPanel(el.querySelector(".kq-zone"), false, "lesson-3");
       } }
     ];
     return stepper(page, a, steps, "Listen to the passage and follow the transcript. Each speaker has a different voice; hover over a sentence to see its Chinese translation.");
@@ -627,9 +627,9 @@
   GU.views.l3text = function (page) {
     var a = act("l3-text");
     var steps = [
-      { key: "l3d-title", title: "Choosing a Title", mount: function (el, done) { choiceQuestion(el, D.titleQ, "l3d-title", done); } },
-      { key: "l3d-detail", title: "Reading for Details", mount: function (el, done) { detailsTables(el, "l3d-detail-ans", done); } },
-      { key: "l3d-fact", title: "Facts or Opinions", mount: function (el, done) { factQuestion(el, D.factQ, "l3d-fact", done); } }
+      { key: "l3d-title", title: "Title Selection", mount: function (el, done) { choiceQuestion(el, D.titleQ, "l3d-title", done); } },
+      { key: "l3d-detail", title: "Detailed Reading", mount: function (el, done) { detailsTables(el, "l3d-detail-ans", done); } },
+      { key: "l3d-fact", title: "Fact and Opinion", mount: function (el, done) { factQuestion(el, D.factQ, "l3d-fact", done); } }
     ];
     return stepper(page, a, steps, "This activity looks at the passage as a whole and in detail: a suitable title, what each speaker says, and the difference between facts and opinions.");
   };

@@ -59,21 +59,22 @@
   }
 
   /* ---------- Word Battle and AI Tutor panel at the bottom of Lesson 1 ---------- */
-  GU.communityPanel = function (el, full) {
+  GU.communityPanel = function (el, full, ctxId) {
+    var C = GU.PRACTICE[ctxId || "lesson-1"];
     el.innerHTML =
       '<section class="zone' + (full ? " zone-full" : "") + '" aria-labelledby="zone-h">' +
-      '<div class="zone-head"><span class="zone-tag">' + ui.icon("users") + "Vocabulary Practice</span>" +
-      (full ? "" : '<h2 id="zone-h">Practise with Classmates and the AI Tutor</h2>') +
-      (full ? "" : "<p>" + GU.COMMUNITY.blurb + "</p>") + "</div>" +
+      '<div class="zone-head"><span class="zone-tag">' + ui.icon("users") + C.tag + "</span>" +
+      (full ? "" : '<h2 id="zone-h">' + C.title + "</h2>") +
+      (full ? "" : "<p>" + C.blurb + "</p>") + "</div>" +
       '<div class="zone-grid">' +
-      '<article class="zcard"><div class="zcard-top"><img src="' + ui.emojiSrc("🏆") + '" alt=""><div><h3>Word Battle</h3><p>Fifteen timed questions on the thirty words. Accuracy decides your place on the class leaderboard, and time breaks ties.</p></div></div>' +
+      '<article class="zcard"><div class="zcard-top"><img src="' + ui.emojiSrc("🏆") + '" alt=""><div><h3>Word Battle</h3><p>' + C.battleCard + "</p></div></div>" +
       '<div class="zcard-lb" id="zone-lb"><p class="lb-empty">Loading the leaderboard…</p></div>' +
-      '<a class="btn btn-mint" href="#/community/battle">' + ui.icon("trophy") + "Enter the Word Battle</a></article>" +
-      '<article class="zcard"><div class="zcard-top"><img src="' + ui.emojiSrc("🤖") + '" alt=""><div><h3>AI Tutor</h3><p>Ask about any word in the unit: word forms, collocations, fixed phrases, meanings and examples. The tutor answers and then sets a short practice question.</p></div></div>' +
-      '<div class="zcard-chips">' + ["What are the word forms of mature?", "Collocations with commitment", "How is “have a say” used?", "Wage or salary: what is the difference?"].map(function (q) {
+      '<a class="btn btn-mint" href="' + C.battle + '">' + ui.icon("trophy") + "Enter the Word Battle</a></article>" +
+      '<article class="zcard"><div class="zcard-top"><img src="' + ui.emojiSrc("🤖") + '" alt=""><div><h3>AI Tutor</h3><p>' + C.tutorCard + "</p></div></div>" +
+      '<div class="zcard-chips">' + C.panelChips.map(function (q) {
         return '<button data-q="' + ui.esc(q) + '">' + ui.esc(q) + "</button>";
       }).join("") + "</div>" +
-      '<a class="btn btn-mint" href="#/community/tutor">' + ui.icon("chat") + "Open the AI Tutor</a></article>" +
+      '<a class="btn btn-mint" href="' + C.tutor + '">' + ui.icon("chat") + "Open the AI Tutor</a></article>" +
       "</div></section>";
     el.querySelectorAll("[data-q]").forEach(function (b) {
       b.addEventListener("click", function () { GU.tutor.openDrawer(null, null, b.dataset.q); });
@@ -118,9 +119,9 @@
     function setup() {
       var p = store.player() || {};
       page.innerHTML =
-        '<header class="lesson-head zone-page-head"><a class="crumb" href="#/lesson-1">' + ui.icon("left") + "Lesson 1: Vocabulary</a>" +
-        '<p class="lesson-kicker">Vocabulary Practice <em class="tag-bonus">Bonus</em></p><h1>Word Battle</h1>' +
-        '<p class="lede">Fifteen questions on the thirty words of Unit 1, in four formats: meaning, word, listening and textbook context. The class leaderboard ranks players by accuracy, then by time.</p></header>' +
+        '<header class="lesson-head zone-page-head"><a class="crumb" href="' + GU.practice().href + '">' + ui.icon("left") + GU.practice().crumb + "</a>" +
+        '<p class="lesson-kicker">' + GU.practice().tag + ' <em class="tag-bonus">Bonus</em></p><h1>Word Battle</h1>' +
+        '<p class="lede">' + GU.practice().battleLede + "</p></header>" +
         '<div class="battle-grid">' +
         '<form class="zcard battle-setup" id="setup" autocomplete="off"><h2>Player Details</h2>' +
         '<label for="nick">Nickname</label><input id="nick" maxlength="16" required placeholder="e.g. Sapling 7" value="' + ui.esc(p.name || "") + '">' +
@@ -216,7 +217,7 @@
       store.addBattle(finishedRec);
       var firstBadge = store.award("battle");
       page.innerHTML =
-        '<header class="lesson-head zone-page-head"><a class="crumb" href="#/lesson-1">' + ui.icon("left") + "Lesson 1: Vocabulary</a><h1>Battle Results</h1></header>" +
+        '<header class="lesson-head zone-page-head"><a class="crumb" href="' + GU.practice().href + '">' + ui.icon("left") + GU.practice().crumb + "</a><h1>Battle Results</h1></header>" +
         '<section class="results zcard"><div class="res-score"><span class="res-num">' + correct + '</span><span>/15</span></div>' +
         "<div><h2>Accuracy: " + Math.round(correct / 15 * 100) + "%</h2><p>Time: " + fmtTime(ms) + '. <span id="rank-line">Submitting your result…</span></p></div></section>' +
         '<div class="res-actions"><button class="btn btn-ghost" id="again">' + ui.icon("redo") + "Battle Again</button>" +
@@ -232,7 +233,7 @@
         if (line) line.textContent = "Saved on this device. The shared leaderboard is not connected.";
         loadBoard();
       });
-      if (firstBadge) ui.celebrate("battle", { href: "#/community/tutor", label: "Open the AI Tutor" });
+      if (firstBadge) ui.celebrate("battle", { href: GU.practice().tutor, label: "Open the AI Tutor" });
     }
 
     setup();
@@ -240,12 +241,19 @@
   };
 
   /* ---------- AI Tutor ---------- */
-  var history = [];
-  try { history = JSON.parse(sessionStorage.getItem("gu-tutor") || "[]"); } catch (e) { history = []; }
+  /* Each lesson keeps its own conversation with the tutor. */
+  var history = [], historyFor = null;
+  function histKey() { return "gu-tutor" + (GU.practiceId === "lesson-1" ? "" : "-" + GU.practiceId); }
+  function useHistory() {
+    if (historyFor === histKey()) return;
+    historyFor = histKey();
+    try { history = JSON.parse(sessionStorage.getItem(historyFor) || "[]"); } catch (e) { history = []; }
+    pendingQuiz = null;
+  }
   var mode = "ai";           // "ai" or "hints" (after the AI service fails)
   var pendingQuiz = null;    // for the hints-mode practice question
 
-  function saveHistory() { try { sessionStorage.setItem("gu-tutor", JSON.stringify(history.slice(-30))); } catch (e) {} }
+  function saveHistory() { try { sessionStorage.setItem(histKey(), JSON.stringify(history.slice(-30))); } catch (e) {} }
 
   function md(text) {
     /* minimal formatting for AI replies: **bold**, *italic*, bullet lines, line breaks */
@@ -290,6 +298,41 @@
 
   function list(items) { return "<ul>" + items.map(function (i) { return "<li>" + i + "</li>"; }).join("") + "</ul>"; }
 
+  /* Teacher-hint answers on the passage's key expressions (Lesson 3), used when the AI service is unavailable. */
+  function exprList() {
+    return (GU.L3 && GU.L3.passage ? GU.L3.passage.expressions : []).map(function (x) {
+      var w = x.word ? GU.wordById(x.word) || {} : {};
+      return { phrase: x.phrase, base: x.base || w.word, zh: x.zh || w.zh, def: x.def || w.def, dict: x.dict || w.dict };
+    });
+  }
+  function exprSentence(ph) {
+    var hit = null;
+    GU.L3.passage.sections.forEach(function (sec) { sec.sentences.forEach(function (t) { if (!hit && t[0].toLowerCase().indexOf(ph.toLowerCase()) >= 0) hit = t[0]; }); });
+    return hit;
+  }
+  function exprAnswer(q, intent) {
+    var xs = exprList(), n = ui.normalize(q);
+    if (intent === "quiz") {
+      var t = xs[Math.floor(Math.random() * xs.length)], s = exprSentence(t.phrase);
+      if (!s) return null;
+      pendingQuiz = { word: t.phrase, answer: t.phrase, book: s, alt: true };
+      return "<p><b>Practice question.</b> Complete the sentence from the passage:</p><p class=\"tq\">" + blankOut(s, t.phrase) + "</p><p>Hint: <span lang=\"zh-CN\">" + ui.esc(t.zh || "") + "</span></p>";
+    }
+    var x = xs.slice().sort(function (a, b) { return b.phrase.length - a.phrase.length; }).filter(function (y) {
+      return n.indexOf(ui.normalize(y.phrase)) >= 0 || n.indexOf(ui.normalize(y.base.replace(/\b(sth|sb)\b/g, "").trim())) >= 0;
+    })[0];
+    if (!x) {
+      if (findWord(q)) return null;
+      return "<p>In teacher-hint mode I can explain the key expressions of the passage. Choose one:</p><div class=\"tchips\">" +
+        ui.shuffle(xs).slice(0, 6).map(function (y) { return '<button data-tq="How is ' + ui.esc(y.base) + ' used?">' + ui.esc(y.base) + "</button>"; }).join("") + "</div>";
+    }
+    var s2 = exprSentence(x.phrase);
+    return "<p><b>" + ui.esc(x.base) + "</b> <span lang=\"zh-CN\">" + ui.esc(x.zh || "") + "</span>" + (x.def ? ": " + ui.esc(x.def) : "") + ".</p>" +
+      (s2 ? "<p>In the passage: “" + ui.highlight(s2, x.phrase) + "”</p>" : "") +
+      (x.dict ? "<p>" + ui.esc(x.dict[1]) + ": “" + ui.esc(x.dict[0]) + "”</p>" : "") +
+      "<p class=\"tfollow\">Your turn: write one sentence of your own with <b>" + ui.esc(x.base) + "</b>, or type <i>quiz me</i>.</p>";
+  }
+
   function hintAnswer(q) {
     if (pendingQuiz) {
       var pq = pendingQuiz; pendingQuiz = null;
@@ -298,6 +341,7 @@
         "The full sentence reads: “" + ui.highlight(pq.book, pq.answer) + "”</p><p>Would you like another question? Type <i>quiz me</i>.</p>";
     }
     var intent = intentOf(q);
+    if (GU.practiceId === "lesson-3") { var xa = exprAnswer(q, intent); if (xa) return xa; }
     var w = findWord(q) || (intent && intent !== "quiz" ? GU.currentWord : null);
     if (intent === "quiz") {
       var pool = GU.currentWord ? GU.WORDS.filter(function (x) { return GU.groupWords(Math.floor(GU.WORDS.indexOf(GU.currentWord) / 10)).indexOf(x) >= 0; }) : GU.WORDS;
@@ -330,7 +374,7 @@
 
   function renderLog(log) {
     if (!history.length) {
-      log.innerHTML = '<div class="tmsg bot"><p>Hello. I am the AI Tutor for Unit 1, Growing up.</p><p>Ask me about any of the thirty words: word forms, collocations, phrases, meanings or examples. Type <i>quiz me</i> for a practice question.</p></div>';
+      log.innerHTML = '<div class="tmsg bot">' + GU.practice().greeting + "</div>";
     } else {
       log.innerHTML = history.map(function (m) {
         return '<div class="tmsg ' + (m.role === "user" ? "me" : "bot") + (m.hint ? " is-hint" : "") + '">' +
@@ -362,7 +406,7 @@
     var payload = history.filter(function (m) { return m.content; }).slice(-10).map(function (m) { return { role: m.role, content: m.content }; });
     fetch("api/tutor", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: payload, word: GU.currentWord ? GU.currentWord.id : null })
+      body: JSON.stringify({ messages: payload, word: GU.currentWord ? GU.currentWord.id : null, context: GU.practiceId })
     }).then(function (r) {
       if (r.status === 429) return r.json().then(function (d) { throw { rate: true, msg: d.error }; });
       if (!r.ok) throw new Error("http " + r.status);
@@ -380,9 +424,10 @@
   GU.tutor = {
     mount: function (el, opts) {
       opts = opts || {};
+      useHistory();
       var w = opts.word;
       var chips = w ? ["Word forms of " + w.word, "Collocations with " + w.word, "Phrases with " + w.word, "Example sentences with " + w.word, "Quiz me"]
-        : ["What are the word forms of mature?", "Collocations with commitment", "Phrases with have a say", "Wage or salary: what is the difference?", "Quiz me"];
+        : GU.practice().chips;
       el.innerHTML =
         '<div class="tutor">' +
         '<div class="tutor-head"><img src="' + ui.emojiSrc("🤖") + '" alt=""><div><b>AI Tutor</b><span class="tutor-status"></span></div>' +
@@ -391,7 +436,7 @@
         '<div class="tutor-typing" hidden><i></i><i></i><i></i></div>' +
         '<div class="tutor-suggest">' + chips.map(function (c) { return '<button type="button" data-tq="' + ui.esc(c) + '">' + ui.esc(c) + "</button>"; }).join("") + "</div>" +
         '<form class="tutor-form"><label class="sr-only" for="tq-' + instances.length + '">Your question</label>' +
-        '<textarea id="tq-' + instances.length + '" rows="1" maxlength="500" placeholder="Ask about any word in the unit"></textarea>' +
+        '<textarea id="tq-' + instances.length + '" rows="1" maxlength="500" placeholder="' + GU.practice().placeholder + '"></textarea>' +
         '<button class="btn btn-mint" type="submit" aria-label="Send">' + ui.icon("send") + "</button></form>" +
         '<p class="tutor-note">AI answers can contain mistakes. Check them against the textbook and a dictionary, and ask your teacher whenever unsure.</p>' +
         "</div>";
@@ -399,7 +444,7 @@
       var inst = {
         log: log,
         typing: function (on) { el.querySelector(".tutor-typing").hidden = !on; },
-        updateStatus: function () { el.querySelector(".tutor-status").textContent = mode === "ai" ? "Answers vocabulary questions about Unit 1" : "Teacher hints mode"; }
+        updateStatus: function () { el.querySelector(".tutor-status").textContent = mode === "ai" ? GU.practice().status : "Teacher hints mode"; }
       };
       instances.push(inst);
       renderLog(log); inst.updateStatus();
@@ -442,9 +487,9 @@
 
   GU.views.tutorPage = function (page) {
     page.innerHTML =
-      '<header class="lesson-head zone-page-head"><a class="crumb" href="#/lesson-1">' + ui.icon("left") + "Lesson 1: Vocabulary</a>" +
-      '<p class="lesson-kicker">Vocabulary Practice</p><h1>AI Tutor</h1>' +
-      '<p class="lede">The AI Tutor answers questions on the thirty words of Unit 1, including word forms, collocations, fixed phrases, meanings and examples, and then sets a short practice task.</p></header>' +
+      '<header class="lesson-head zone-page-head"><a class="crumb" href="' + GU.practice().href + '">' + ui.icon("left") + GU.practice().crumb + "</a>" +
+      '<p class="lesson-kicker">' + GU.practice().tag + "</p><h1>AI Tutor</h1>" +
+      '<p class="lede">' + GU.practice().tutorLede + "</p></header>" +
       '<div class="tutor-page" id="tp"></div>';
     return GU.tutor.mount(page.querySelector("#tp"), {});
   };

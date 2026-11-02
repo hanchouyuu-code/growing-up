@@ -64,10 +64,10 @@
       "<dt>Personal Responses</dt><dd>The warm-up and the two personal-response questions are open. Students post first and only then see their classmates’ answers, so that each student forms a view before the discussion begins.</dd>" +
       "</dl></section>" +
       '<section class="plan"><h2>Lesson 3 Reference Answers</h2><dl class="keys">' +
-      "<dt>Activity 1, Rights and Ages</dt><dd>" + GU.L3.rights.items.map(function (it) { return ui.esc(it.text) + ": " + it.answer.join(" (women) / ") + (it.answer.length > 1 ? " (men)" : ""); }).join("; ") + ".</dd>" +
-      "<dt>Activity 4, Choosing a Title</dt><dd>" + ui.esc(GU.L3.titleQ.options[GU.L3.titleQ.answer].text) + "</dd>" +
-      "<dt>Activity 4, Text Type</dt><dd>" + ui.esc(GU.L3.typeQ.options[GU.L3.typeQ.answer].text) + ": an introduction followed by three personal opinions.</dd>" +
-      "<dt>Activity 4, Facts or Opinions</dt><dd>" + GU.L3.factQ.items.map(function (it, i) { return (i + 1) + " " + it.answer; }).join("  ") + "</dd>" +
+      "<dt>Activity 1, Legal Ages for Adult Rights</dt><dd>" + GU.L3.rights.items.map(function (it) { return ui.esc(it.text) + ": " + it.answer.join(" (women) / ") + (it.answer.length > 1 ? " (men)" : ""); }).join("; ") + ".</dd>" +
+      "<dt>Activity 4, Title Selection</dt><dd>" + ui.esc(GU.L3.titleQ.options[GU.L3.titleQ.answer].text) + "</dd>" +
+      "<dt>Activity 1, Text Structure</dt><dd>" + ui.esc(GU.L3.typeQ.options[GU.L3.typeQ.answer].text) + ": an introduction followed by three personal opinions.</dd>" +
+      "<dt>Activity 4, Fact and Opinion</dt><dd>" + GU.L3.factQ.items.map(function (it, i) { return (i + 1) + " " + it.answer; }).join("  ") + "</dd>" +
       "</dl></section>" +
       '<section class="plan"><h2>Lesson 3 Questions from Students</h2>' +
       "<p>Questions posted in Activity 3 of Lesson 3. Students are told that the teacher replies within three days. Save the teacher key below, then answer on the activity page; your replies are marked as the teacher’s answer.</p>" +
