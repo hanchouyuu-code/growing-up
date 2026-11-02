@@ -54,9 +54,9 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 - **学习路径**：学生在 Lesson 2 首页选择路径，可随时更改；进度和奖章（Branching Out）按所选路径计算。路径以外的活动在左侧导航标注 Optional，仍可完成。
 - **先发后看**：三个讨论区都要求学生先发表自己的回答，才能看到同学的回答、点赞和回复；发帖后会出现 Teacher’s Example。讨论区沿用 Word Battle 和 AI Tutor 的深绿配色，便于识别。
 - **视频**：嵌入 B 站 BV1zL7a6PEhg（外研社 Starting out 视频），旁边有“Open the Video on Bilibili”链接备用。
-- **诗歌朗诵**：只有音频，没有视频。播放条可拖动，可调速（0.75× / 1× / 1.25×）。
-  - 放入 Michael Caine 的朗诵：把音频（mp3 或 m4a）放进 `assets/audio/`，在 `js/data.js` 的 `GU.L2.poem.recording` 里把 `audio` 改成文件路径；`cues` 填 32 行各自开始的秒数后，会逐行高亮，点行号会从这一行播放，选 Textbook Excerpt 时自动跳过第 2、3 节。
-  - 没有音频文件时，自动改为逐行英式朗读（有道），同样可调速、高亮当前行。
+- **诗歌朗诵**：纯音频 `assets/audio/if-poem.m4a`（约 1 分 46 秒），按诗节男女声交替：第 1、3 节女声，第 2、4 节男声（课本节选第 1、4 节同样是一女一男）。播放条可拖动，可调速（0.75× / 1× / 1.25×），逐行高亮；点行号只播放这一行；选 Textbook Excerpt 时自动跳过第 2、3 节。
+  - 录音用开源语音模型 Kokoro（Apache 2.0）在本地生成，英式女声 bf_emma、男声 bm_george。重新生成：`python3 tools/make-poem-audio.py poem.json <模型目录> assets/audio/if-poem.m4a`，把输出的 cues 填进 `js/data.js` 的 `GU.L2.poem.recording.cues`。
+  - 想换成真人录音：替换音频文件并更新 `cues`（32 行各自开始的秒数）。若音频文件缺失，页面会自动改为有道逐行朗读。
   - 下方是全诗中英对照（课本只印第 1、4 节；第 2、3 节有浅色底纹并标注“not printed in the textbook”，可切换为 Textbook Excerpt）。行号按全诗 1–32 编排。
 - **图片**：三张成人礼照片引用自 Wikimedia Commons（CC BY 2.0，按许可要求在页脚署名摄影者）。若无法加载（如中国大陆网络），会自动显示对应的 emoji 图。
 - **答案反馈**：Activity 1 理解题为 Place / Age / How 填表，逐格判断（允许小的拼写错误），可显示答案和完整句子范例；Activity 2 主旨题按要点检查并给出参考答案；勾选题逐项给出诗句证据，点击 Line N 可跳到并朗读该行。
@@ -81,9 +81,11 @@ api/discuss.js             班级讨论服务（Vercel 函数）
 assets/img/                首页小树苗（取自课本 Starting Out 页）、左侧导航的课本封面 cover.jpg
 assets/emoji/              Twemoji 图片（CC BY 4.0）
 assets/video/              介绍视频
+assets/audio/              诗歌朗读音频
 assets/fonts/              字体（本地托管）
 downloads/                 单词表 PDF
 tools/make-wordlist-pdf.js 修改单词后重新生成 PDF：node tools/make-wordlist-pdf.js
+tools/make-poem-audio.py   生成诗歌双声朗读音频和逐行时间点
 ```
 
 ## 单词发音

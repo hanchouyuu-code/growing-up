@@ -163,8 +163,7 @@
       var n = nextAfter(a);
       var end = page.querySelector(".act-end");
       end.hidden = false;
-      end.innerHTML = '<div><p class="act-end-k">' + a.label + " completed</p><h2>" + (n.lessonDone ? "Well done. Your learning path is complete." : "Ready for the next activity") + "</h2>" +
-        "<p>" + (opt ? "This activity is optional on your current path." : "Your answers are saved on this device and in the class discussion.") + "</p></div>" +
+      end.innerHTML = '<span class="tag-done">' + ui.icon("check") + a.label + " completed</span>" +
         '<div class="act-end-go">' + nextButtons(n) + "</div>";
       /* Once finished, the step line gives way to the one next action. */
       var ban = page.querySelector(".act-banner");
@@ -422,13 +421,15 @@
     var rec = P.recording || {};
     var lines = [].concat.apply([], P.stanzas);
     var cues = rec.cues && rec.cues.length === lines.length ? rec.cues : null;
-    var media = null, playing = false, cur = 0, run = 0;
+    var media = null, playing = false, cur = 0, run = 0, stopAt = 0;
 
     var n = 0;
     var body = P.stanzas.map(function (st, si) {
       var inBook = P.excerpt.indexOf(si) >= 0;
+      var voice = rec.voices && rec.audio ? rec.voices[si] : "";
       return '<div class="stanza' + (inBook ? "" : " is-extra") + '" data-stanza="' + si + '">' +
-        (inBook ? "" : '<p class="stanza-tag">Stanza ' + (si + 1) + ": not printed in the textbook</p>") +
+        '<p class="stanza-tag">' + (inBook ? "" : "Stanza " + (si + 1) + ": not printed in the textbook") +
+        (voice ? '<span class="stanza-voice">' + voice + "</span>" : "") + "</p>" +
         st.map(function (l) {
           n++;
           return '<div class="pl" data-line="' + n + '"><button class="pl-n" type="button" data-say="' + n + '" aria-label="Hear line ' + n + '">' + n + "</button>" +
@@ -523,11 +524,12 @@
       media.preload = "metadata";
       media.src = rec.audio;
       media.addEventListener("loadedmetadata", function () {
-        byEl.textContent = rec.reader ? "recited by " + rec.reader : "";
+        byEl.textContent = rec.label || "";
         timeEl.textContent = clock(0) + " / " + clock(media.duration);
       });
       media.addEventListener("timeupdate", function () {
         if (!media.duration) return;
+        if (stopAt && media.currentTime >= stopAt) { stopAt = 0; media.pause(); mark(0); return; }
         seek.value = String(Math.round(media.currentTime / media.duration * 1000));
         timeEl.textContent = clock(media.currentTime) + " / " + clock(media.duration);
         if (cues) {
@@ -538,20 +540,22 @@
       });
       media.addEventListener("play", function () { setPlaying(true); });
       media.addEventListener("pause", function () { setPlaying(false); });
+      media.addEventListener("seeking", function () { if (!stopAt) return; if (media.currentTime < cues[cur - 1] - 0.3 || media.currentTime > stopAt) stopAt = 0; });
       media.addEventListener("ended", function () { cur = 0; mark(0); setPlaying(false); finished(); });
       media.addEventListener("error", function () { media = null; voiceLabels(); });
-      byEl.textContent = rec.reader ? "recited by " + rec.reader : "";
+      byEl.textContent = rec.label || "";
       timeEl.textContent = "0:00";
     } else {
       voiceLabels();
     }
 
-    function stop() { run++; GU.audio.stop(); if (media) media.pause(); setPlaying(false); }
+    function stop() { run++; stopAt = 0; GU.audio.stop(); if (media) media.pause(); setPlaying(false); }
 
     playBtn.addEventListener("click", function () {
       if (playing) { stop(); return; }
       if (media) {
         GU.audio.stop();
+        stopAt = 0;
         media.playbackRate = rate;
         var p = media.play();
         if (p && p.catch) p.catch(function () { media = null; voiceLabels(); voiceFrom(cur || 1); });
@@ -578,7 +582,9 @@
     function say(k) {
       if (media && cues) {
         GU.audio.stop();
+        stopAt = cues[k] || 0;
         media.currentTime = cues[k - 1]; media.playbackRate = rate;
+        cur = k; mark(k);
         media.play();
         return;
       }

@@ -403,10 +403,14 @@ GU.L2 = {
     title: "If—",
     author: "Rudyard Kipling",
     note: "<em>If—</em> by Rudyard Kipling (1910), in the public domain. Chinese translation prepared for this course.",
-    /* Audio recitation. Put the file in assets/audio/ and set audio to its path; cues are the start time
-       (in seconds) of each of the 32 lines and drive the line highlighting. With no audio file,
-       the poem is read line by line instead. */
-    recording: { audio: "", reader: "Sir Michael Caine", cues: [] },
+    /* Recitation in two voices that alternate by stanza (female, male, female, male), generated with
+       tools/make-poem-audio.py. cues = start time in seconds of each of the 32 lines. */
+    recording: {
+      audio: "assets/audio/if-poem.m4a",
+      label: "two voices, alternating by stanza",
+      voices: ["Female voice", "Male voice", "Female voice", "Male voice"],
+      cues: [0.27, 2.95, 5.78, 8.64, 11.32, 14.46, 17.21, 20.22, 24.07, 27.93, 31.56, 34.9, 38.7, 42.15, 45.77, 49.58, 54.22, 56.93, 59.77, 62.45, 65.18, 68.06, 70.74, 73.31, 76.87, 80.62, 84.44, 88.35, 91.98, 95.23, 98.75, 102.5]
+    },
     /* The textbook prints stanzas 1 and 4. Stanzas 2 and 3 are shown so that the full recitation can be followed. */
     excerpt: [0, 3],
     stanzas: [

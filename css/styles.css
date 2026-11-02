@@ -1503,3 +1503,17 @@ input.bd-input { max-width: 260px; }
   .act-end { border-radius: 24px; }
 }
 .act-hero .act-banner { border-radius: 0; }
+
+/* Round 6: compact completion row; voice labels on stanzas */
+.act-end { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; margin-top: 4px;
+  padding: 18px clamp(20px, 3.5vw, 32px); border-radius: 20px; background: var(--paper); border: 1px solid var(--line); box-shadow: none; }
+.act-end[hidden] { display: none; }
+.act-end .tag-done { margin: 0; background: none; padding: 0; font-size: .82rem; font-weight: 500; color: var(--taupe-2); }
+.act-end .tag-done .ic { color: var(--sage); }
+.act-end-go { gap: 10px 20px; }
+.act-end .btn-primary { min-height: 40px; padding: 0 18px; font-size: .9rem; }
+.stanza-tag:empty { display: none; }
+.stanza-tag { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; }
+.stanza-voice { font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--taupe-3); }
+.stanza:not(.is-extra) .stanza-tag { margin-top: 6px; }
+.act-end > .act-end-go { flex: 0 1 auto; min-width: 0; justify-content: flex-end; }
