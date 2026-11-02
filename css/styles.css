@@ -1912,6 +1912,14 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .wr-model > p:not(.wr-title-mini):not(.wr-model-n) { margin: 0; padding: 14px 18px; border-radius: 12px; background: var(--sky); font: 1rem/1.85 Georgia, serif; color: var(--ink); }
 .wr-model-n { margin: 6px 0 0; font-size: .78rem; color: var(--taupe-2); }
 .q-actions .btn img { width: 20px; height: 20px; }
-.l4-zone .zone { margin-top: 32px; }
 @media (max-width: 700px) { .fbk-grid, .fbk-compare { grid-template-columns: 1fr; } .fbk-head { flex-direction: column; align-items: flex-start; gap: 8px; } }
 .fbk-corr .ic, .fbk-list .ic { display: inline-block; }
+
+/* Lesson 4, Pre-writing: rights listed for reference, and the poll note */
+.bd-ref { margin: 0 0 6px; }
+.bd-ref .bd-label { margin-top: 0; }
+.bd-ref-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.bd-ref-list li { border: 1px dashed rgba(232, 182, 90, .38); color: var(--moon-2); border-radius: 999px; padding: 6px 13px; font-size: .88rem; font-weight: 600; }
+.bd-ref-note { margin: 10px 0 0; font-size: .86rem; color: var(--moon-2); font-style: italic; }
+.bd-poll-note { margin: -4px 0 14px; font-size: .82rem; color: var(--moon-2); }
+.step-k .tag-opt { margin-left: 8px; vertical-align: 1px; }

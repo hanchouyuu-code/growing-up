@@ -52,7 +52,10 @@
         var L = o.labels || {};
         var posted = qa || store.step(postedKey);
         var p = me() || {};
-        var choiceHtml = o.choices ? '<fieldset class="bd-choices"><legend>' + (max > 1 ? "Your choices (up to " + max + ")" : "Your choice") + "</legend>" +
+        /* With classify, the options are listed for reference only and each answer is counted from its text. */
+        var choiceHtml = o.classify ? '<div class="bd-ref"><p class="bd-label">' + (o.reference.title || "For reference") + '</p><ul class="bd-ref-list">' +
+          o.reference.items.map(function (c) { return "<li>" + ui.esc(c) + "</li>"; }).join("") + '</ul><p class="bd-ref-note">' + o.reference.note + "</p></div>" :
+          o.choices ? '<fieldset class="bd-choices"><legend>' + (max > 1 ? "Your choices (up to " + max + ")" : "Your choice") + "</legend>" +
           o.choices.map(function (c, i) {
             return '<button type="button" class="bd-choice' + (selected.indexOf(c) >= 0 ? " is-on" : "") + '" data-choice="' + i + '" aria-pressed="' + (selected.indexOf(c) >= 0) + '">' + ui.esc(c) + "</button>";
           }).join("") + "</fieldset>" : "";
@@ -98,9 +101,11 @@
         posts.forEach(function (p) {
           var hit = false;
           (p.choices || []).forEach(function (c) { var i = o.choices.indexOf(c); if (i >= 0) { counts[i]++; hit = true; } });
+          if (!hit && o.classify) { counts[o.choices.indexOf(o.classify(p.text))]++; hit = true; }
           if (hit) n++;
         });
         return '<div class="bd-poll"><p class="bd-poll-h">Class Poll <span>' + n + " response" + (n === 1 ? "" : "s") + "</span></p>" +
+          (o.pollNote ? '<p class="bd-poll-note">' + o.pollNote + "</p>" : "") +
           o.choices.map(function (c, i) {
             var pct = n ? Math.round(counts[i] / n * 100) : 0;
             return '<div class="bd-pollrow"><span class="bd-poll-l">' + ui.esc(c) + '</span><span class="bd-poll-bar"><i style="width:' + pct + '%"></i></span><b>' + pct + "%</b></div>";
@@ -115,6 +120,13 @@
         return a;
       }
 
+      /* Tags under a post: its chosen options, or for a classified board the option its text names. */
+      function tagsOf(p) {
+        var c = (p.choices || []).filter(function (x) { return !o.choices || o.choices.indexOf(x) >= 0; });
+        if (!c.length && o.classify && p.text) c = [o.classify(p.text)];
+        return c;
+      }
+
       function answered(p) { return (p.replies || []).some(function (r) { return r.teacher; }) ? 1 : 0; }
 
       function postHtml(p) {
@@ -126,7 +138,7 @@
           (mine ? '<em class="lb-you">You</em>' : "") + '<span class="bd-time">' + ago(p.at) + "</span>" +
           (tk && live ? '<button class="link-btn bd-del" data-del="' + ui.esc(p.id) + '">Remove</button>' : "") + "</div>" +
           (qa ? (answered(p) ? '<span class="qa-st is-done">' + ui.icon("check") + "Answered by the teacher</span>" : '<span class="qa-st">' + ui.icon("clock") + "Awaiting the teacher’s reply</span>") : "") +
-          ((p.choices || []).length ? '<div class="bd-tags">' + p.choices.map(function (c) { return "<span>" + ui.esc(c) + "</span>"; }).join("") + "</div>" : "") +
+          (tagsOf(p).length ? '<div class="bd-tags">' + tagsOf(p).map(function (c) { return "<span>" + ui.esc(c) + "</span>"; }).join("") + "</div>" : "") +
           "<p>" + ui.esc(p.text) + "</p>" +
           '<div class="bd-acts">' +
           (live ? '<button class="bd-like' + (p.liked ? " is-on" : "") + '" data-like="' + ui.esc(p.id) + '" aria-pressed="' + !!p.liked + '" aria-label="Like">' +
@@ -194,9 +206,10 @@
 
       function submit() {
         var text = el.querySelector(".bd-text").value.trim();
-        if (o.choices && !selected.length) { msg("Choose an option first."); return; }
+        if (o.choices && !o.classify && !selected.length) { msg("Choose an option first."); return; }
         if (text.length < (o.minLen || (o.qa ? 8 : 15))) { msg(o.qa ? "Write your question in a full sentence." : "Write at least one full sentence before posting."); return; }
         var p = ensurePlayer(); if (!p) return;
+        if (o.classify) selected = [o.classify(text)];
         var local = { id: "local-" + Date.now(), pid: "local", name: p.name, text: text, choices: selected.slice(), at: Date.now(), replies: [], likes: 0, liked: false };
         if (o.qa) { var mine = store.answer("posts:" + board) || []; mine.push(local); store.answer("posts:" + board, mine); }
         else store.answer("post:" + board, local);

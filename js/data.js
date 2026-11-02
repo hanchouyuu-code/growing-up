@@ -78,11 +78,11 @@ GU.LESSONS = [
     ]
   },
   {
-    id: "lesson-4", n: 4, title: "Writing", short: "Writing", minutes: 15, practice: true,
+    id: "lesson-4", n: 4, title: "Writing", short: "Writing", minutes: 15,
     blurb: "A discussion of adult rights and responsibilities, followed by an 80-word essay, Me at Eighteen, with AI feedback and a class showcase.",
     activities: [
       { id: "l4-think", title: "Pre-writing", short: "Pre-writing", kind: "l4think", minutes: 5, label: "Activity 1", steps: ["l4t-right", "l4t-adult"] },
-      { id: "l4-write", title: "Guided Writing", short: "Guided Writing", kind: "l4write", minutes: 10, label: "Activity 2", steps: ["l4w-draft", "l4w-feedback", "l4w-qa", "l4w-share"] }
+      { id: "l4-write", title: "Guided Writing", short: "Guided Writing", kind: "l4write", minutes: 10, label: "Activity 2", steps: ["l4w-draft", "l4w-feedback", "l4w-share"] }
     ]
   }
 ];
@@ -117,20 +117,6 @@ GU.PRACTICE = {
     tutorLede: "The AI Tutor answers questions on <em>The Age of Majority</em>, including its key expressions, difficult sentences and the three speakers’ views, and then sets a short practice task.",
     battleLede: "Fifteen questions on the thirty key words of Unit 1, most of which appear in <em>The Age of Majority</em>, in four formats: meaning, word, listening and textbook context. The class leaderboard ranks players by accuracy, then by time."
   }
-};
-GU.PRACTICE["lesson-4"] = {
-  crumb: "Lesson 4: Writing", href: "#/lesson-4", tag: "Writing Support", battle: "#/lesson-4/battle", tutor: "#/lesson-4/tutor",
-  title: "Writing Support: AI Tutor and Word Battle",
-  blurb: "Consult the AI Tutor on ideas, words and sentence patterns for your essay, and review the unit’s key words in a timed battle with classmates.",
-  battleCard: "Fifteen timed questions on the thirty key words of the unit: a quick review before you write. Accuracy decides your place on the class leaderboard.",
-  tutorCard: "Ask about ideas, words, linking words and sentence patterns for your essay, or ask the tutor to check a sentence. The tutor guides you but does not write the essay for you.",
-  panelChips: ["Which linking words can I use to give a reason?", "How can I begin an essay about turning 18?", "Is this sentence correct: “I look forward to have a say.”", "How is “take responsibility for” used?"],
-  chips: ["Which linking words can I use to give a reason?", "How can I begin an essay about turning 18?", "Is this sentence correct: “I look forward to have a say.”", "How is “take responsibility for” used?", "Quiz me"],
-  greeting: "<p>Hello. I am the AI Tutor for Unit 1, Growing up.</p><p>Ask me about ideas, words and sentence patterns for your essay <i>Me at Eighteen</i>, or paste a sentence for me to check. I will help you write it, but I will not write it for you.</p>",
-  placeholder: "Ask about ideas, words or a sentence",
-  status: "Helps with ideas, words and sentences for your essay",
-  tutorLede: "The AI Tutor helps with ideas, vocabulary, linking words and sentence patterns for the essay <em>Me at Eighteen</em>, and checks sentences that you write. It guides you but does not write the essay for you.",
-  battleLede: "Fifteen questions on the thirty key words of Unit 1, in four formats: meaning, word, listening and textbook context. A quick review of words you can use in your essay."
 };
 GU.practiceId = "lesson-1";
 GU.practice = function () { return GU.PRACTICE[GU.practiceId] || GU.PRACTICE["lesson-1"]; };
@@ -734,7 +720,16 @@ GU.L4 = {
   /* Think & Share (textbook, Understanding ideas), questions 2 and 3. Sample answers are shown after posting. */
   right: {
     prompt: "What right are you most looking forward to having as an adult? Why?",
-    choices: ["Getting a driver’s licence", "Voting in elections", "Getting a credit card", "Getting a full-time job", "Renting an apartment", "Another right"],
+    /* Shown for reference only: students may write about any right. Each answer is counted in the class poll
+       under the first of these rights it mentions (keywords match the start of a word), or under "Other rights". */
+    rights: [
+      ["Getting a driver’s licence", ["driv", "licen", "car ", "cars "]],
+      ["Voting in elections", ["vot", "elect", "ballot"]],
+      ["Getting a credit card", ["credit", "bank account", "loan"]],
+      ["Getting a full-time job", ["job", "work", "employ", "career", "full time", "part time", "salary", "earn "]],
+      ["Renting an apartment", ["rent", "apartment", "flat ", "live on my own", "live alone", "move out", "my own place"]]
+    ],
+    other: "Other rights",
     starters: ["The right I am most looking forward to is …", "This is because …", "With this right, I will be able to …"],
     example: "The right I am most looking forward to is getting a driver’s licence. Driving would give me more freedom, and I could take my grandparents to see the doctor. However, I know that being behind the wheel also means taking responsibility for my own life and the lives of other people."
   },
@@ -748,13 +743,13 @@ GU.L4 = {
   task: {
     title: "Me at Eighteen",
     zh: [
-      "假定你是李华，你校英文报 “Growing Up” 栏目正在开展以“我的十八岁”（Me at Eighteen）为题的征文活动。请你写一篇短文投稿，内容包括：",
+      "你即将迎来自己的十八岁。你校英文报 “Growing Up” 栏目正在开展以“我的十八岁”（Me at Eighteen）为题的征文活动。请你畅想自己的十八岁，写一篇短文投稿，内容包括：",
       "1. 成年后你最希望拥有的一项权利；",
       "2. 你希望拥有这项权利的理由；",
       "3. 你对这项权利所对应责任的理解。",
       "注意：1. 写作词数应为 80 左右；2. 短文的题目已为你写好。"
     ],
-    en: "Write about 80 words for the school English newspaper: the right you most want to have as an adult, why you want it, and the responsibility that comes with it.",
+    en: "You will soon turn 18. Imagine your own eighteenth year and write about 80 words for the school English newspaper: the right you most want to have as an adult, why you want it, and the responsibility that comes with it.",
     points: [
       { id: "right", label: "The right you most want to have", any: ["right", "vote", "voting", "licence", "license", "drive", "driving", "credit card", "loan", "job", "work", "rent", "apartment", "sign", "decide", "decision", "travel"] },
       { id: "reason", label: "Your reason for wanting it", any: ["because", "since", "as ", "so that", "so i", "reason", "in order to", "which means", "will be able to", "allow me", "allows me", "give me", "help me"] },

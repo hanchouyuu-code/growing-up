@@ -14,7 +14,7 @@
 
   /* ---------- Landing ---------- */
   var DESC = {
-    "l4-think": "Two Think & Share questions on adult rights and responsibility, discussed with classmates, with the AI Tutor for support.",
+    "l4-think": "Two Think & Share questions on adult rights and responsibility, discussed with classmates.",
     "l4-write": "An 80-word essay, Me at Eighteen, written with a language bank, followed by AI feedback, questions to the teacher and a class showcase."
   };
   GU.views.lesson4 = function (page) {
@@ -46,16 +46,30 @@
   };
 
   /* ---------- Activity 1: Pre-writing ---------- */
+  /* The class poll counts each answer under the first listed right it mentions, or under "Other rights". */
+  var POLL = D.right.rights.map(function (r) { return r[0]; }).concat([D.right.other]);
+  function classifyRight(text) {
+    var t = " " + String(text || "").toLowerCase().replace(/[’']/g, "").replace(/[^a-z0-9]+/g, " ") + " ";
+    var best = D.right.other, at = Infinity;
+    D.right.rights.forEach(function (r) {
+      r[1].forEach(function (k) { var i = t.indexOf(" " + k); if (i >= 0 && i < at) { at = i; best = r[0]; } });
+    });
+    return best;
+  }
   GU.views.l4think = function (page) {
     var a = act("l4-think");
     var steps = [
       { key: "l4t-right", title: "Rights in Adulthood", mount: function (el, done) {
-        el.innerHTML = '<p class="step-intro">Think about the rights that come with turning 18, then share your view. Your classmates’ answers and a sample answer appear after you post.</p><div class="disc-slot"></div>';
-        return K.boardStep({ board: "l4-right", prompts: [D.right.prompt], choices: D.right.choices, maxChoices: 1, starters: D.right.starters, example: D.right.example })(el.querySelector(".disc-slot"), done);
+        el.innerHTML = '<p class="step-intro">Think about the rights that come with turning 18, then share your view. After you post, a class poll shows which rights your classmates look forward to, and a sample answer appears.</p><div class="disc-slot"></div>';
+        return GU.discuss.mount(el.querySelector(".disc-slot"), {
+          board: "l4-right", prompts: [D.right.prompt], choices: POLL, classify: classifyRight,
+          reference: { title: "Rights for Reference", items: D.right.rights.map(function (r) { return r[0]; }), note: "You may also write about any other right." },
+          pollNote: "Each answer is counted under the right it names.",
+          starters: D.right.starters, example: D.right.example, onPosted: done
+        });
       } },
       { key: "l4t-adult", title: "Responsible Adulthood", mount: function (el, done) {
-        el.innerHTML = '<p class="step-intro">Now think about the other side of adulthood. Your ideas here will help you write the second half of your essay.</p><div class="disc-slot"></div><div class="l4-zone"></div>';
-        GU.communityPanel(el.querySelector(".l4-zone"), false, "lesson-4");
+        el.innerHTML = '<p class="step-intro">Now think about the other side of adulthood. Your ideas here will help you write the second half of your essay.</p><div class="disc-slot"></div>';
         return K.boardStep({ board: "l4-adult", prompts: [D.adult.prompt], starters: D.adult.starters, example: D.adult.example })(el.querySelector(".disc-slot"), done);
       } }
     ];
@@ -305,14 +319,14 @@
     var steps = [
       { key: "l4w-draft", title: "Essay Draft", mount: function (el, done) { editor = editorStep(el, done); } },
       { key: "l4w-feedback", title: "Feedback and Revision", mount: function (el, done) { feedbackStep(el, done, { focus: function () { editor.focus(); } }); } },
-      { key: "l4w-qa", title: "Questions and Answers", mount: function (el, done) {
-        el.innerHTML = '<p class="step-intro">Ask the teacher about your essay, a word or a sentence, and help classmates with their questions. The teacher replies within three days.</p>' +
-          '<div class="disc-slot"></div><div class="q-actions"><button class="link-quiet" type="button" data-none>' + (store.step("l4w-qa") ? "Step completed" : "I have no questions for now") + "</button></div>";
-        el.querySelector("[data-none]").addEventListener("click", function (e) { e.target.textContent = "Step completed"; done(); });
-        return GU.discuss.mount(el.querySelector(".disc-slot"), { board: "l4-qa", qa: true, onPosted: done });
+      /* Steps 3 and 4 open together: students may ask the teacher and share their essays in either order. */
+      { key: "l4w-qa", title: "Questions and Answers", optional: true, mount: function (el, done) {
+        el.innerHTML = '<p class="step-intro">Ask the teacher about your essay, a word or a sentence whenever you need to, and help classmates with their questions. The teacher replies within three days. This step is open at the same time as the Writing Showcase below.</p>' +
+          '<div class="disc-slot"></div>';
+        return GU.discuss.mount(el.querySelector(".disc-slot"), { board: "l4-qa", qa: true, onPosted: done, labels: { placeholder: "Ask about a word, a sentence or an idea in your essay." } });
       } },
-      { key: "l4w-share", title: "Writing Showcase", mount: function (el, done) {
-        el.innerHTML = '<p class="step-intro">Share your final essay with the class. After sharing, read your classmates’ essays, like the ones you enjoy, and reply with one specific comment.</p><div class="disc-slot"></div>';
+      { key: "l4w-share", title: "Writing Showcase", together: true, mount: function (el, done) {
+        el.innerHTML = '<p class="step-intro">Share your final essay with the class. After sharing, read your classmates’ essays, like the ones you enjoy, and reply with one specific comment. You can still ask the teacher questions in Step 3.</p><div class="disc-slot"></div>';
         return GU.discuss.mount(el.querySelector(".disc-slot"), {
           board: "l4-showcase", maxLen: 1200, minLen: 150, example: T.model, onPosted: done,
           prefill: function () { return draft(); },

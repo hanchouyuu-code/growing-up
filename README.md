@@ -16,7 +16,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 | Word Battle / AI Tutor | 位于 Vocabulary 下方：单词对战排行榜、AI 答疑 | — | 已完成（需在 Vercel 连接两项服务） |
 | Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（朗诵音频可调速 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 15 分钟（视频 7 + 诗歌 8） | 已完成（班级讨论需连接 Upstash） |
 | Lesson 3 | Understanding Ideas: The Age of Majority：导入（成年权利勾选）、课文录音与 transcript（人物卡片、逐句翻译、key expressions）、课文精讲视频 + 笔记 + 师生问答区、文本分析（标题选择、文本类型、三人信息填表、事实与观点） | 40 分钟 | 已完成（问答区需连接 Upstash） |
-| Lesson 4 | Writing：Pre-writing（课本 Think & Share 两个开放问题 + 班级讨论 + AI Tutor / Word Battle）；Guided Writing（高考应用文格式的 80 词短文 Me at Eighteen，旁边有语言库；写完后 AI 评分与润色、教师问答区、班级习作展示） | 15 分钟（思考 5 + 写作 10） | 已完成（AI 评价需 AI 密钥，问答区和展示区需连接 Upstash） |
+| Lesson 4 | Writing：Pre-writing（课本 Think & Share 两个开放问题 + 班级讨论与投票）；Guided Writing（高考应用文格式的 80 词短文 Me at Eighteen，旁边有语言库；写完后 AI 评分与润色，教师问答区和班级习作展示同时开放） | 15 分钟（思考 5 + 写作 10） | 已完成（AI 评价需 AI 密钥，问答区和展示区需连接 Upstash） |
 | Teacher’s Corner | 课程安排、单词表 PDF、Lesson 2–4 参考答案与范文、待回答的学生问题、讨论区管理 | — | 已完成 |
 
 ## 需要你在 Vercel 上做的设置
@@ -77,13 +77,11 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 ## Lesson 4 说明
 
-- **Activity 1 Pre-writing（5 分钟）**：课本 Think & Share 的第 2、3 题（What right are you most looking forward to having as an adult? Why? / What do you think it means to be a responsible adult?）。两题都是先发后看的班级讨论，有句子开头提示，发帖后显示参考回答。第二题下方接 Writing Support（AI Tutor 与 Word Battle）。左侧导航 Writing 下也有这两个入口（`#/lesson-4/tutor`、`#/lesson-4/battle`）。
+- **Activity 1 Pre-writing（5 分钟）**：课本 Think & Share 的第 2、3 题（What right are you most looking forward to having as an adult? Why? / What do you think it means to be a responsible adult?）。两题都是先发后看的班级讨论，有句子开头提示，发帖后显示参考回答。第一题列出五项权利供参考（不需要选择，也可以写其他权利）；发帖后的 Class Poll 按回答里提到的第一项权利自动统计，没提到的计入 Other rights（关键词在 `GU.L4.right.rights` 中修改）。Writing 部分不设 Word Battle 和 AI Tutor。
 - **Activity 2 Guided Writing（10 分钟）**：
-  - **Essay Draft**：高考应用文格式的中文题目（假定你是李华……“我的十八岁”征文，三个要点，80 词左右），附英文要点。编辑器自动保存，显示词数（80 词标记）和三个要点的完成情况，至少 50 词才能提交，可下载。右侧语言库分三栏：Words（Vocabulary 30 词）、Expressions（Lesson 3 的 key expressions）、Patterns（开头、理由、责任、结尾句型），点击插入到光标处，已用到的会打勾。
+  - **Essay Draft**：高考应用文格式的中文题目（不用“假定你是李华”，请学生畅想自己的十八岁：“我的十八岁”征文，三个要点，80 词左右），附英文要点。编辑器自动保存，显示词数（80 词标记）和三个要点的完成情况，至少 50 词才能提交，可下载。右侧语言库分三栏：Words（Vocabulary 30 词）、Expressions（Lesson 3 的 key expressions）、Patterns（开头、理由、责任、结尾句型），点击插入到光标处，已用到的会打勾。
   - **Feedback and Revision**：AI 按高考应用文 15 分五档评分，给出优点、改进建议、语言错误（在原文中标出）和润色后的版本对照。没有 AI 密钥时显示本地估分。可返回编辑器修改后重新评价，可展开范文。
-  - **Questions and Answers**：师生问答区（教师回复需 `TEACHER_KEY`），没有问题可直接跳过。
-  - **Writing Showcase**：习作展示区，自动填入学生的作文，先发后看，发帖后显示范文。
-- **AI Tutor**：Lesson 4 的 AI Tutor 帮助学生想思路、查用词、检查句子，但不会代写作文。
+  - **Questions and Answers** 与 **Writing Showcase**：完成 AI 评价后两步同时开放。问答区为可选步骤（教师回复需 `TEACHER_KEY`），随时可以提问；展示区自动填入学生的作文，先发后看，发帖后显示范文。分享作文即完成本活动。
 - 题目、要点、范文（83 词）、语言库和评分档次都在 `js/data.js` 的 `GU.L4` 中修改。
 
 ## 文件结构

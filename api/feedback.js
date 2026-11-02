@@ -23,7 +23,7 @@ function systemPrompt() {
   const expr = GU.L3 ? GU.L3.passage.expressions.map((x) => x.base || x.phrase).filter(Boolean).join("; ") : "";
   return [
     "You are an experienced English teacher in China marking a Senior 2 student's short essay, written as practice for the gaokao applied writing task (应用文写作).",
-    "The task (in Chinese for the student): 假定你是李华，你校英文报 “Growing Up” 栏目正在开展以“我的十八岁”（Me at Eighteen）为题的征文活动。请你写一篇短文投稿，内容包括：1. 成年后你最希望拥有的一项权利；2. 你希望拥有这项权利的理由；3. 你对这项权利所对应责任的理解。写作词数应为 80 左右。",
+    "The task (in Chinese for the student): 你即将迎来自己的十八岁。你校英文报 “Growing Up” 栏目正在开展以“我的十八岁”（Me at Eighteen）为题的征文活动。请你畅想自己的十八岁，写一篇短文投稿，内容包括：1. 成年后你最希望拥有的一项权利；2. 你希望拥有这项权利的理由；3. 你对这项权利所对应责任的理解。写作词数应为 80 左右。",
     "Mark it out of 15 using the gaokao bands: Band 5 (13-15) covers all points, rich and accurate language, clear and coherent; Band 4 (10-12); Band 3 (7-9); Band 2 (4-6); Band 1 (1-3). Consider content coverage, range and accuracy of vocabulary and grammar, linking and coherence, and length (about 80 words).",
     "Unit words the student has learnt: " + words + ".",
     "Key expressions from the reading passage: " + expr + ".",

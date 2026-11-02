@@ -57,7 +57,9 @@
     } });
   }
 
-  /* Steps unlock one after another. Each step mounts once and keeps its own state. */
+  /* Steps unlock one after another. Each step mounts once and keeps its own state.
+     A step marked together opens at the same time as the step before it; an optional step
+     does not hold back the completion of the activity. */
   function stepper(page, lesson, a, steps, intro) {
     var opt = !inPath(lesson, a);
     page.innerHTML =
@@ -73,7 +75,7 @@
       "</header>" +
       steps.map(function (s, i) {
         return '<section class="step" id="step-' + (i + 1) + '" data-step="' + i + '" aria-labelledby="sh-' + i + '">' +
-          '<header class="step-h"><div class="step-ht"><p class="step-k">Step ' + (i + 1) + " of " + steps.length + "</p>" +
+          '<header class="step-h"><div class="step-ht"><p class="step-k">Step ' + (i + 1) + " of " + steps.length + (s.optional ? ' <span class="tag-opt">Optional</span>' : "") + "</p>" +
           '<h2 id="sh-' + i + '">' + s.title + '</h2></div><span class="step-st"></span></header>' +
           '<div class="step-body"></div></section>';
       }).join("") +
@@ -83,8 +85,13 @@
     var cleanups = [];
 
     function sync(justDone) {
-      var unlocked = true;
+      var allBefore = true, prevOpen = true, gate = 0;
+      var nextSec = justDone != null ? page.querySelector('[data-step="' + (justDone + 1) + '"]') : null;
+      var nextWasLocked = !!nextSec && nextSec.classList.contains("is-locked");
       steps.forEach(function (s, i) {
+        var unlocked = s.together && i ? prevOpen : allBefore;
+        if (!(s.together && i)) gate = i;
+        prevOpen = unlocked;
         var sec = page.querySelector('[data-step="' + i + '"]');
         var body = sec.querySelector(".step-body");
         var done = store.step(s.key);
@@ -98,18 +105,16 @@
           var c = s.mount(body, function () { if (store.setStep(s.key)) sync(i); });
           if (typeof c === "function") cleanups.push(c);
         } else if (!unlocked) {
-          body.innerHTML = '<p class="step-lock">' + ui.icon("lock") + "This step opens after Step " + i + " is completed.</p>";
+          body.innerHTML = '<p class="step-lock">' + ui.icon("lock") + "This step opens after Step " + gate + " is completed.</p>";
         }
-        unlocked = unlocked && done;
+        allBefore = allBefore && done;
       });
 
-      if (!steps.every(function (s) { return store.step(s.key); })) {
-        if (justDone != null) {
-          var nx = page.querySelector('[data-step="' + (justDone + 1) + '"]');
-          setTimeout(function () { nx.scrollIntoView({ behavior: "smooth", block: "start" }); }, 250);
-        }
-        return;
+      /* Move on only when a completed step has just opened the next one. */
+      if (nextWasLocked && !nextSec.classList.contains("is-locked")) {
+        setTimeout(function () { nextSec.scrollIntoView({ behavior: "smooth", block: "start" }); }, 250);
       }
+      if (!steps.every(function (s) { return s.optional || store.step(s.key); })) return;
       var first = store.complete(a.id);
       var n = nextAfter(lesson, a);
       var end = page.querySelector(".act-end");
@@ -120,7 +125,8 @@
       var ban = page.querySelector(".act-banner");
       page.querySelector(".step-track").hidden = true;
       ban.hidden = false;
-      ban.innerHTML = '<span class="tag-done">' + ui.icon("check") + "All " + steps.length + " steps completed</span>" + nextButtons(n);
+      var all = steps.every(function (s) { return store.step(s.key); });
+      ban.innerHTML = '<span class="tag-done">' + ui.icon("check") + (all ? "All " + steps.length + " steps completed" : a.label + " completed") + "</span>" + nextButtons(n);
       if (first && !checkLesson(lesson, false)) completedPrompt(lesson, a, n);
     }
     sync(null);
