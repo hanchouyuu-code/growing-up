@@ -59,7 +59,7 @@
         el.innerHTML =
           '<blockquote class="opening"><p>' + D.opening.join(" ") + '</p><cite>From the introduction to <em>The Age of Majority</em></cite></blockquote>' +
           '<p class="q-prompt">' + R.prompt + "</p>" +
-          '<div class="rights" role="table" aria-label="Rights and ages">' +
+          '<div class="rights" role="table" aria-label="Rights and ages" style="--cols:' + R.ages.length + '">' +
           '<div class="rt-row rt-head" role="row"><span role="columnheader">Right</span>' + R.ages.map(function (g) { return '<span role="columnheader">' + g + "</span>"; }).join("") + "</div>" +
           R.items.map(function (it, i) {
             return '<div class="rt-row" role="row" data-row="' + i + '"><span class="rt-item" role="rowheader">' + K.emoji(it.emoji, "rt-pic") + "<span>" + it.text + "</span></span>" +
@@ -91,7 +91,7 @@
             note.innerHTML = (ok ? '<b class="ok">' + ui.icon("check") + "Correct.</b> " : '<b class="no">Answer: ' + it.answer.join(" and ") + ".</b> ") + ui.esc(it.note);
           });
           el.querySelector(".q-fb").innerHTML = '<p class="fb ' + (right === R.items.length ? "fb-ok" : "fb-info") + '">' + (right === R.items.length ? ui.icon("check") : ui.icon("bulb")) +
-            "<span>" + right + " of " + R.items.length + " rows are correct. Most adult rights in China begin at 18, the age of majority.</span></p>";
+            "<span>" + right + " of " + R.items.length + " rows are correct. Most adult rights in China begin at 18, the age of majority; a full-time job is possible from 16.</span></p>";
           done();
         }
         el.querySelector("[data-check]").addEventListener("click", function () { check(false); });
@@ -115,7 +115,7 @@
     return D.passage.expressions.map(function (x, n) {
       if (x.word) {
         var w = GU.wordById(x.word) || {};
-        return { n: n, phrase: x.phrase, base: w.word, zh: w.zh, def: w.def, dict: w.dict };
+        return { n: n, phrase: x.phrase, base: x.base || w.word, zh: x.zh || w.zh, def: x.def || w.def, dict: x.dict || w.dict };
       }
       return { n: n, phrase: x.phrase, base: x.base, zh: x.zh, def: x.def, dict: x.dict };
     });
@@ -249,7 +249,7 @@
 
     function stop() { run++; stopAt = 0; GU.audio.stop(); if (media) media.pause(); setPlaying(false); }
     function playSentence(i) {
-      if (media && cues) { GU.audio.stop(); stopAt = cues[i + 1] || 0; media.currentTime = cues[i]; media.playbackRate = rate; cur = i; highlight(i); media.play(); return; }
+      if (media && cues) { GU.audio.stop(); stopAt = cues[i + 1] || 0; media.currentTime = cues[i] + 0.02; media.playbackRate = rate; cur = i; highlight(i); media.play(); return; }
       stop(); var my = run; cur = i; highlight(i); if (!media) voiceLabels();
       GU.audio.play(sents[i].en, { rate: rate }).then(function () { if (my === run) highlight(-1); });
     }
@@ -369,7 +369,9 @@
             ? '<a class="video-link" href="' + V.url + '" target="_blank" rel="noopener"><span class="vp-play">' + ui.icon("play") + "</span><span><b>" + ui.esc(V.title) + "</b>The video opens in a new tab.</span></a>"
             : '<div class="video-link is-pending"><span class="vp-play">' + ui.icon("play") + "</span><span><b>" + ui.esc(V.title) + "</b>The video will appear here.</span></div>";
         el.innerHTML =
-          '<p class="step-intro">Watch the explanation of the passage and take notes on the main ideas and useful expressions.</p>' + frame +
+          '<p class="step-intro">Watch the explanation of the passage and take notes on the main ideas and useful expressions. The video is in Chinese and English; use the speed control in the player if you want to watch faster.</p>' + frame +
+          (V.url ? '<div class="watch-bar"><a class="link-btn" href="' + V.url + '" target="_blank" rel="noopener">' + ui.icon("external") + "Open the Video on Bilibili</a>" +
+            (V.length ? '<span class="watch-len">' + ui.icon("clock") + "Length: " + V.length + "</span>" : "") + "</div>" : "") +
           '<div class="notes-slot"></div>' +
           '<div class="q-actions"><button class="btn btn-primary" type="button" data-go>' + (store.step("l3c-watch") ? ui.icon("check") + "Video Watched" : "I Have Watched the Video") + "</button></div>";
         notesPanel(el.querySelector(".notes-slot"), "l3c-notes", "My Notes on The Age of Majority (video lecture)", "age-of-majority-notes.txt");

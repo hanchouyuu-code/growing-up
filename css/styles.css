@@ -1543,7 +1543,7 @@ input.bd-input { max-width: 260px; }
 
 /* Rights and ages */
 .rights { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
-.rt-row { display: grid; grid-template-columns: minmax(0, 1fr) repeat(4, 64px); align-items: center; padding: 10px 14px; gap: 0 4px; }
+.rt-row { display: grid; grid-template-columns: minmax(0, 1fr) repeat(var(--cols, 4), 72px); align-items: center; padding: 10px 14px; gap: 0 4px; }
 .rt-row + .rt-row { border-top: 1px solid var(--line); }
 .rt-head { background: var(--sky); font-size: .74rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--taupe-2); padding-top: 9px; padding-bottom: 9px; }
 .rt-head span:not(:first-child) { text-align: center; font-size: .9rem; letter-spacing: 0; color: var(--ink-2); font-family: var(--f-display); }
@@ -1561,7 +1561,7 @@ input.bd-input { max-width: 260px; }
 .rt-note .ic { width: 14px; height: 14px; vertical-align: -2px; margin-right: 3px; stroke-width: 2.8; }
 .rt-row.is-ok { background: rgba(228, 239, 225, .45); }
 .rt-row.is-wrong { background: rgba(255, 244, 234, .7); }
-@media (max-width: 600px) { .rt-row { grid-template-columns: minmax(0, 1fr) repeat(4, 44px); padding: 10px; } .rt-pic { width: 28px; height: 28px; } .rt-item { font-size: .9rem; gap: 8px; } .rt-note { margin-left: 0; } }
+@media (max-width: 600px) { .rt-row { grid-template-columns: minmax(0, 1fr) repeat(var(--cols, 4), 48px); padding: 10px; } .rt-pic { width: 28px; height: 28px; } .rt-item { font-size: .9rem; gap: 8px; } .rt-note { margin-left: 0; } }
 
 /* Transcript */
 .tr-hint { font-size: .82rem; color: var(--taupe-2); }
@@ -1703,3 +1703,5 @@ input.bd-input { max-width: 260px; }
 .tq li + li { margin-top: 8px; }
 .tq small { display: block; margin-top: 4px; color: var(--taupe-2); }
 .tq small.late { color: var(--red); font-weight: 700; }
+button.link-quiet { background: none; border: 0; border-bottom: 1px solid var(--line-2); padding: 0 0 1px; cursor: pointer; font: inherit; font-size: .9rem; font-weight: 500; color: var(--taupe); }
+button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--violet); }

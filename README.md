@@ -15,7 +15,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 | Lesson 1 | Vocabulary：30 个单词（minimum 之前），3 组，每组含 Set Read-Along | 20 分钟 | 已完成 |
 | Word Battle / AI Tutor | 位于 Vocabulary 下方：单词对战排行榜、AI 答疑 | — | 已完成（需在 Vercel 连接两项服务） |
 | Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（朗诵音频可调速 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 15 分钟（视频 7 + 诗歌 8） | 已完成（班级讨论需连接 Upstash） |
-| Lesson 3 | Understanding Ideas: The Age of Majority：导入（成年权利勾选）、课文录音与 transcript（人物卡片、逐句翻译、key expressions）、课文精讲视频 + 笔记 + 师生问答区、文本分析（标题选择、文本类型、三人信息填表、事实与观点） | 40 分钟 | 已上线；课文正文、录音和精讲视频待补充 |
+| Lesson 3 | Understanding Ideas: The Age of Majority：导入（成年权利勾选）、课文录音与 transcript（人物卡片、逐句翻译、key expressions）、课文精讲视频 + 笔记 + 师生问答区、文本分析（标题选择、文本类型、三人信息填表、事实与观点） | 40 分钟 | 已完成（问答区需连接 Upstash） |
 | Lesson 4 | Writing | 20 分钟 | 待制作 |
 | Teacher’s Corner | 课程安排、单词表 PDF、Lesson 2 参考答案、讨论区管理 | — | 部分完成 |
 
@@ -64,10 +64,11 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 ## Lesson 3 说明
 
-- **待补充：** `js/data.js` 的 `GU.L3.passage.sections` 目前只有课文开头一段；三位人物的段落、对应中文翻译、key expressions 需要课文原文后补上。录音按段落人物生成（三人音色不同、男女对应），生成后填 `audio` 和逐句 `cues`。精讲视频填 `GU.L3.video.bvid`（B 站）或 `url`（其他网站，以新标签页打开）。
-- **导入勾选题** 的五项权利和答案在 `GU.L3.rights`，可按课本 Activity 1 的原有选项修改。
-- **师生问答区**（Activity 3）：学生提问后，问题对全班可见，同学可以回答；教师在 Teacher's Corner 保存 `TEACHER_KEY` 后，在活动页回答的内容会标为 Teacher 并把问题标记为已回答。Teacher's Corner 会列出尚未回答的问题，超过三天的标红。
-- **课程总时长**：现在为 20 + 15 + 40 + 20 = 95 分钟，首页和 Teacher's Corner 的总时长自动按各课时长计算。
+- **导入勾选题**：课本 Activity 1 的六项（credit card、driver's licence、full-time job、right to vote、bank loan、rent an apartment），可选 16 / 18 / 21 岁，答案与法律依据在 `GU.L3.rights`。
+- **课文与录音**：全文 34 句及逐句中文翻译在 `GU.L3.passage.sections`（中文为本课程翻译）。录音 `assets/audio/age-of-majority.m4a`（约 3 分 22 秒）用 Kokoro 生成，引言为旁白女声，Bethany 英式女声，Lin Ning 英式男声，Morgan 美式男声；逐句高亮、点句子单独播放、可调速。重新生成：`python3 tools/make-passage-audio.py passage.json <模型目录> assets/audio/age-of-majority.m4a`，把输出的 cues 填回。
+- **Key expressions**：33 个，首次出现处高亮，点击弹出中文、英文释义、牛津词典例句和链接；单元词表中的词直接引用 Lesson 1 的词典例句。
+- **精讲视频**：B 站 BV1TiyKYUEwE（爱学英语的Vivian，约 27 分钟），下方有笔记区（可下载）和师生问答区。学生提问对全班可见，同学可回答；教师在 Teacher's Corner 保存 `TEACHER_KEY` 后，在活动页的回答标为 Teacher。Teacher's Corner 列出未回答的问题，超过三天的标红。
+- **课程总时长**：20 + 15 + 40 + 20 = 95 分钟，首页和 Teacher's Corner 自动按各课时长计算。
 
 ## 文件结构
 
@@ -89,11 +90,12 @@ api/discuss.js             班级讨论服务（Vercel 函数）
 assets/img/                首页小树苗（取自课本 Starting Out 页）、左侧导航的课本封面 cover.jpg
 assets/emoji/              Twemoji 图片（CC BY 4.0）
 assets/video/              介绍视频
-assets/audio/              诗歌朗读音频
+assets/audio/              诗歌和课文朗读音频
 assets/fonts/              字体（本地托管）
 downloads/                 单词表 PDF
 tools/make-wordlist-pdf.js 修改单词后重新生成 PDF：node tools/make-wordlist-pdf.js
 tools/make-poem-audio.py   生成诗歌双声朗读音频和逐行时间点
+tools/make-passage-audio.py 生成课文四种音色朗读音频和逐句时间点
 ```
 
 ## 单词发音

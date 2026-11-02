@@ -509,23 +509,26 @@ GU.L3 = {
   opening: ["In most countries, turning 18 marks the start of adulthood.", "But what does reaching this milestone, the age of majority, really mean?"],
   rights: {
     prompt: "Discuss at what age you are allowed to do the following things in China. Tick the age for each one.",
-    ages: ["16", "18", "20", "22"],
-    /* answer = the ages that apply; note = the legal basis */
+    ages: ["16", "18", "21"],
+    /* The six items of Activity 1 in the textbook. answer = the age that applies; note = the legal basis */
     items: [
+      { text: "Get a credit card", emoji: "💳", answer: ["18"], note: "Banks issue a credit card in your own name only from the age of 18." },
+      { text: "Get a driver’s licence", emoji: "🚗", answer: ["18"], note: "Applicants for a small-car licence must be at least 18." },
       { text: "Get a full-time job", emoji: "💼", answer: ["16"], note: "The Labour Law does not allow employers to take on workers under 16." },
-      { text: "Get a driver’s licence for a car", emoji: "🚗", answer: ["18"], note: "Applicants for a small-car licence must be at least 18." },
-      { text: "Vote in elections", emoji: "🗳️", answer: ["18"], note: "The Constitution gives citizens who have reached 18 the right to vote and to stand for election." },
+      { text: "Get the right to vote", emoji: "🗳️", answer: ["18"], note: "The Constitution gives citizens who have reached 18 the right to vote and to stand for election." },
       { text: "Get a bank loan", emoji: "🏦", answer: ["18"], note: "A loan is a contract, and full legal capacity begins at 18." },
-      { text: "Get married", emoji: "💍", answer: ["20", "22"], note: "The Civil Code sets the minimum age at 20 for women and 22 for men." }
+      { text: "Rent an apartment", emoji: "🏠", answer: ["18"], note: "A lease is also a contract, so you can sign one on your own from 18." }
     ]
   },
   bridge: "Will you be completely in charge of your own life and able to express yourself in new and exciting ways? What new responsibilities will this freedom bring? Here, three young people tell us what turning 18 means, or meant, to them.",
 
-  /* Activity 2: the passage. Set when the text is added: sections of { speaker, sentences: [[en, zh], ...] }. */
+  /* Activity 2: the passage (textbook, Understanding ideas), with a Chinese translation prepared for this course.
+     audio and cues (start time of each sentence) come from tools/make-passage-audio.py. */
   passage: {
     title: "The Age of Majority",
-    audio: "",
-    cues: [],
+    audio: "assets/audio/age-of-majority.m4a",
+    voices: "read by a narrator and the three speakers",
+    cues: [0.34,  4.22,  8.65,  14.85,  17.68,  23.23,  25.25,  31.71,  33.15,  35.42,  42.16,  49.01,  51.85,  60.79,  70.5,  75.63,  84.61,  86.45,  91.77,  96.82,  107.67,  113.67,  116.46,  120.56,  125.29,  130.79,  145.96,  152.59,  157.43,  167.06,  173.15,  181.24,  186.59,  197.02],
     sections: [
       { speaker: "intro", sentences: [
         ["In most countries, turning 18 marks the start of adulthood.", "在大多数国家，年满 18 岁标志着成年的开始。"],
@@ -533,9 +536,44 @@ GU.L3 = {
         ["Will you be completely in charge of your own life and able to express yourself in new and exciting ways?", "你会完全掌控自己的生活，并能以全新而令人兴奋的方式表达自我吗？"],
         ["What new responsibilities will this freedom bring?", "这种自由又会带来哪些新的责任？"],
         ["Here, three young people tell us what turning 18 means, or meant, to them.", "下面，三位年轻人告诉我们，年满 18 岁对他们意味着什么，或曾经意味着什么。"]
+      ] },
+      { speaker: "bethany", sentences: [
+        ["I can’t wait to be 18.", "我迫不及待地想满 18 岁。"],
+        ["One reason is that although I’ve been working ever since leaving school, I won’t be voting in the next general election.", "原因之一是，虽然我离开学校后一直在工作，但我还不能在下一次大选中投票。"],
+        ["Why?", "为什么呢？"],
+        ["Because I still won’t be old enough.", "因为到那时我的年龄还不够。"],
+        ["Surely, if you’re old enough to earn a wage and pay taxes, you should be allowed to have a say on how the government spends them!", "如果你已经到了挣工资、交税的年纪，当然就应该有权对政府如何使用这些税款发表意见！"],
+        ["I’ve also been taking driving lessons, and in fact I will be taking my driving test on the very day I turn 18.", "我也一直在上驾驶课，事实上，我将在满 18 岁的那一天参加驾驶考试。"],
+        ["My mum worries about me being behind the wheel.", "我妈妈担心我开车。"],
+        ["As an ambulance driver, she’s seen a lot of car accidents involving teenagers and thinks the legal age for getting a driving licence should be 21.", "她是一名救护车司机，见过很多涉及青少年的车祸，认为考取驾照的法定年龄应该是 21 岁。"],
+        ["But I think I’m already mature enough to understand that driving a car also means taking responsibility for my life and the lives of other people.", "但我认为自己已经足够成熟，明白开车也意味着要对自己和他人的生命负责。"]
+      ] },
+      { speaker: "linning", sentences: [
+        ["I celebrated my 18th birthday just before I went to university.", "我在上大学前不久庆祝了自己的 18 岁生日。"],
+        ["I expected to feel instantly different, as if I had closed the door on my childhood and stepped into a whole new adult world.", "我原以为自己会立刻感觉不一样，就好像关上了童年的大门，走进了一个全新的成人世界。"],
+        ["But it wasn’t like that.", "但事实并非如此。"],
+        ["When I woke up the next day, there were still rules to obey and lessons to attend.", "第二天醒来，依然有规矩要遵守，有课要上。"],
+        ["In fact, the change has been more subtle and gradual than I imagined.", "实际上，这种变化比我想象的更微妙、更缓慢。"],
+        ["Instead of being the selfish teenager I used to be, I have begun to feel more aware of other people and to develop a stronger sense of social responsibility.", "我不再是从前那个自私的少年，开始更多地关注他人，社会责任感也越来越强。"],
+        ["To give an example, I will be signing an organ donation agreement this time tomorrow.", "举个例子，明天这个时候我将签署一份器官捐献协议。"],
+        ["This was a big decision for me.", "这对我来说是一个重大的决定。"],
+        ["Of course I asked my parents for their approval first.", "当然，我事先征得了父母的同意。"],
+        ["Turning 18 also changed the way that society viewed me.", "年满 18 岁也改变了社会看待我的方式。"],
+        ["I was really surprised when a bank contacted me with a credit card offer.", "当一家银行联系我，要为我办理信用卡时，我真的很惊讶。"],
+        ["Of course, I would like to have more freedom with money and no doubt I will be getting a credit card at some point, but I currently don’t have a steady income, so getting a credit card might tempt me to spend more money than I have!", "当然，我希望在用钱方面有更多自由，而且我迟早会办一张信用卡，但我目前没有稳定的收入，所以办信用卡可能会诱使我花掉超出自己承受能力的钱！"]
+      ] },
+      { speaker: "morgan", sentences: [
+        ["People say that 18 marks a new chapter in our lives, and that we should become more independent.", "人们说，18 岁标志着人生新篇章的开始，我们应该变得更加独立。"],
+        ["I used to believe this, but the reality for me has been very different.", "我过去也这么认为，但我的现实却大不相同。"],
+        ["I assumed I’d already have a well-paid job and that I’d be moving into a rented apartment as soon as I turned 18, but how wrong I was!", "我原以为一满 18 岁，我就会有一份高薪工作，并搬进租来的公寓，但我真是大错特错！"],
+        ["My librarian’s salary means that I’ll be living at home with my parents for a while longer.", "我当图书管理员的薪水意味着我还得和父母在家里再住一段时间。"],
+        ["Because I contribute to the household bills and my commute to work is quite expensive, I find it hard to save any money.", "因为我要分担家里的账单，而且上下班通勤的花费相当高，我发现很难攒下钱。"],
+        ["I’ll be starting a new job next month, however, so maybe things will get easier.", "不过，我下个月就要开始一份新工作了，所以情况也许会好转。"],
+        ["I know I could get a bank loan to pay the deposit on my very own apartment, but I don’t feel ready to make that kind of commitment, and I do like my mom’s cooking.", "我知道我可以申请银行贷款，为属于自己的公寓支付订金，但我觉得自己还没准备好做出那样的投入，而且我确实很喜欢妈妈做的饭。"],
+        ["I guess some responsibilities are more about attitude than age.", "我想，有些责任更多关乎态度，而非年龄。"]
       ] }
     ],
-    /* Key expressions highlighted in the text: phrase as it appears, meaning, dictionary example. */
+    /* Key expressions highlighted in the transcript (first appearance only). word = an entry of the unit word list. */
     expressions: [
       { phrase: "marks the start of", base: "mark the start of sth", zh: "标志着……的开始", def: "to be a sign that something new is beginning",
         dict: ["The birth of their first child marked the beginning of a new era in their life together.", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/beginning"] },
@@ -545,12 +583,44 @@ GU.L3 = {
       { phrase: "in charge of", base: "be in charge of sth", zh: "掌管；负责", def: "having control of or responsibility for somebody or something",
         dict: ["I need to feel more in charge of my life.", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/charge_1"] },
       { phrase: "express yourself", base: "express yourself", zh: "表达自己（的想法和感受）", def: "to speak, write or communicate in some other way what you think or feel",
-        dict: ["Some teenagers have difficulty expressing themselves.", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/express_1"] }
+        dict: ["Some teenagers have difficulty expressing themselves.", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/express_1"] },
+      { phrase: "general election", word: "election", base: "general election", zh: "大选" },
+      { phrase: "earn a wage", word: "wage", base: "earn a wage", zh: "挣工资" },
+      { phrase: "pay taxes", word: "tax", base: "pay taxes", zh: "纳税" },
+      { phrase: "have a say", word: "have-a-say" },
+      { phrase: "behind the wheel", word: "behind-the-wheel" },
+      { phrase: "ambulance", word: "ambulance" },
+      { phrase: "legal age", word: "legal", base: "the legal age (for sth)", zh: "（做某事的）法定年龄" },
+      { phrase: "mature", word: "mature" },
+      { phrase: "taking responsibility for", base: "take responsibility for sth", zh: "对……负责", def: "to accept that you are in charge of something and must deal with the results",
+        dict: ["Each of us must take responsibility for our own actions.", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/action_1"] },
+      { phrase: "instantly", word: "instantly" },
+      { phrase: "closed the door on", base: "close the door on sth", zh: "（比喻）告别；结束（某个阶段）", def: "In the passage: to leave a stage of your life behind, as if shutting a door on it." },
+      { phrase: "childhood", word: "childhood" },
+      { phrase: "obey", word: "obey" },
+      { phrase: "subtle", word: "subtle" },
+      { phrase: "gradual", word: "gradual" },
+      { phrase: "selfish", word: "selfish" },
+      { phrase: "aware of", base: "be aware of sth", zh: "意识到；关注", def: "knowing or realizing something",
+        dict: ["Everybody should be made aware of the risks involved.", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/aware"] },
+      { phrase: "organ donation", word: "organ-donation" },
+      { phrase: "approval", word: "approval" },
+      { phrase: "steady income", word: "steady", base: "a steady income", zh: "稳定的收入" },
+      { phrase: "tempt", word: "tempt" },
+      { phrase: "a new chapter", base: "a new chapter (in your life)", zh: "（人生的）新篇章", def: "a new period of time in a person’s life",
+        dict: ["Her return to Kansas ended a particularly unhappy chapter in her life.", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/chapter"] },
+      { phrase: "librarian", word: "librarian" },
+      { phrase: "contribute to", base: "contribute to sth", zh: "分担；为……出钱出力", def: "to give something, especially money, to help achieve or provide something",
+        dict: ["a situation where husband and wife contribute equally to the family budget", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/contribute"] },
+      { phrase: "household bills", word: "household", base: "household bills", zh: "家庭账单" },
+      { phrase: "commute", word: "commute" },
+      { phrase: "deposit", word: "deposit" },
+      { phrase: "commitment", word: "commitment" }
     ]
   },
 
   /* Activity 3: video lecture (set bvid for a Bilibili video, or url for a link to another site). */
-  video: { bvid: "", url: "", title: "A Close Reading of The Age of Majority", length: "" },
+  video: { bvid: "BV1TiyKYUEwE", url: "https://www.bilibili.com/video/BV1TiyKYUEwE/", title: "The Age of Majority: A Close Reading of the Passage", length: "27 minutes" },
 
   /* Activity 4: text analysis */
   titleQ: {
