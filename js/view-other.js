@@ -73,6 +73,14 @@
       "<p>Questions posted in Activity 3 of Lesson 3. Students are told that the teacher replies within three days. Save the teacher key below, then answer on the activity page; your replies are marked as the teacher’s answer.</p>" +
       '<div class="tq-list"><p class="tkey-msg">Loading the questions…</p></div>' +
       '<a class="btn btn-ghost btn-sm" href="#/lesson-3/l3-video">Open the Questions and Answers</a></section>' +
+      '<section class="plan"><h2>Class Discussion and Q&amp;A Service</h2>' +
+      '<p class="svc"><span class="svc-dot"></span><span class="svc-txt">Checking the connection…</span></p>' +
+      '<ol class="svc-steps" hidden>' +
+      "<li>Open the project in Vercel and select <b>Storage</b>, then <b>Create Database</b>, then <b>Upstash for Redis</b> (the free plan is enough).</li>" +
+      "<li>Select <b>Connect Project</b> and choose this site. Vercel adds the connection settings automatically.</li>" +
+      "<li>Under <b>Settings</b>, then <b>Environment Variables</b>, add <code>TEACHER_KEY</code> with a password of your choice.</li>" +
+      "<li>Under <b>Deployments</b>, select <b>Redeploy</b> on the latest deployment. This page then shows “Connected”.</li></ol>" +
+      "</section>" +
       '<section class="plan"><h2>Discussion Moderation</h2>' +
       "<p>Posts in the Lesson 2 class discussions appear immediately. Enter the teacher key (the <code>TEACHER_KEY</code> value set in Vercel) to show <b>Remove</b> buttons on posts and replies on this device.</p>" +
       '<form class="tkey" autocomplete="off"><label class="sr-only" for="tkey">Teacher key</label>' +
@@ -81,6 +89,21 @@
       '<button class="btn btn-ghost btn-sm" type="button" data-forget>Forget Key</button></form>' +
       '<p class="tkey-msg tkey-status" aria-live="polite">' + (savedKey() ? "A teacher key is saved on this device." : "") + "</p></section>";
 
+    var svc = page.querySelector(".svc");
+    fetch("api/discuss?board=l3-qa", { cache: "no-store" }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (x) {
+        var on = x.ok && x.d.configured;
+        svc.classList.add(on ? "is-on" : "is-off");
+        svc.querySelector(".svc-txt").innerHTML = on
+          ? "<b>Connected.</b> Students’ posts, likes, replies and questions are shared across all devices, and the Word Battle leaderboard is live."
+          : "<b>Not connected yet.</b> Each student sees only their own answers and questions on their own device. Follow the four steps below to connect the service.";
+        page.querySelector(".svc-steps").hidden = on;
+      })
+      .catch(function () {
+        svc.classList.add("is-off");
+        svc.querySelector(".svc-txt").innerHTML = "<b>Not connected yet.</b> Follow the four steps below to connect the service.";
+        page.querySelector(".svc-steps").hidden = false;
+      });
     var tq = page.querySelector(".tq-list");
     fetch("api/discuss?board=l3-qa", { cache: "no-store" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
       var open = (d.posts || []).filter(function (p) { return !(p.replies || []).some(function (r) { return r.teacher; }); });

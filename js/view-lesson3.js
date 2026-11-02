@@ -9,7 +9,9 @@
   function stepper(page, a, steps, intro) { return K.stepper(page, L3, a, steps, intro); }
   function speaker(id) { return D.speakers.filter(function (s) { return s.id === id; })[0]; }
   function initials(name) { return name.split(" ").map(function (w) { return w[0]; }).join(""); }
-  function avatar(sp) { return '<span class="sp-av tone-' + sp.tone + '" aria-hidden="true">' + initials(sp.name) + "</span>"; }
+  function avatar(sp) {
+    return '<span class="sp-av tone-' + sp.tone + '" aria-hidden="true">' + (sp.face ? '<img src="' + sp.face + '" alt="">' : initials(sp.name)) + "</span>";
+  }
   function speakerCard(sp, extra) {
     return '<div class="sp-card tone-' + sp.tone + '">' + avatar(sp) + '<div class="sp-txt"><b>' + sp.name + "</b><span>" + sp.age + ", " + sp.place + "</span></div>" + (extra || "") + "</div>";
   }
@@ -29,24 +31,28 @@
     }).join("");
     var first = L3.activities.filter(function (a) { return !store.isDone(a.id); })[0];
     page.innerHTML =
-      '<header class="lesson-head">' +
+      '<header class="l3-hero">' +
+      '<div class="l3-ghosts" aria-hidden="true">' + D.speakers.map(function (sp, i) { return '<img class="g' + i + '" src="' + sp.photo + '" alt="">'; }).join("") + "</div>" +
+      '<div class="l3-hero-in">' +
       '<a class="crumb" href="#/overview">' + ui.icon("left") + "Course Overview</a>" +
       '<p class="lesson-kicker">Lesson 3 <span>' + L3.minutes + " minutes</span></p>" +
       "<h1>" + L3.title + "</h1>" +
-      '<p class="lede">In the reading passage <em>The Age of Majority</em>, three young people from Australia, China and the US explain what turning 18 means, or meant, to them.</p>' +
-      "</header>" +
-      '<section class="how" aria-labelledby="sp-h"><h2 id="sp-h">The Three Speakers</h2><div class="sp-row">' +
-      D.speakers.map(function (s) { return speakerCard(s); }).join("") + "</div>" +
-      '<div class="path-go" style="margin-top:24px">' + (first
+      '<blockquote class="l3-verse" lang="en">' + D.verse.map(function (l, i) { return '<span style="--d:' + i + '">' + ui.esc(l) + "</span>"; }).join("") + "</blockquote>" +
+      '<p class="l3-lede">In the reading passage <em>The Age of Majority</em>, three young people from Australia, China and the US explain what turning 18 means, or meant, to them.</p>' +
+      '<ul class="l3-faces">' + D.speakers.map(function (sp) {
+        return '<li class="tone-' + sp.tone + '">' + avatar(sp) + "<span><b>" + sp.name + "</b>" + sp.age + ", " + sp.place + "</span></li>";
+      }).join("") + "</ul>" +
+      (first
         ? '<a class="btn btn-primary btn-lg" href="' + K.actHref(L3, first) + '">' + (first.steps.some(store.step) ? "Continue with " : "Begin with ") + first.short + ui.icon("right") + "</a>"
-        : '<p class="path-done">' + ui.icon("check") + 'All activities are completed.</p><a class="btn btn-ghost" href="#/lesson-4">Proceed to Lesson 4</a>') + "</div></section>" +
+        : '<p class="path-done">' + ui.icon("check") + 'All activities are completed.</p><a class="btn btn-ghost" href="#/lesson-4">Proceed to Lesson 4</a>') +
+      "</div></header>" +
       '<section aria-labelledby="act-h"><h2 id="act-h" class="block-h">Learning Activities</h2><ul class="acts">' + acts + "</ul></section>";
   };
   var DESC = {
-    "l3-lead": "The ages at which young people in China gain adult rights, and an introduction to the three speakers.",
-    "l3-read": "The recorded passage with a voice for each speaker, sentence-by-sentence translation and key expressions.",
+    "l3-lead": "The ages at which young people in China gain adult rights, and a first look at how the passage is laid out.",
+    "l3-read": "The recorded passage with a voice for each speaker, sentence-by-sentence translation, key expressions and a quiz.",
     "l3-video": "A video explanation of the passage, with space for notes and a question-and-answer board with the teacher.",
-    "l3-text": "Choosing a title, identifying the text type, reading for details and telling facts from opinions."
+    "l3-text": "Choosing a title, reading for details about each speaker and telling facts from opinions."
   };
 
   /* ---------- Activity 1: Lead-in ---------- */
@@ -57,7 +63,6 @@
       { key: "l3a-rights", title: "Rights and Ages", mount: function (el, done) {
         var saved = store.answer("l3a-rights") || {};
         el.innerHTML =
-          '<blockquote class="opening"><p>' + D.opening.join(" ") + '</p><cite>From the introduction to <em>The Age of Majority</em></cite></blockquote>' +
           '<p class="q-prompt">' + R.prompt + "</p>" +
           '<div class="rights" role="table" aria-label="Rights and ages" style="--cols:' + R.ages.length + '">' +
           '<div class="rt-row rt-head" role="row"><span role="columnheader">Right</span>' + R.ages.map(function (g) { return '<span role="columnheader">' + g + "</span>"; }).join("") + "</div>" +
@@ -97,17 +102,11 @@
         el.querySelector("[data-check]").addEventListener("click", function () { check(false); });
         if (store.step("l3a-rights") && Object.keys(saved).length) check(true);
       } },
-      { key: "l3a-meet", title: "The Passage and Its Speakers", mount: function (el, done) {
-        el.innerHTML =
-          '<p class="step-intro">You are going to read a passage called <em>The Age of Majority</em>. Its introduction continues:</p>' +
-          '<blockquote class="opening is-soft"><p>' + D.bridge + "</p></blockquote>" +
-          '<div class="sp-row">' + D.speakers.map(function (s) { return speakerCard(s); }).join("") + "</div>" +
-          '<div class="q-actions"><button class="btn btn-primary" type="button" data-go>' + (store.step("l3a-meet") ? ui.icon("check") + "Ready" : "I Am Ready to Read the Passage") + "</button></div>";
-        var b = el.querySelector("[data-go]");
-        b.addEventListener("click", function () { b.innerHTML = ui.icon("check") + "Ready"; done(); });
+      { key: "l3a-type", title: "Text Type", mount: function (el, done) {
+        choiceQuestion(el, D.typeQ, "l3a-type", done, '<p class="step-intro">Before you read, look at how the passage is laid out on the page.</p>' + textTypeDiagram());
       } }
     ];
-    return stepper(page, a, steps, "In most countries, turning 18 marks the start of adulthood. This activity looks at the rights that come with this age in China.");
+    return stepper(page, a, steps, "This activity looks at the rights that come with turning 18 in China and gives a first look at how the passage is laid out.");
   };
 
   /* ---------- Activity 2: Listening and Reading ---------- */
@@ -136,17 +135,88 @@
     var reader = null;
     var steps = [
       { key: "l3b-listen", title: "Listening and Reading", mount: function (el, done) { reader = passageReader(el, D.passage, done); return reader.stop; } },
-      { key: "l3b-expr", title: "Key Expressions", mount: function (el, done) {
-        el.innerHTML = '<p class="step-intro">Review the key expressions from the passage. Each one has its meaning and an example from the Oxford or Cambridge dictionary.</p>' +
-          '<div class="kx-grid">' + expressionList().map(exprCard).join("") + "</div>" +
-          '<div class="q-actions"><button class="btn btn-primary" type="button" data-go>' + (store.step("l3b-expr") ? ui.icon("check") + "Studied" : "I Have Studied the Key Expressions") + "</button></div>";
+      { key: "l3b-expr", title: "Key Expressions Quiz", mount: function (el, done) {
+        el.innerHTML = '<p class="step-intro">Eight quick questions on the key expressions of the passage: choose the right expression for a sentence from the passage, or choose its meaning.</p>' +
+          '<div class="kq-slot"></div>' +
+          '<details class="kx-all"><summary>' + ui.icon("book") + "All " + D.passage.expressions.length + " key expressions</summary>" +
+          '<div class="kx-grid">' + expressionList().map(exprCard).join("") + "</div></details>" +
+          '<div class="kq-zone"></div>';
         bindSay(el);
-        var b = el.querySelector("[data-go]");
-        b.addEventListener("click", function () { b.innerHTML = ui.icon("check") + "Studied"; done(); });
+        exprQuiz(el.querySelector(".kq-slot"), done);
+        GU.communityPanel(el.querySelector(".kq-zone"));
       } }
     ];
     return stepper(page, a, steps, "Listen to the passage and follow the transcript. Each speaker has a different voice; hover over a sentence to see its Chinese translation.");
   };
+
+  /* A short quiz on the key expressions: sentence completion with the passage, and meanings. */
+  function exprQuiz(el, done) {
+    var xs = expressionList();
+    var sents = [];
+    D.passage.sections.forEach(function (sec) { sec.sentences.forEach(function (x) { sents.push(x[0]); }); });
+    function sentenceFor(x) { return sents.filter(function (t) { return t.toLowerCase().indexOf(x.phrase.toLowerCase()) >= 0; })[0]; }
+    function blank(t, ph) {
+      var i = t.toLowerCase().indexOf(ph.toLowerCase());
+      return ui.esc(t.slice(0, i)) + '<span class="blank">' + new Array(Math.max(6, Math.min(14, ph.length))).join("_") + "</span>" + ui.esc(t.slice(i + ph.length));
+    }
+    var set, qi, right, missed;
+    function makeSet() {
+      return ui.shuffle(xs).slice(0, 8).map(function (x, i) {
+        var s = sentenceFor(x);
+        var type = i % 2 === 0 && s ? "context" : "meaning";
+        var others = ui.shuffle(xs.filter(function (y) {
+          return y !== x && (type === "meaning" ? y.zh && y.zh !== x.zh : y.phrase.toLowerCase() !== x.phrase.toLowerCase());
+        })).slice(0, 3);
+        return { x: x, type: type, s: s, options: ui.shuffle([x].concat(others)) };
+      });
+    }
+    function start() { set = makeSet(); qi = 0; right = 0; missed = []; show(); }
+    function show() {
+      var q = set[qi];
+      el.innerHTML = '<div class="kq">' +
+        '<div class="kq-top"><span>Question ' + (qi + 1) + " of " + set.length + '</span><span class="kq-score">' + right + ' correct</span></div>' +
+        '<div class="kq-bar"><i style="width:' + (qi / set.length * 100) + '%"></i></div>' +
+        '<p class="kq-type">' + (q.type === "context" ? "Complete the sentence from the passage." : "Choose the meaning of the expression.") + "</p>" +
+        '<p class="kq-q">' + (q.type === "context" ? blank(q.s, q.x.phrase) : "<b>" + ui.esc(q.x.base) + "</b>") + "</p>" +
+        '<div class="kq-opts">' + q.options.map(function (o, i) {
+          return '<button type="button" class="mcq-opt" data-o="' + i + '"><span class="mcq-n">' + "ABCD"[i] + "</span><span" + (q.type === "meaning" ? ' lang="zh-CN"' : "") + ">" +
+            ui.esc(q.type === "context" ? o.phrase : o.zh) + "</span></button>";
+        }).join("") + "</div>" +
+        '<div class="kq-fb" aria-live="polite"></div></div>';
+      el.querySelectorAll("[data-o]").forEach(function (b) {
+        b.addEventListener("click", function () { answer(+b.dataset.o); });
+      });
+    }
+    function answer(i) {
+      var q = set[qi], ok = q.options[i] === q.x;
+      if (ok) right++; else missed.push(q.x);
+      el.querySelectorAll("[data-o]").forEach(function (b, j) {
+        b.disabled = true;
+        if (q.options[j] === q.x) b.classList.add("is-right");
+        else if (j === i) b.classList.add("is-wrong");
+      });
+      el.querySelector(".kq-score").textContent = right + " correct";
+      el.querySelector(".kq-fb").innerHTML = '<p class="fb ' + (ok ? "fb-ok" : "fb-info") + '">' + ui.icon(ok ? "check" : "bulb") + "<span><b>" + (ok ? "Correct." : "Not quite.") + "</b> " +
+        ui.esc(q.x.base) + (q.x.zh ? " · " + ui.esc(q.x.zh) : "") + (q.x.def ? ": " + ui.esc(q.x.def) : "") + "</span></p>" +
+        '<button class="btn btn-primary btn-sm" type="button" data-next>' + (qi < set.length - 1 ? "Next Question" : "See My Result") + ui.icon("right") + "</button>";
+      var nx = el.querySelector("[data-next]");
+      nx.focus({ preventScroll: true });
+      nx.addEventListener("click", function () { qi++; if (qi < set.length) show(); else finish(); });
+    }
+    function finish() {
+      store.setScore("l3-expr", right);
+      var best = store.score("l3-expr");
+      el.innerHTML = '<div class="kq kq-end">' +
+        '<p class="kq-big"><b>' + right + "</b> of " + set.length + "</p>" +
+        "<p>" + (right === set.length ? "Excellent. You know all of these expressions." : right >= 6 ? "Well done. Review the expressions below and try another set." : "Review the expressions below, then try another set.") +
+        ' <span class="kq-best">Best score: ' + best + "/" + set.length + "</span></p>" +
+        (missed.length ? '<ul class="kq-miss">' + missed.map(function (x) { return "<li><b>" + ui.esc(x.base) + "</b><span lang=\"zh-CN\">" + ui.esc(x.zh || "") + "</span></li>"; }).join("") + "</ul>" : "") +
+        '<button class="btn btn-primary" type="button" data-again>' + ui.icon("redo") + "Try Another Set</button></div>";
+      el.querySelector("[data-again]").addEventListener("click", start);
+      done();
+    }
+    start();
+  }
 
   /* The recorded passage: speaker cards, sentence translations and key expressions. */
   function passageReader(el, P, done) {
@@ -175,6 +245,7 @@
     var body = P.sections.map(function (sec) {
       var sp = sec.speaker === "intro" ? null : speaker(sec.speaker);
       return '<div class="tr-sec' + (sp ? " tone-" + sp.tone : " tr-intro") + '">' +
+        (sp && sp.photo ? '<img class="tr-ghost" src="' + sp.photo + '" alt="" aria-hidden="true">' : "") +
         (sp ? speakerCard(sp) : '<p class="tr-label">Introduction</p>') +
         '<p class="tr-p">' + sec.sentences.map(function (s) {
           var i = k++;
@@ -306,7 +377,8 @@
     /* Key expression pop-up */
     function openPop(btn) {
       var x = xs[+btn.dataset.x];
-      pop.innerHTML = '<button class="kx-x" type="button" aria-label="Close">' + ui.icon("close") + "</button>" + exprCard(x);
+      pop.innerHTML = '<button class="kx-x" type="button" aria-label="Close">' + ui.icon("close") + "</button>" + exprCard(x) +
+        '<button class="kx-ask" type="button">' + K.emoji("🤖") + "Ask the AI Tutor about this expression</button>";
       pop.hidden = false;
       var r = btn.getBoundingClientRect();
       var w = Math.min(340, window.innerWidth - 24);
@@ -315,6 +387,10 @@
       var below = r.bottom + 10, h = pop.offsetHeight;
       pop.style.top = (below + h > window.innerHeight - 10 ? Math.max(70, r.top - h - 10) : below) + "px";
       pop.querySelector(".kx-x").addEventListener("click", closePop);
+      pop.querySelector(".kx-ask").addEventListener("click", function () {
+        closePop();
+        GU.tutor.openDrawer(null, null, "How is “" + x.base + "” used? Please give me one more example.");
+      });
       bindSay(pop);
       hideTip();
     }
@@ -552,12 +628,9 @@
     var a = act("l3-text");
     var steps = [
       { key: "l3d-title", title: "Choosing a Title", mount: function (el, done) { choiceQuestion(el, D.titleQ, "l3d-title", done); } },
-      { key: "l3d-type", title: "Text Type", mount: function (el, done) {
-        choiceQuestion(el, D.typeQ, "l3d-type", done, '<p class="step-intro">Look at how the passage is organised.</p>' + textTypeDiagram());
-      } },
       { key: "l3d-detail", title: "Reading for Details", mount: function (el, done) { detailsTables(el, "l3d-detail-ans", done); } },
       { key: "l3d-fact", title: "Facts or Opinions", mount: function (el, done) { factQuestion(el, D.factQ, "l3d-fact", done); } }
     ];
-    return stepper(page, a, steps, "This activity looks at how the passage is built: its title, its text type, the details each speaker gives, and the difference between facts and opinions.");
+    return stepper(page, a, steps, "This activity looks at the passage as a whole and in detail: a suitable title, what each speaker says, and the difference between facts and opinions.");
   };
 })();

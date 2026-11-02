@@ -36,7 +36,7 @@ function systemPrompt(wordId) {
   return [
     "You are the AI Tutor in an online English course for Senior High School Year 2 students in China (aged 16-17).",
     "Course: FLTRP Senior High School English, Selective Compulsory Book 2, Unit 1 Growing up. The reading passage, The Age of Majority, has three speakers: Bethany (16, Australia), Lin Ning (19, Shanghai) and Morgan (20, Florida).",
-    "Your job: help students learn the unit's 30 key words: meanings, word forms (word family), collocations, fixed phrases, usage, pronunciation and spelling tips, and how each word is used in the textbook.",
+    "Your job: help students learn the unit's 30 key words and the key expressions of the reading passage: meanings, word forms (word family), collocations, fixed phrases, usage, pronunciation and spelling tips, and how each word or expression is used in the textbook.",
     "Style rules:",
     "- Answer in clear, simple English (CEFR B1-B2). Add a short Chinese gloss in brackets only when it helps understanding.",
     "- Keep answers under 120 words. Use short bullet lists (lines starting with '- ') for forms, collocations and phrases. Use **bold** for the target word.",
@@ -47,8 +47,23 @@ function systemPrompt(wordId) {
     "- Never ask for personal information. If you are not sure about something, say so and suggest checking with the teacher.",
     current ? `The student is currently studying the word: ${current.word}.` : "",
     "Reference list of the 30 words:",
-    lines
+    lines,
+    passageInfo(GU)
   ].filter(Boolean).join("\n");
+}
+
+/* The reading passage and its key expressions (Lesson 3), so the tutor can refer to them. */
+function passageInfo(GU) {
+  const L3 = GU.L3;
+  if (!L3 || !L3.passage) return "";
+  const who = { intro: "Introduction" };
+  (L3.speakers || []).forEach((s) => { who[s.id] = `${s.name} (${s.age}, ${s.place})`; });
+  const text = L3.passage.sections.map((sec) => `${who[sec.speaker] || sec.speaker}: ${sec.sentences.map((x) => x[0]).join(" ")}`).join("\n");
+  const ex = L3.passage.expressions.map((x) => {
+    const w = x.word ? GU.wordById(x.word) || {} : {};
+    return `- ${x.base || w.word || x.phrase} (${x.zh || w.zh || ""}): ${x.def || w.def || ""}`;
+  }).join("\n");
+  return `The reading passage, ${L3.passage.title}:\n${text}\nKey expressions of the passage:\n${ex}`;
 }
 
 function readBody(req) {

@@ -71,10 +71,10 @@ GU.LESSONS = [
     id: "lesson-3", n: 3, title: "Understanding Ideas: The Age of Majority", short: "Understanding Ideas", minutes: 40,
     blurb: "Three young people explain what turning 18 means, or meant, to them: the passage with its recording, a video lecture and an analysis of the text.",
     activities: [
-      { id: "l3-lead", title: "Lead-in: Adult Rights in China", short: "Lead-in", kind: "l3lead", minutes: 5, label: "Activity 1", steps: ["l3a-rights", "l3a-meet"] },
+      { id: "l3-lead", title: "Lead-in: Adult Rights and a First Look at the Passage", short: "Lead-in", kind: "l3lead", minutes: 6, label: "Activity 1", steps: ["l3a-rights", "l3a-type"] },
       { id: "l3-read", title: "Listening and Reading: The Age of Majority", short: "Listening and Reading", kind: "l3read", minutes: 12, label: "Activity 2", steps: ["l3b-listen", "l3b-expr"] },
       { id: "l3-video", title: "Video Lecture: A Close Reading of the Passage", short: "Video Lecture", kind: "l3video", minutes: 10, label: "Activity 3", steps: ["l3c-watch", "l3c-qa"] },
-      { id: "l3-text", title: "Text Analysis: Structure, Details and Viewpoints", short: "Text Analysis", kind: "l3text", minutes: 13, label: "Activity 4", steps: ["l3d-title", "l3d-type", "l3d-detail", "l3d-fact"] }
+      { id: "l3-text", title: "Text Analysis: Title, Details and Viewpoints", short: "Text Analysis", kind: "l3text", minutes: 12, label: "Activity 4", steps: ["l3d-title", "l3d-detail", "l3d-fact"] }
     ]
   },
   {
@@ -499,11 +499,15 @@ GU.L2 = {
 
 /* ---------- Lesson 3: Understanding Ideas, The Age of Majority ---------- */
 GU.L3 = {
+  /* Photos: the speakers' portraits from the textbook. */
   speakers: [
-    { id: "bethany", name: "Bethany", age: 16, place: "Victoria, Australia", gender: "female", tone: "rose" },
-    { id: "linning", name: "Lin Ning", age: 19, place: "Shanghai, China", gender: "male", tone: "amber" },
-    { id: "morgan", name: "Morgan", age: 20, place: "Florida, the US", gender: "male", tone: "sage" }
+    { id: "bethany", name: "Bethany", age: 16, place: "Victoria, Australia", gender: "female", tone: "rose", photo: "assets/img/speakers/bethany.jpg", face: "assets/img/speakers/bethany-face.jpg" },
+    { id: "linning", name: "Lin Ning", age: 19, place: "Shanghai, China", gender: "male", tone: "amber", photo: "assets/img/speakers/linning.jpg", face: "assets/img/speakers/linning-face.jpg" },
+    { id: "morgan", name: "Morgan", age: 20, place: "Florida, the US", gender: "male", tone: "sage", photo: "assets/img/speakers/morgan.jpg", face: "assets/img/speakers/morgan-face.jpg" }
   ],
+  /* The opening of the passage, set as verse on the lesson page. */
+  verse: ["In most countries, turning 18", "marks the start of adulthood.", "But what does reaching this milestone,", "the age of majority, really mean?",
+    "Will you be completely in charge of your own life", "and able to express yourself in new and exciting ways?", "What new responsibilities will this freedom bring?"],
 
   /* Activity 1: lead-in. The opening of the passage leads into the discussion of ages. */
   opening: ["In most countries, turning 18 marks the start of adulthood.", "But what does reaching this milestone, the age of majority, really mean?"],
@@ -527,7 +531,7 @@ GU.L3 = {
   passage: {
     title: "The Age of Majority",
     audio: "assets/audio/age-of-majority.m4a",
-    voices: "read by a narrator and the three speakers",
+    voices: "four voices",
     cues: [0.34,  4.22,  8.65,  14.85,  17.68,  23.23,  25.25,  31.71,  33.15,  35.42,  42.16,  49.01,  51.85,  60.79,  70.5,  75.63,  84.61,  86.45,  91.77,  96.82,  107.67,  113.67,  116.46,  120.56,  125.29,  130.79,  145.96,  152.59,  157.43,  167.06,  173.15,  181.24,  186.59,  197.02],
     sections: [
       { speaker: "intro", sentences: [

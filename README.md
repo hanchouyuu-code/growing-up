@@ -40,7 +40,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 接上 Upstash 后，AI Tutor 会自动限流：每个网络连接每小时最多 30 个问题，防止费用失控。
 
-### 3. 讨论区管理密钥（可选）
+### 3. 讨论区管理密钥（可选，Lesson 3 问答区教师回复需要）
 
 在 **Environment Variables** 添加 `TEACHER_KEY` =（自己设定的一串密码），Redeploy。之后在网站 Teacher’s Corner → Discussion Moderation 输入这串密码，本设备上的讨论区会出现 **Remove** 按钮，可以删除不当的帖子或回复。
 
@@ -64,11 +64,13 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 ## Lesson 3 说明
 
-- **导入勾选题**：课本 Activity 1 的六项（credit card、driver's licence、full-time job、right to vote、bank loan、rent an apartment），可选 16 / 18 / 21 岁，答案与法律依据在 `GU.L3.rights`。
-- **课文与录音**：全文 34 句及逐句中文翻译在 `GU.L3.passage.sections`（中文为本课程翻译）。录音 `assets/audio/age-of-majority.m4a`（约 3 分 22 秒）用 Kokoro 生成，引言为旁白女声，Bethany 英式女声，Lin Ning 英式男声，Morgan 美式男声；逐句高亮、点句子单独播放、可调速。重新生成：`python3 tools/make-passage-audio.py passage.json <模型目录> assets/audio/age-of-majority.m4a`，把输出的 cues 填回。
-- **Key expressions**：33 个，首次出现处高亮，点击弹出中文、英文释义、牛津词典例句和链接；单元词表中的词直接引用 Lesson 1 的词典例句。
-- **精讲视频**：B 站 BV1TiyKYUEwE（爱学英语的Vivian，约 27 分钟），下方有笔记区（可下载）和师生问答区。学生提问对全班可见，同学可回答；教师在 Teacher's Corner 保存 `TEACHER_KEY` 后，在活动页的回答标为 Teacher。Teacher's Corner 列出未回答的问题，超过三天的标红。
-- **课程总时长**：20 + 15 + 40 + 20 = 95 分钟，首页和 Teacher's Corner 自动按各课时长计算。
+- **课程首页**：以课文引言的诗句形式导入（逐行淡入），三位人物照片半透明印在右侧。
+- **Activity 1 导入**：课本 Activity 1 的六项权利勾选（16 / 18 / 21 岁，答案与法律依据在 `GU.L3.rights`），随后是读前的文本类型判断（文章版式图 + 选择题，答案 magazine）。
+- **Activity 2 课文**：全文 34 句及逐句中文翻译（本课程翻译）；录音 `assets/audio/age-of-majority.m4a`（约 3 分 22 秒，Kokoro 生成：引言旁白女声，Bethany 英式女声，Lin Ning 英式男声，Morgan 美式男声），逐句高亮、点句单独播放、可调速。人物照片半透明印在各自段落旁。33 个 key expressions 在正文高亮，点击可看中文、释义、牛津词典例句，或直接问 AI Tutor。第二步为 Key Expressions Quiz（每轮 8 题，补全课文句子或选择中文意思），下方接 Word Battle 与 AI Tutor。AI Tutor 已加入课文全文和 key expressions，可回答相关问题；本页右下角也有 AI Tutor 按钮。
+- **Activity 3 精讲视频**：B 站 BV1TiyKYUEwE（爱学英语的Vivian，约 27 分钟），笔记区 + 师生问答区。
+- **Activity 4 文本分析**：标题选择、三人信息填表、事实与观点。
+- **人物照片**：`assets/img/speakers/`，取自课本页面截图。重新生成录音：`python3 tools/make-passage-audio.py passage.json <模型目录> assets/audio/age-of-majority.m4a`，把输出的 cues 填回 `GU.L3.passage.cues`。
+- **课程总时长**：20 + 15 + 40 + 20 = 95 分钟。
 
 ## 文件结构
 

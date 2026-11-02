@@ -142,7 +142,7 @@
   /* Floating AI Tutor button: available throughout the vocabulary module and the community. */
   function renderFab(view) {
     var fab = document.getElementById("tutor-fab");
-    var show = /^(lesson1|group|match|challenge)$/.test(view);
+    var show = /^(lesson1|group|match|challenge|l3read)$/.test(view);
     fab.hidden = !show;
     if (!fab.dataset.bound) {
       fab.dataset.bound = "1";
