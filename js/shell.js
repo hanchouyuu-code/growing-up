@@ -51,7 +51,7 @@
 
     var lessons = GU.LESSONS.map(function (l) {
       var lp = store.lessonProgress(l);
-      var head = '<a class="nl-head" href="#/' + l.id + '"' + cur("#/" + l.id) + '>' +
+      var head = '<a class="nl-head' + (l.soon ? " is-soon" : "") + '" href="#/' + l.id + '"' + cur("#/" + l.id) + '>' +
         '<span class="nl-num">' + l.n + "</span>" +
         '<span class="nl-text"><b>' + l.title.replace(/:.*/, "") + "</b><small>" + l.minutes + " minutes" + (l.soon ? ", forthcoming" : "") + "</small></span>" +
         (l.activities ? '<span class="nl-count">' + lp.done + "/" + lp.total + "</span>" : statusDot("soon")) +

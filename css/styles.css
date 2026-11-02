@@ -1435,3 +1435,71 @@ input.bd-input { max-width: 260px; }
 .nav-teacher { margin-top: 10px; }
 .nl-items .st-done { background: var(--sage); }
 .lesson-kicker .tag-bonus { text-transform: none; letter-spacing: 0; }
+
+/* =====================================================================
+   Round 5: activity pages as quiet cards
+   ===================================================================== */
+/* Activity header card */
+.act-hero { background: var(--paper); border-radius: 30px; padding: clamp(26px, 4.5vw, 48px) clamp(22px, 5vw, 52px) clamp(26px, 4vw, 40px); margin-bottom: 64px;
+  box-shadow: 0 1px 2px rgba(31, 43, 37, .04), 0 18px 40px -28px rgba(31, 43, 37, .28); }
+.act-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 0; font-size: .76rem; color: var(--taupe-3); margin-bottom: 22px; }
+.act-meta > * + *::before { content: "·"; margin: 0 10px; color: var(--line-2); }
+.act-meta .crumb { margin: 0; font-size: inherit; font-weight: 500; color: var(--taupe-2); }
+.act-meta .crumb .ic { width: 14px; height: 14px; }
+.act-meta .tag-opt { font-size: .7rem; padding: 1px 8px; }
+.act-meta .tag-opt::before { content: none; }
+.act-hero h1 { font-size: clamp(1.8rem, 1.35rem + 1.6vw, 2.45rem); line-height: 1.12; letter-spacing: -0.02em; }
+.act-hero .lede { font-size: .95rem; line-height: 1.7; color: var(--taupe-2); margin: 16px 0 0; max-width: 40em; }
+.lede.is-clamped { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; cursor: default; }
+.lede.is-clamped:hover, .lede.is-clamped:focus { -webkit-line-clamp: unset; display: block; outline: none; }
+.act-hero .step-track { margin-top: 34px; }
+.act-hero .step-track[hidden] { display: none; }
+.act-hero .act-banner { margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--line); }
+.act-banner .tag-done { background: none; padding: 0; font-weight: 500; color: var(--taupe-2); }
+.act-banner .tag-done .ic { color: var(--sage); }
+.act-banner .btn-primary { padding: 0 24px; min-height: 48px; }
+
+/* Step cards: rounder, more air, number folded into the label */
+.step { border-radius: 30px; margin-bottom: 44px; box-shadow: 0 1px 2px rgba(31, 43, 37, .04), 0 18px 40px -30px rgba(31, 43, 37, .24); }
+.step-h { padding: clamp(26px, 4vw, 40px) clamp(22px, 5vw, 52px) 0; align-items: flex-start; }
+.step-k { font-size: .7rem; letter-spacing: .1em; color: var(--taupe-3); margin-bottom: 6px; }
+.step-h h2 { font-size: 1.32rem; }
+.step-st { padding-top: 2px; }
+.step-body { padding: 24px clamp(22px, 5vw, 52px) clamp(30px, 4.5vw, 48px); }
+.step.is-locked { background: rgba(255, 253, 249, .45); border: 1px dashed var(--line-2); box-shadow: none; }
+.step.is-locked .step-h { padding-top: 22px; }
+.step.is-locked .step-body { padding-top: 10px; padding-bottom: 24px; }
+.step.is-locked h2 { font-size: 1.05rem; }
+
+/* Completion card at the end: no badge circle */
+.act-end { border-radius: 30px; padding: clamp(26px, 4vw, 40px) clamp(22px, 5vw, 52px); gap: 20px 32px; box-shadow: 0 18px 40px -30px rgba(31, 43, 37, .24); }
+.act-end-k { margin: 0 0 6px; font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--sage); }
+.act-end h2 { font-size: 1.2rem; margin-bottom: 6px; }
+.done-prompt .done-ic { width: 56px; height: 56px; background: var(--green-50); color: var(--green); box-shadow: none; margin-bottom: 18px; }
+.done-prompt .done-ic .ic { width: 26px; height: 26px; }
+
+/* Photos and captions a little smaller */
+.ph figcaption span { font-size: .84rem; color: var(--taupe); }
+
+/* Sidebar: quieter lesson numbers and status marks, more space between groups */
+.nl { margin-top: 18px; }
+.nl-num { width: 24px; height: 24px; border-radius: 7px; background: var(--sky); color: var(--ink-2); font-size: .78rem; font-weight: 700; }
+.nl-head[aria-current="page"] .nl-num { background: var(--violet); color: #fff; }
+.st-done { background: var(--sage); }
+.nav-solo .st, .nl-items .st { width: 18px; height: 18px; }
+.nav-solo .st .ic { width: 11px; height: 11px; }
+.st-todo { border-width: 1.5px; }
+.nl-head.is-soon { padding-top: 6px; padding-bottom: 6px; }
+.nl-head.is-soon .nl-num { width: 20px; height: 20px; font-size: .7rem; background: none; border: 1px solid var(--line-2); color: var(--taupe-3); }
+.nl-head.is-soon .nl-text b { font-size: .84rem; font-weight: 600; color: var(--taupe-2); }
+.nl-head.is-soon .nl-text small { font-size: .7rem; }
+.nl-head.is-soon .st-soon { width: 18px; height: 18px; background: none; color: var(--taupe-3); }
+.nl-head.is-soon .st-soon .ic { width: 13px; height: 13px; }
+.nl-head.is-soon + .nl-items { display: none; }
+.nav-teacher { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line); border-radius: 0 0 10px 10px; font-size: .86rem; color: var(--taupe-2); }
+@media (max-width: 640px) {
+  .act-hero { border-radius: 24px; margin-bottom: 44px; }
+  .step { border-radius: 24px; margin-bottom: 32px; }
+  .act-end { border-radius: 24px; }
+}
+.act-hero .act-banner { border-radius: 0; }

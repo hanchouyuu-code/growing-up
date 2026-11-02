@@ -110,11 +110,11 @@
   function stepper(page, a, steps, intro) {
     var opt = !inPath(a);
     page.innerHTML =
-      '<header class="lesson-head">' +
-      '<a class="crumb" href="#/lesson-2">' + ui.icon("left") + "Lesson 2: Starting Out</a>" +
-      '<p class="lesson-kicker">' + a.label + " <span>Approximately " + a.minutes + " minutes</span>" + (opt ? ' <em class="tag-opt">Optional on your path</em>' : "") + "</p>" +
+      '<header class="act-hero">' +
+      '<div class="act-meta"><a class="crumb" href="#/lesson-2">' + ui.icon("left") + "Lesson 2</a>" +
+      "<span>" + a.label + "</span><span>" + a.minutes + " min</span>" + (opt ? '<span class="tag-opt">Optional</span>' : "") + "</div>" +
       "<h1>" + a.title + "</h1>" +
-      '<p class="lede">' + intro + "</p>" +
+      '<p class="lede is-clamped" tabindex="0">' + intro + "</p>" +
       '<ol class="step-track" aria-label="Steps">' + steps.map(function (s, i) {
         return '<li data-track="' + i + '"><span class="stn">' + (i + 1) + '</span><span class="stl">' + s.title + "</span></li>";
       }).join("") + "</ol>" +
@@ -122,7 +122,7 @@
       "</header>" +
       steps.map(function (s, i) {
         return '<section class="step" id="step-' + (i + 1) + '" data-step="' + i + '" aria-labelledby="sh-' + i + '">' +
-          '<header class="step-h"><span class="step-n">' + (i + 1) + '</span><div class="step-ht"><p class="step-k">Step ' + (i + 1) + " of " + steps.length + "</p>" +
+          '<header class="step-h"><div class="step-ht"><p class="step-k">Step ' + (i + 1) + " of " + steps.length + "</p>" +
           '<h2 id="sh-' + i + '">' + s.title + '</h2></div><span class="step-st"></span></header>' +
           '<div class="step-body"></div></section>';
       }).join("") +
@@ -130,7 +130,6 @@
 
     var mounted = [];
     var cleanups = [];
-    var wasDone = store.isDone(a.id);
 
     function sync(justDone) {
       var unlocked = true;
@@ -164,15 +163,14 @@
       var n = nextAfter(a);
       var end = page.querySelector(".act-end");
       end.hidden = false;
-      end.innerHTML = '<span class="act-end-ic">' + ui.icon("check") + "</span><div><h2>" + a.label + " Completed</h2>" +
+      end.innerHTML = '<div><p class="act-end-k">' + a.label + " completed</p><h2>" + (n.lessonDone ? "Well done. Your learning path is complete." : "Ready for the next activity") + "</h2>" +
         "<p>" + (opt ? "This activity is optional on your current path." : "Your answers are saved on this device and in the class discussion.") + "</p></div>" +
         '<div class="act-end-go">' + nextButtons(n) + "</div>";
-      /* Returning to a finished activity: the way forward is shown at the top as well. */
-      if (wasDone) {
-        var ban = page.querySelector(".act-banner");
-        ban.hidden = false;
-        ban.innerHTML = '<span class="tag-done">' + ui.icon("check") + "Completed</span>" + nextButtons(n);
-      }
+      /* Once finished, the step line gives way to the one next action. */
+      var ban = page.querySelector(".act-banner");
+      page.querySelector(".step-track").hidden = true;
+      ban.hidden = false;
+      ban.innerHTML = '<span class="tag-done">' + ui.icon("check") + "All " + steps.length + " steps completed</span>" + nextButtons(n);
       if (first && !checkLesson(false)) completedPrompt(a, n);
     }
     sync(null);
