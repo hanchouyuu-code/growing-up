@@ -1,6 +1,7 @@
 {
   "functions": {
     "api/tutor.js": { "maxDuration": 30, "includeFiles": "js/*.js" },
-    "api/leaderboard.js": { "maxDuration": 10 }
+    "api/leaderboard.js": { "maxDuration": 10 },
+    "api/discuss.js": { "maxDuration": 10 }
   }
 }

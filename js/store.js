@@ -4,7 +4,7 @@
   var listeners = [];
 
   function blank() {
-    return { overview: false, words: {}, activities: {}, badges: {}, scores: {}, ui: {}, readalong: {}, player: null, battles: [] };
+    return { overview: false, words: {}, activities: {}, badges: {}, scores: {}, ui: {}, readalong: {}, player: null, battles: [], paths: {}, steps: {}, answers: {} };
   }
 
   function load() {
@@ -88,12 +88,33 @@
 
     reset: function () { state = blank(); save(); },
 
-    /* Overall progress: overview + every activity of every lesson (unbuilt lessons count as one each). */
+    /* Learning paths (Lesson 2): which activities the student has chosen to do. */
+    path: function (lessonId, value) {
+      if (value === undefined) return state.paths[lessonId] || null;
+      state.paths[lessonId] = value; save();
+    },
+    lessonActs: function (lesson) {
+      if (!lesson.activities) return [];
+      if (!lesson.paths) return lesson.activities;
+      var pid = state.paths[lesson.id] || "both";
+      var p = lesson.paths.filter(function (x) { return x.id === pid; })[0] || lesson.paths[lesson.paths.length - 1];
+      return lesson.activities.filter(function (a) { return p.acts.indexOf(a.id) >= 0; });
+    },
+
+    /* Steps inside an activity, and saved written answers */
+    step: function (key) { return !!state.steps[key]; },
+    setStep: function (key) { if (!state.steps[key]) { state.steps[key] = Date.now(); save(); return true; } return false; },
+    answer: function (key, value) {
+      if (value === undefined) return state.answers[key];
+      state.answers[key] = value; save();
+    },
+
+    /* Overall progress: overview + every activity on each lesson's chosen path (unbuilt lessons count as one each). */
     progress: function () {
       var total = 1, done = state.overview ? 1 : 0;
       GU.LESSONS.forEach(function (l) {
         if (l.activities) {
-          l.activities.forEach(function (a) { total++; if (state.activities[a.id]) done++; });
+          GU.store.lessonActs(l).forEach(function (a) { total++; if (state.activities[a.id]) done++; });
         } else {
           total++; if (state.activities[l.id]) done++;
         }
@@ -103,8 +124,9 @@
 
     lessonProgress: function (lesson) {
       if (!lesson.activities) return { done: state.activities[lesson.id] ? 1 : 0, total: 1 };
-      var done = lesson.activities.filter(function (a) { return state.activities[a.id]; }).length;
-      return { done: done, total: lesson.activities.length };
+      var acts = GU.store.lessonActs(lesson);
+      var done = acts.filter(function (a) { return state.activities[a.id]; }).length;
+      return { done: done, total: acts.length };
     }
   };
 })();

@@ -34,7 +34,9 @@
     send: '<path d="M4.5 12L20 4.5 16.5 19.5l-4.5-5.5z"/><path d="M12 14l8-9.5"/>',
     external: '<path d="M13.5 5.5h5v5"/><path d="M18.5 5.5L11 13"/><path d="M16.5 13.5v5h-11v-11h5"/>',
     bulb: '<path d="M9 17.5h6M9.8 20.5h4.4"/><path d="M12 3.5a5.8 5.8 0 0 0-3.3 10.6c.6.5 1 1.2 1 2v.4h4.6v-.4c0-.8.4-1.5 1-2A5.8 5.8 0 0 0 12 3.5z"/>',
-    repeat: '<path d="M5 9.5h11.5l-3-3M19 14.5H7.5l3 3"/>'
+    repeat: '<path d="M5 9.5h11.5l-3-3M19 14.5H7.5l3 3"/>',
+    pause: '<path d="M9 6v12M15 6v12"/>',
+    pen: '<path d="M15 4l5 5L9 20H4v-5z"/><path d="M13 6l5 5"/>'
   };
 
   function icon(name, cls) {

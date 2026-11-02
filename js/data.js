@@ -55,8 +55,17 @@ GU.LESSONS = [
     ]
   },
   {
-    id: "lesson-2", n: 2, title: "Starting Out", short: "Starting Out", minutes: 20, soon: true,
-    blurb: "Coming-of-age ceremonies and Rudyard Kipling’s poem <em>If—</em>: the qualities needed to grow up."
+    id: "lesson-2", n: 2, title: "Starting Out", short: "Starting Out", minutes: 20,
+    blurb: "Coming-of-age ceremonies around the world and Rudyard Kipling’s poem <em>If—</em>, with a choice of three learning paths.",
+    activities: [
+      { id: "l2-video", title: "Video Time: Coming-of-Age Ceremonies", short: "Video Time", kind: "l2video", minutes: 10, label: "Activity 1", steps: ["l2v-warm", "l2v-watch", "l2v-q1", "l2v-q2"] },
+      { id: "l2-poem", title: "Poetry Reading: Rudyard Kipling’s If—", short: "Poetry Reading", kind: "l2poem", minutes: 10, label: "Activity 2", steps: ["l2p-listen", "l2p-q1", "l2p-q2", "l2p-q3"] }
+    ],
+    paths: [
+      { id: "video", name: "Video Path", acts: ["l2-video"], minutes: 10, desc: "Activity 1 only: coming-of-age ceremonies around the world." },
+      { id: "poem", name: "Poetry Path", acts: ["l2-poem"], minutes: 10, desc: "Activity 2 only: Rudyard Kipling’s poem <em>If—</em>." },
+      { id: "both", name: "Complete Path", acts: ["l2-video", "l2-poem"], minutes: 20, desc: "Activities 1 and 2: the full Starting Out section.", recommended: true }
+    ]
   },
   {
     id: "lesson-3", n: 3, title: "Reading: The Age of Majority", short: "Reading", minutes: 30, soon: true,
@@ -91,7 +100,7 @@ GU.BADGES = [
   { id: "match", name: "Firm Roots", desc: "Completion of the Word–Meaning Matching", icon: "roots" },
   { id: "challenge", name: "Keen Ear", desc: "Bonus: Completion of the Dictation Challenge", icon: "ear", bonus: true },
   { id: "battle", name: "Word Champion", desc: "Bonus: Completion of a Word Battle", icon: "trophy", bonus: true },
-  { id: "lesson-2", name: "Branching Out", desc: "Completion of Lesson 2", icon: "sun", soon: true },
+  { id: "lesson-2", name: "Branching Out", desc: "Completion of the chosen path in Lesson 2", icon: "sun" },
   { id: "lesson-3", name: "In Full Leaf", desc: "Completion of Lesson 3", icon: "book", soon: true },
   { id: "lesson-4", name: "Coming of Age", desc: "Completion of Lesson 4", icon: "pen", soon: true }
 ];
@@ -346,3 +355,106 @@ GU.WORDS = [
 GU.GROUP_SIZE = 10;
 GU.groupWords = function (g) { return GU.WORDS.slice(g * GU.GROUP_SIZE, (g + 1) * GU.GROUP_SIZE); };
 GU.wordById = function (id) { for (var i = 0; i < GU.WORDS.length; i++) if (GU.WORDS[i].id === id) return GU.WORDS[i]; return null; };
+
+/* ---------------- Lesson 2: Starting Out ---------------- */
+GU.L2 = {
+  /* Photos from Wikimedia Commons (Creative Commons Attribution 2.0). */
+  photos: [
+    { file: "2003-01-13_Coming_of_Age_Day_at_Atsuta_Shrine.jpg", place: "Japan", caption: "Coming of Age Day at a shrine in Nagoya",
+      credit: "Bruce Dailey", licence: "CC BY 2.0", emoji: "👘" },
+    { file: "Quinceañera._Santa_Fe_(14369403262).jpg", place: "Latin American tradition", caption: "Girls celebrating a quinceañera",
+      credit: "Christopher Michel", licence: "CC BY 2.0", emoji: "👗" },
+    { file: "Michael's_Bar_Mitzvah_6.jpg", place: "Jewish tradition", caption: "A boy reading the Torah at his bar mitzvah",
+      credit: "Eli", licence: "CC BY 2.0", emoji: "📜" }
+  ],
+  warmupPrompts: [
+    "Which coming-of-age celebrations in different countries do you know? How do people celebrate them?",
+    "What does a coming-of-age ceremony mean to you?"
+  ],
+  warmupStarters: ["In …, young people celebrate coming of age by …", "To me, a coming-of-age ceremony means …", "I think the ceremony is important because …"],
+  warmupExample: "In China, many senior high schools hold a coming-of-age ceremony for students who are turning 18. Students take an oath and thank their parents and teachers. To me, the ceremony means that I should start taking responsibility for my own choices.",
+
+  video: {
+    bvid: "BV1zL7a6PEhg",
+    url: "https://www.bilibili.com/video/BV1zL7a6PEhg/",
+    title: "Coming-of-Age Ceremony (FLTRP pre-class video)",
+    length: "about 3 minutes"
+  },
+  q1: {
+    prompt: "How do people celebrate in the video?",
+    starters: ["In …, people hold … for … at the age of …", "On the island of …, …", "In the US, …"],
+    reference: "In Ancient China, people held a traditional “capping ceremony” for a man at the age of 20 and a “hair-pinning ceremony” for a woman around her 15th birthday. On the South Pacific island of Pentecost, a ceremony of land diving takes place only for boys. In the US, a particularly modern celebration takes place for a girl or a boy at the age of 16.",
+    /* Each keyword must match the start of a word in the answer ("dive" matches "dives", not "diving"). */
+    points: [
+      { label: "Ancient China: a capping ceremony for men at 20 and a hair-pinning ceremony for women at about 15", any: ["china", "chinese", "ancient", "capping", "capped", "cap ceremony", "hair", "hat"] },
+      { label: "Pentecost Island in the South Pacific: land diving for boys", any: ["pentecost", "land div", "diving", "dive", "jump", "south pacific", "pacific", "island", "vanuatu", "tower", "vine"] },
+      { label: "The US: a modern celebration for girls or boys at 16", any: ["the us ", "the u s ", "usa", "america", "sixteen", "16 ", "16th", "sweet"] }
+    ]
+  },
+  q2: {
+    prompt: "Which celebration makes the greatest impression on you? Why?",
+    choices: ["Capping and hair-pinning ceremonies (Ancient China)", "Land diving (Pentecost Island)", "Sixteenth birthday celebration (the US)"],
+    starters: ["The … makes the greatest impression on me because …", "I find … impressive, since …"],
+    example: "Land diving makes the greatest impression on me because the boys must be brave enough to jump from a high tower. It shows that growing up takes courage."
+  },
+
+  poem: {
+    title: "If—",
+    author: "Rudyard Kipling",
+    note: "Excerpts from <em>If—</em> by Rudyard Kipling (1910). Chinese translation prepared for this course.",
+    /* Optional teacher recording: set audio to a file path and give each line a start time in seconds (cues). */
+    audio: "",
+    cues: [],
+    lines: [
+      ["If you can keep your head when all about you", "如果在你周围的人都惊慌失措、"],
+      ["Are losing theirs and blaming it on you;", "还把过错推给你时，你仍能保持冷静；"],
+      ["If you can trust yourself when all men doubt you,", "如果在所有人都怀疑你时，你仍能相信自己，"],
+      ["But make allowance for their doubting too;", "同时也体谅他们的怀疑；"],
+      ["If you can wait and not be tired by waiting,", "如果你能耐心等待，而不因等待而厌倦，"],
+      ["Or, being lied about, don’t deal in lies,", "或者，遭人诋毁时，不以谎言回击，"],
+      ["Or, being hated, don’t give way to hating,", "或者，遭人憎恨时，不让自己心生憎恨，"],
+      ["And yet don’t look too good, nor talk too wise;", "却又不显得过分完美，也不自作聪明地高谈阔论；"],
+      ["…", "……"],
+      ["If you can talk with crowds and keep your virtue,", "如果你能与众人交谈而不失美德，"],
+      ["Or walk with kings – nor lose the common touch;", "或与君王同行而不失平易近人；"],
+      ["If neither foes nor loving friends can hurt you;", "如果敌人和挚友都无法伤害你；"],
+      ["If all men count with you, but none too much;", "如果你重视每一个人，却不过分依赖任何人；"],
+      ["If you can fill the unforgiving minute", "如果你能把无情流逝的每一分钟"],
+      ["With sixty seconds’ worth of distance run –", "都用六十秒的奔跑来填满——"],
+      ["Yours is the Earth and everything that’s in it,", "那么大地和其中的一切都属于你，"],
+      ["And – which is more – you’ll be a Man, my son!", "而且——更重要的是——孩子，你将成为真正的男子汉！"]
+    ],
+    librivox: "https://archive.org/details/if_1808.poem_librivox"
+  },
+  pq1: {
+    prompt: "What is the poem about?",
+    starters: ["The poem is about …", "In the poem, a father …"],
+    reference: "The poem is a father’s advice to his son about the qualities needed to become a virtuous or good man.",
+    points: [
+      { label: "a father (the speaker) talking to his son", any: ["father", "dad", "parent", "son ", "sons", "his son", "child"] },
+      { label: "giving advice", any: ["advice", "advis", "tell", "teach", "guid", "suggest", "lesson", "instruct", "encourag", "hope", "expect", "wish"] },
+      { label: "the qualities needed to become a good or virtuous man", any: ["qualit", "virtu", "good man", "good person", "character", "grow", "become a man", "be a man", "mature", "adult", "real man"] }
+    ]
+  },
+  pq2: {
+    prompt: "According to Kipling, what qualities does his son need to “be a Man”? Tick those mentioned in the poem.",
+    reference: "The qualities mentioned in the poem: self-belief, honesty, confidence, kindness, modesty, integrity, patience.",
+    options: [
+      { q: "self-belief", ok: true, line: 2, why: "“If you can trust yourself when all men doubt you”" },
+      { q: "confidence", ok: true, line: 0, why: "“If you can keep your head when all about you / Are losing theirs”" },
+      { q: "modesty", ok: true, line: 7, why: "“And yet don’t look too good, nor talk too wise”" },
+      { q: "integrity", ok: true, line: 9, why: "“If you can talk with crowds and keep your virtue”" },
+      { q: "honesty", ok: true, line: 5, why: "“Or, being lied about, don’t deal in lies”" },
+      { q: "kindness", ok: true, line: 3, why: "“But make allowance for their doubting too”; “being hated, don’t give way to hating”" },
+      { q: "pride", ok: false, line: 7, why: "Not mentioned. The poem warns against looking “too good”, which is the opposite of pride." },
+      { q: "patience", ok: true, line: 4, why: "“If you can wait and not be tired by waiting”" }
+    ]
+  },
+  pq3: {
+    prompt: "Which of these qualities are most important to you as you grow up?",
+    choices: ["self-belief", "confidence", "modesty", "integrity", "honesty", "kindness", "patience"],
+    maxChoices: 2,
+    starters: ["… is the most important quality to me because …", "As I grow up, I want to develop … because …"],
+    example: "Patience is the most important quality to me. Growing up is a gradual process, and many changes do not happen instantly, so I need to wait and keep working."
+  }
+};

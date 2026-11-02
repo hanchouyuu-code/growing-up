@@ -15,6 +15,7 @@
     if (store.isDone(a.id)) return "done";
     if (a.kind === "group" && (store.groupCount(a.group) > 0 || store.readAlongDone(a.group))) return "partial";
     if ((a.kind === "match" || a.kind === "challenge") && store.score(a.id + "-tries")) return "partial";
+    if (a.steps && a.steps.some(store.step)) return "partial";
     return "todo";
   }
 
@@ -57,10 +58,12 @@
         "</a>";
       var items = "";
       if (l.activities) {
+        var onPath = store.lessonActs(l);
         items = '<ul class="nl-items">' + l.activities.map(function (a) {
           var href = "#/" + l.id + "/" + a.id;
+          var opt = l.paths && onPath.indexOf(a) < 0;
           return '<li><a href="' + href + '"' + cur(href) + ">" + statusDot(activityState(a)) +
-            "<span>" + a.title + (a.range ? ' <small class="nl-range">' + a.range + "</small>" : "") + (a.bonus ? ' <em class="tag-bonus">Bonus</em>' : "") + "</span></a></li>";
+            "<span>" + a.title + (a.range ? ' <small class="nl-range">' + a.range + "</small>" : "") + (a.bonus ? ' <em class="tag-bonus">Bonus</em>' : "") + (opt ? ' <em class="tag-opt">Optional</em>' : "") + "</span></a></li>";
         }).join("") + "</ul>";
         /* The Learning Community sits directly under the vocabulary module, in its own visual zone. */
         if (l.id === "lesson-1") {
@@ -168,7 +171,10 @@
     else if (parts[0] === "community" && !parts[1]) view = "community";
     else if (parts[0] === "community" && parts[1] === "battle") view = "battle";
     else if (parts[0] === "community" && parts[1] === "tutor") view = "tutorPage";
-    else if (/^lesson-[234]$/.test(parts[0])) { view = "soon"; params.lesson = parts[0]; }
+    else if (parts[0] === "lesson-2" && !parts[1]) view = "lesson2";
+    else if (parts[0] === "lesson-2" && parts[1] === "l2-video") view = "l2video";
+    else if (parts[0] === "lesson-2" && parts[1] === "l2-poem") view = "l2poem";
+    else if (/^lesson-[34]$/.test(parts[0])) { view = "soon"; params.lesson = parts[0]; }
     else if (parts[0] === "teacher") view = "teacher";
     else { location.replace("#/overview"); return; }
 
