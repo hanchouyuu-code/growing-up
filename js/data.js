@@ -72,9 +72,9 @@ GU.LESSONS = [
     blurb: "Three young people explain what turning 18 means, or meant, to them: the passage with its recording, a video lecture and an analysis of the text.",
     activities: [
       { id: "l3-lead", title: "Pre-reading", short: "Pre-reading", kind: "l3lead", minutes: 6, label: "Activity 1", steps: ["l3a-rights", "l3a-type"] },
-      { id: "l3-read", title: "Listening and Reading: The Age of Majority", short: "Listening and Reading", kind: "l3read", minutes: 12, label: "Activity 2", steps: ["l3b-listen", "l3b-expr"] },
-      { id: "l3-video", title: "Video Lecture: A Close Reading of the Passage", short: "Video Lecture", kind: "l3video", minutes: 10, label: "Activity 3", steps: ["l3c-watch", "l3c-qa"] },
-      { id: "l3-text", title: "Text Analysis: Title, Details and Viewpoints", short: "Text Analysis", kind: "l3text", minutes: 12, label: "Activity 4", steps: ["l3d-title", "l3d-detail", "l3d-fact"] }
+      { id: "l3-read", title: "Listening and Reading", short: "Listening and Reading", kind: "l3read", minutes: 12, label: "Activity 2", steps: ["l3b-listen", "l3b-expr"] },
+      { id: "l3-video", title: "Video Lecture", short: "Video Lecture", kind: "l3video", minutes: 10, label: "Activity 3", steps: ["l3c-watch", "l3c-qa"] },
+      { id: "l3-text", title: "Reading Comprehension", short: "Reading Comprehension", kind: "l3text", minutes: 12, label: "Activity 4", steps: ["l3d-title", "l3d-detail", "l3d-fact"] }
     ]
   },
   {

@@ -146,7 +146,7 @@
         GU.communityPanel(el.querySelector(".kq-zone"), false, "lesson-3");
       } }
     ];
-    return stepper(page, a, steps, "Listen to the passage and follow the transcript. Each speaker has a different voice; hover over a sentence to see its Chinese translation.");
+    return stepper(page, a, steps, "The recorded passage <em>The Age of Majority</em>, with a distinct voice for each speaker, sentence translations and a review of key expressions.");
   };
 
   /* A short quiz on the key expressions: sentence completion with the passage, and meanings. */
@@ -462,10 +462,10 @@
         return GU.discuss.mount(el.querySelector(".disc-slot"), { board: "l3-qa", qa: true, onPosted: done });
       } }
     ];
-    return stepper(page, a, steps, "A close reading of the passage, with a place for your notes and a question-and-answer board where the teacher replies within three days.");
+    return stepper(page, a, steps, "A close reading of <em>The Age of Majority</em>, with a note-taking area and a question-and-answer board on which the teacher replies within three days.");
   };
 
-  /* ---------- Activity 4: Text Analysis ---------- */
+  /* ---------- Activity 4: Reading Comprehension ---------- */
   function choiceQuestion(el, q, key, done, before) {
     var saved = store.answer(key) || {};
     var tries = 0;
@@ -631,6 +631,6 @@
       { key: "l3d-detail", title: "Detailed Reading", mount: function (el, done) { detailsTables(el, "l3d-detail-ans", done); } },
       { key: "l3d-fact", title: "Fact and Opinion", mount: function (el, done) { factQuestion(el, D.factQ, "l3d-fact", done); } }
     ];
-    return stepper(page, a, steps, "This activity looks at the passage as a whole and in detail: a suitable title, what each speaker says, and the difference between facts and opinions.");
+    return stepper(page, a, steps, "Title selection, detailed reading of each speaker’s paragraph, and the distinction between fact and opinion.");
   };
 })();

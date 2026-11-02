@@ -30,7 +30,8 @@
     var rest = store.lessonActs(lesson).filter(function (x) { return x !== a && !store.isDone(x.id); })[0];
     var extra = lesson.activities.filter(function (x) { return x !== a && !inPath(lesson, x) && !store.isDone(x.id); })[0];
     return {
-      main: rest ? { href: actHref(lesson, rest), label: "Proceed to " + rest.label + ": " + rest.short } : nextLesson(lesson),
+      /* An unfinished earlier activity is named as one to complete, not one to proceed to. */
+      main: rest ? { href: actHref(lesson, rest), label: (lesson.activities.indexOf(rest) < lesson.activities.indexOf(a) ? "Complete " : "Proceed to ") + rest.label + ": " + rest.short } : nextLesson(lesson),
       extra: !rest && extra ? { href: actHref(lesson, extra), label: "Try the Optional " + extra.short } : null,
       lessonDone: !rest
     };
