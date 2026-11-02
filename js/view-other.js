@@ -57,9 +57,10 @@
       '<li class="res-soon">' + ui.icon("lock") + "<span><b>Lesson Plans and Answer Keys for Lessons 3 and 4</b>In preparation</span></li>" +
       "</ul></section>" +
       '<section class="plan"><h2>Lesson 2 Reference Answers</h2><dl class="keys">' +
-      "<dt>Activity 1, Comprehension Question</dt><dd><i>" + ui.esc(L2.q1.prompt) + "</i><br>" + ui.esc(L2.q1.reference) + "</dd>" +
+      "<dt>Activity 1, Comprehension Question</dt><dd><i>" + ui.esc(L2.q1.prompt) + "</i><br>" +
+      L2.q1.rows.map(function (r, i) { var pl = r.place || L2.q1.rows[i - 1].place; return ui.esc(pl) + ": " + ui.esc(r.age) + ", " + ui.esc(r.how); }).join("; ") + ".</dd>" +
       "<dt>Activity 2, The Theme of the Poem</dt><dd><i>" + ui.esc(L2.pq1.prompt) + "</i><br>" + ui.esc(L2.pq1.reference) + "</dd>" +
-      "<dt>Activity 2, The Qualities in the Poem</dt><dd>" + ui.esc(L2.pq2.reference) + " <i>Pride</i> is the distractor.</dd>" +
+      "<dt>Activity 2, The Qualities in the Poem</dt><dd>" + ui.esc(L2.pq2.reference) + " <i>Pride</i> is the distractor. Line numbers in the feedback refer to the full poem; the textbook prints stanzas 1 and 4 (lines 1–8 and 25–32).</dd>" +
       "<dt>Personal Responses</dt><dd>The warm-up and the two personal-response questions are open. Students post first and only then see their classmates’ answers, so that each student forms a view before the discussion begins.</dd>" +
       "</dl></section>" +
       '<section class="plan"><h2>Discussion Moderation</h2>' +

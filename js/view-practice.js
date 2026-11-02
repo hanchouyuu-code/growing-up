@@ -53,9 +53,9 @@
     }
 
     function matchArt() {
-      return '<svg viewBox="0 0 120 90"><g fill="#fff" stroke="#CFC6F5" stroke-width="2"><rect x="4" y="8" width="36" height="16" rx="8"/><rect x="4" y="37" width="36" height="16" rx="8"/><rect x="4" y="66" width="36" height="16" rx="8"/>' +
+      return '<svg viewBox="0 0 120 90"><g fill="#fff" stroke="#CBD9CC" stroke-width="2"><rect x="4" y="8" width="36" height="16" rx="8"/><rect x="4" y="37" width="36" height="16" rx="8"/><rect x="4" y="66" width="36" height="16" rx="8"/>' +
         '<rect x="80" y="8" width="36" height="16" rx="8"/><rect x="80" y="37" width="36" height="16" rx="8"/><rect x="80" y="66" width="36" height="16" rx="8"/></g>' +
-        '<g stroke="#5A3FD6" stroke-width="2.5" stroke-linecap="round"><path d="M40 16L80 45"/><path d="M40 45L80 74"/><path d="M40 74L80 16" stroke="#F4B63F"/></g></svg>';
+        '<g stroke="#1E3A2F" stroke-width="2.5" stroke-linecap="round"><path d="M40 16L80 45"/><path d="M40 45L80 74"/><path d="M40 74L80 16" stroke="#D99A2B"/></g></svg>';
     }
 
     function play() {
@@ -198,8 +198,8 @@
     }
 
     function earArt() {
-      return '<svg viewBox="0 0 120 90"><circle cx="60" cy="45" r="30" fill="#5A3FD6"/><path d="M50 33v24l20-12z" fill="#fff"/>' +
-        '<g fill="none" stroke="#F4B63F" stroke-width="3" stroke-linecap="round"><path d="M98 30a24 24 0 0 1 0 30"/><path d="M106 22a36 36 0 0 1 0 46"/><path d="M22 30a24 24 0 0 0 0 30"/><path d="M14 22a36 36 0 0 0 0 46"/></g></svg>';
+      return '<svg viewBox="0 0 120 90"><circle cx="60" cy="45" r="30" fill="#1E3A2F"/><path d="M50 33v24l20-12z" fill="#fff"/>' +
+        '<g fill="none" stroke="#D99A2B" stroke-width="3" stroke-linecap="round"><path d="M98 30a24 24 0 0 1 0 30"/><path d="M106 22a36 36 0 0 1 0 46"/><path d="M22 30a24 24 0 0 0 0 30"/><path d="M14 22a36 36 0 0 0 0 46"/></g></svg>';
     }
 
     function start() {

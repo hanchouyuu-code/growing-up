@@ -1,5 +1,7 @@
 # Growing up · Unit 1 在线英语课
 
+配色：米白/燕麦色背景、深墨绿主色、琥珀色点缀（变量在 `css/styles.css` 顶部 `:root`）。
+
 MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 教材：外语教学与研究出版社 普通高中教科书 英语 选择性必修 第二册，Unit 1 Growing up。
 
@@ -12,7 +14,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 | Course Overview | 教材名称（中英）、Unit Overview、Introduction Video、课程结构、奖章 | — | 已完成 |
 | Lesson 1 | Vocabulary：30 个单词（minimum 之前），3 组，每组含 Set Read-Along | 20 分钟 | 已完成 |
 | Learning Community | Word Battle 排行榜 + AI Tutor | — | 已完成（需在 Vercel 连接两项服务） |
-| Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、理解题、个人观点投票讨论）；Activity 2 Poetry Reading（诗歌逐行朗读 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 20 分钟 | 已完成（班级讨论需连接 Upstash） |
+| Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（Michael Caine 朗诵视频 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 20 分钟 | 已完成（班级讨论需连接 Upstash） |
 | Lesson 3 | Reading: The Age of Majority | 30 分钟 | 待制作 |
 | Lesson 4 | Writing | 20 分钟 | 待制作 |
 | Teacher’s Corner | 课程安排、单词表 PDF、Lesson 2 参考答案、讨论区管理 | — | 部分完成 |
@@ -52,9 +54,10 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 - **学习路径**：学生在 Lesson 2 首页选择路径，可随时更改；进度和奖章（Branching Out）按所选路径计算。路径以外的活动在左侧导航标注 Optional，仍可完成。
 - **先发后看**：三个讨论区都要求学生先发表自己的回答，才能看到同学的回答、点赞和回复；发帖后会出现 Teacher’s Example。讨论区沿用 Learning Community 的深色配色，便于识别。
 - **视频**：嵌入 B 站 BV1zL7a6PEhg（外研社 Starting out 视频），旁边有“Open the Video on Bilibili”链接备用。
-- **诗歌朗读**：目前为逐行英式朗读（有道），可调速、高亮当前行、点任意行重听。LibriVox 有公版完整朗诵，但服务器无法下载，所以没有做逐行同步。若要换成课本录音：把音频放进 `assets/audio/`，在 `js/data.js` 的 `GU.L2.poem` 里填 `audio`（文件路径）和 `cues`（每行开始的秒数，共 17 个，省略号那行也要填），页面会自动改用录音并同步高亮。
-- **图片**：三张成人礼照片引用自 Wikimedia Commons（CC BY 2.0，署名在图片下方）。若无法加载（如中国大陆网络），会自动显示对应的 emoji 图。
-- **答案反馈**：开放题按要点检查（`points` 里的关键词），并给出课本参考答案；勾选题逐项给出诗句证据，点击 Line N 可跳到并朗读该行。
+- **诗歌朗诵**：嵌入 B 站上 Sir Michael Caine 的朗诵（BV17g4y1B7JS，约 2 分半，朗读全诗）。下方是全诗中英对照（课本只印第 1、4 节；第 2、3 节加了浅色底纹并标注“not printed in the textbook”，可切换为 Textbook Excerpt 只看课本节选）。点行号可单独听这一行（有道英式发音）。行号按全诗 1–32 编排。换视频：改 `js/data.js` 里 `GU.L2.poem.recording.bvid`。
+- **图片**：三张成人礼照片引用自 Wikimedia Commons（CC BY 2.0，按许可要求在页脚署名摄影者）。若无法加载（如中国大陆网络），会自动显示对应的 emoji 图。
+- **答案反馈**：Activity 1 理解题为 Place / Age / How 填表，逐格判断（允许小的拼写错误），可显示答案和完整句子范例；Activity 2 主旨题按要点检查并给出参考答案；勾选题逐项给出诗句证据，点击 Line N 可跳到并朗读该行。
+- **完成提示**：完成一个活动后会弹出提示，直接进入路径中的下一个活动；回到已完成的活动时，页面顶部也会显示下一步按钮。
 
 ## 文件结构
 
@@ -72,7 +75,7 @@ js/view-*.js               各个页面（view-lesson2.js 为 Starting Out）
 api/leaderboard.js         排行榜服务（Vercel 函数）
 api/tutor.js               AI Tutor 服务（Vercel 函数）
 api/discuss.js             班级讨论服务（Vercel 函数）
-assets/img/                首页小树苗（取自课本 Starting Out 页）
+assets/img/                首页小树苗（取自课本 Starting Out 页）、左侧导航的课本封面 cover.jpg
 assets/emoji/              Twemoji 图片（CC BY 4.0）
 assets/video/              介绍视频
 assets/fonts/              字体（本地托管）
@@ -92,4 +95,4 @@ tools/make-wordlist-pdf.js 修改单词后重新生成 PDF：node tools/make-wor
 
 - 学习进度保存在学生自己的浏览器里，换设备会从头开始。
 - vercel.app 域名在中国大陆可能无法访问；如需给大陆学生使用，可绑定自定义域名。
-- Wikimedia 图片和 LibriVox 在中国大陆可能无法加载；B 站视频不受影响。
+- Wikimedia 图片在中国大陆可能无法加载；B 站视频不受影响。

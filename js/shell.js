@@ -80,9 +80,7 @@
     document.getElementById("sidebar").innerHTML =
       '<div class="sb-scroll">' +
       '<div class="book">' +
-      '<div class="book-cover" lang="zh-CN" aria-label="' + GU.BOOK.zh.publisher + " " + GU.BOOK.zh.title + '">' +
-      '<span class="bc-pub">外语教学与<br>研究出版社</span><span class="bc-series">普通高中教科书</span>' +
-      '<span class="bc-subject">英语</span><span class="bc-vol">选择性必修<br>第二册</span></div>' +
+      '<img class="book-cover" src="assets/img/cover.jpg" width="78" height="107" alt="' + GU.BOOK.zh.publisher + " " + GU.BOOK.zh.title + '" lang="zh-CN">' +
       '<div class="book-meta"><p class="book-pub">' + GU.BOOK.en.publisher.replace(" (FLTRP)", "") + "</p>" +
       '<p class="book-title">' + GU.BOOK.en.title + "</p></div>" +
       "</div>" +

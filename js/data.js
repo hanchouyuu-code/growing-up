@@ -381,15 +381,16 @@ GU.L2 = {
     length: "about 3 minutes"
   },
   q1: {
-    prompt: "How do people celebrate in the video?",
-    starters: ["In …, people hold … for … at the age of …", "On the island of …, …", "In the US, …"],
-    reference: "In Ancient China, people held a traditional “capping ceremony” for a man at the age of 20 and a “hair-pinning ceremony” for a woman around her 15th birthday. On the South Pacific island of Pentecost, a ceremony of land diving takes place only for boys. In the US, a particularly modern celebration takes place for a girl or a boy at the age of 16.",
-    /* Each keyword must match the start of a word in the answer ("dive" matches "dives", not "diving"). */
-    points: [
-      { label: "Ancient China: a capping ceremony for men at 20 and a hair-pinning ceremony for women at about 15", any: ["china", "chinese", "ancient", "capping", "capped", "cap ceremony", "hair", "hat"] },
-      { label: "Pentecost Island in the South Pacific: land diving for boys", any: ["pentecost", "land div", "diving", "dive", "jump", "south pacific", "pacific", "island", "vanuatu", "tower", "vine"] },
-      { label: "The US: a modern celebration for girls or boys at 16", any: ["the us ", "the u s ", "usa", "america", "sixteen", "16 ", "16th", "sweet"] }
-    ]
+    prompt: "How do people celebrate in the video? Complete the table.",
+    /* A "How" cell is correct if a word in the answer starts with one of the keys, or differs from a key of
+       five or more letters by one letter. An "Age" cell is correct if every number in it is one of the ages. */
+    rows: [
+      { place: "Ancient China", span: 2, age: "20", ages: ["20", "twenty"], how: "Capping ceremony", keys: ["capping", "cap", "capped", "hat"] },
+      { age: "15", ages: ["15", "fifteen"], how: "Hair-pinning ceremony", keys: ["hair", "hairpin", "hairpinning", "pinning"] },
+      { place: "South Pacific Island", age: "9/10", ages: ["9", "10", "nine", "ten"], how: "Land diving (陆跳)", keys: ["land", "diving", "dive", "jump", "jumping"] },
+      { place: "The US", age: "16", ages: ["16", "sixteen"], how: "Party", keys: ["party", "parties", "sweet"] }
+    ],
+    model: "In Ancient China, people held a “capping ceremony” for a man at the age of 20 and a “hair-pinning ceremony” for a woman around her 15th birthday. On the South Pacific island of Pentecost, boys of nine or ten take part in land diving. In the US, young people celebrate their 16th birthday with a party."
   },
   q2: {
     prompt: "Which celebration makes the greatest impression on you? Why?",
@@ -401,30 +402,53 @@ GU.L2 = {
   poem: {
     title: "If—",
     author: "Rudyard Kipling",
-    note: "Excerpts from <em>If—</em> by Rudyard Kipling (1910). Chinese translation prepared for this course.",
-    /* Optional teacher recording: set audio to a file path and give each line a start time in seconds (cues). */
-    audio: "",
-    cues: [],
-    lines: [
-      ["If you can keep your head when all about you", "如果在你周围的人都惊慌失措、"],
-      ["Are losing theirs and blaming it on you;", "还把过错推给你时，你仍能保持冷静；"],
-      ["If you can trust yourself when all men doubt you,", "如果在所有人都怀疑你时，你仍能相信自己，"],
-      ["But make allowance for their doubting too;", "同时也体谅他们的怀疑；"],
-      ["If you can wait and not be tired by waiting,", "如果你能耐心等待，而不因等待而厌倦，"],
-      ["Or, being lied about, don’t deal in lies,", "或者，遭人诋毁时，不以谎言回击，"],
-      ["Or, being hated, don’t give way to hating,", "或者，遭人憎恨时，不让自己心生憎恨，"],
-      ["And yet don’t look too good, nor talk too wise;", "却又不显得过分完美，也不自作聪明地高谈阔论；"],
-      ["…", "……"],
-      ["If you can talk with crowds and keep your virtue,", "如果你能与众人交谈而不失美德，"],
-      ["Or walk with kings – nor lose the common touch;", "或与君王同行而不失平易近人；"],
-      ["If neither foes nor loving friends can hurt you;", "如果敌人和挚友都无法伤害你；"],
-      ["If all men count with you, but none too much;", "如果你重视每一个人，却不过分依赖任何人；"],
-      ["If you can fill the unforgiving minute", "如果你能把无情流逝的每一分钟"],
-      ["With sixty seconds’ worth of distance run –", "都用六十秒的奔跑来填满——"],
-      ["Yours is the Earth and everything that’s in it,", "那么大地和其中的一切都属于你，"],
-      ["And – which is more – you’ll be a Man, my son!", "而且——更重要的是——孩子，你将成为真正的男子汉！"]
-    ],
-    librivox: "https://archive.org/details/if_1808.poem_librivox"
+    note: "<em>If—</em> by Rudyard Kipling (1910), in the public domain. Chinese translation prepared for this course.",
+    /* Recitation by Sir Michael Caine, embedded from Bilibili. */
+    recording: { bvid: "BV17g4y1B7JS", url: "https://www.bilibili.com/video/BV17g4y1B7JS/", reader: "Sir Michael Caine", length: "about 2.5 minutes" },
+    /* The textbook prints stanzas 1 and 4. Stanzas 2 and 3 are shown so that the full recitation can be followed. */
+    excerpt: [0, 3],
+    stanzas: [
+      [
+        ["If you can keep your head when all about you", "如果在你周围的人都惊慌失措、"],
+        ["Are losing theirs and blaming it on you;", "还把过错推给你时，你仍能保持冷静；"],
+        ["If you can trust yourself when all men doubt you,", "如果在所有人都怀疑你时，你仍能相信自己，"],
+        ["But make allowance for their doubting too;", "同时也体谅他们的怀疑；"],
+        ["If you can wait and not be tired by waiting,", "如果你能耐心等待，而不因等待而厌倦，"],
+        ["Or, being lied about, don’t deal in lies,", "或者，遭人诋毁时，不以谎言回击，"],
+        ["Or, being hated, don’t give way to hating,", "或者，遭人憎恨时，不让自己心生憎恨，"],
+        ["And yet don’t look too good, nor talk too wise;", "却又不显得过分完美，也不自作聪明地高谈阔论；"]
+      ],
+      [
+        ["If you can dream – and not make dreams your master;", "如果你能怀有梦想，却不被梦想所主宰；"],
+        ["If you can think – and not make thoughts your aim;", "如果你能深入思考，却不把思考当作目的；"],
+        ["If you can meet with Triumph and Disaster", "如果你能坦然面对成功与灾难，"],
+        ["And treat those two impostors just the same;", "并对这两个“骗子”一视同仁；"],
+        ["If you can bear to hear the truth you’ve spoken", "如果你能忍受你说出的真话"],
+        ["Twisted by knaves to make a trap for fools,", "被无赖歪曲，成为愚弄傻瓜的陷阱，"],
+        ["Or watch the things you gave your life to, broken,", "或者眼看你倾注一生的事业毁于一旦，"],
+        ["And stoop and build ’em up with worn-out tools;", "仍能俯下身，用破旧的工具把它重建；"]
+      ],
+      [
+        ["If you can make one heap of all your winnings", "如果你能把赢得的一切堆在一起，"],
+        ["And risk it on one turn of pitch-and-toss,", "押在一次掷硬币的输赢上，"],
+        ["And lose, and start again at your beginnings", "输了，就从头再来，"],
+        ["And never breathe a word about your loss;", "并且对损失只字不提；"],
+        ["If you can force your heart and nerve and sinew", "如果你能迫使你的心力、勇气和筋骨"],
+        ["To serve your turn long after they are gone,", "在早已耗尽之后仍为你效力，"],
+        ["And so hold on when there is nothing in you", "在你内心一无所有时依然坚持，"],
+        ["Except the Will which says to them: ‘Hold on!’", "只剩下意志对它们说：“坚持住！”"]
+      ],
+      [
+        ["If you can talk with crowds and keep your virtue,", "如果你能与众人交谈而不失美德，"],
+        ["Or walk with kings – nor lose the common touch;", "或与君王同行而不失平易近人；"],
+        ["If neither foes nor loving friends can hurt you;", "如果敌人和挚友都无法伤害你；"],
+        ["If all men count with you, but none too much;", "如果你重视每一个人，却不过分依赖任何人；"],
+        ["If you can fill the unforgiving minute", "如果你能把无情流逝的每一分钟"],
+        ["With sixty seconds’ worth of distance run –", "都用六十秒的奔跑来填满——"],
+        ["Yours is the Earth and everything that’s in it,", "那么大地和其中的一切都属于你，"],
+        ["And – which is more – you’ll be a Man, my son!", "而且——更重要的是——孩子，你将成为真正的男子汉！"]
+      ]
+    ]
   },
   pq1: {
     prompt: "What is the poem about?",
@@ -437,17 +461,18 @@ GU.L2 = {
     ]
   },
   pq2: {
+    /* line = line number in the full poem (1–32) */
     prompt: "According to Kipling, what qualities does his son need to “be a Man”? Tick those mentioned in the poem.",
     reference: "The qualities mentioned in the poem: self-belief, honesty, confidence, kindness, modesty, integrity, patience.",
     options: [
-      { q: "self-belief", ok: true, line: 2, why: "“If you can trust yourself when all men doubt you”" },
-      { q: "confidence", ok: true, line: 0, why: "“If you can keep your head when all about you / Are losing theirs”" },
-      { q: "modesty", ok: true, line: 7, why: "“And yet don’t look too good, nor talk too wise”" },
-      { q: "integrity", ok: true, line: 9, why: "“If you can talk with crowds and keep your virtue”" },
-      { q: "honesty", ok: true, line: 5, why: "“Or, being lied about, don’t deal in lies”" },
-      { q: "kindness", ok: true, line: 3, why: "“But make allowance for their doubting too”; “being hated, don’t give way to hating”" },
-      { q: "pride", ok: false, line: 7, why: "Not mentioned. The poem warns against looking “too good”, which is the opposite of pride." },
-      { q: "patience", ok: true, line: 4, why: "“If you can wait and not be tired by waiting”" }
+      { q: "self-belief", ok: true, line: 3, why: "“If you can trust yourself when all men doubt you”" },
+      { q: "confidence", ok: true, line: 1, why: "“If you can keep your head when all about you / Are losing theirs”" },
+      { q: "modesty", ok: true, line: 8, why: "“And yet don’t look too good, nor talk too wise”" },
+      { q: "integrity", ok: true, line: 25, why: "“If you can talk with crowds and keep your virtue”" },
+      { q: "honesty", ok: true, line: 6, why: "“Or, being lied about, don’t deal in lies”" },
+      { q: "kindness", ok: true, line: 4, why: "“But make allowance for their doubting too”; “being hated, don’t give way to hating”" },
+      { q: "pride", ok: false, line: 8, why: "Not mentioned. The poem warns against looking “too good”, which is the opposite of pride." },
+      { q: "patience", ok: true, line: 5, why: "“If you can wait and not be tired by waiting”" }
     ]
   },
   pq3: {

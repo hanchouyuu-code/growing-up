@@ -60,11 +60,11 @@
 
   function medal(b, earned) {
     var id = "mg" + (++uid);
-    var r1 = earned ? "#FFD978" : "#ECEAF3", r2 = earned ? "#D99412" : "#C9C5D9";
-    var inner = earned ? (b.bonus ? "#D9466B" : "#4B33C7") : "#B7B2CB";
-    var rb1 = earned ? (b.bonus ? "#F38BA3" : "#8F7BF2") : "#DAD7E7";
-    var rb2 = earned ? (b.bonus ? "#D9466B" : "#4B33C7") : "#C4C0D6";
-    var star = b.bonus ? '<path d="M52 24l2 4.2 4.6.6-3.4 3.2.9 4.5-4.1-2.2-4.1 2.2.9-4.5-3.4-3.2 4.6-.6z" fill="' + (earned ? "#FFD978" : "#DAD7E7") + '" stroke="#fff" stroke-width="1.2"/>' : "";
+    var r1 = earned ? "#FFD978" : "#ECE6DA", r2 = earned ? "#B57B14" : "#CDC4B2";
+    var inner = earned ? (b.bonus ? "#B5543C" : "#1E3A2F") : "#BBB19E";
+    var rb1 = earned ? (b.bonus ? "#D9917A" : "#5F8A6C") : "#DFD7C8";
+    var rb2 = earned ? (b.bonus ? "#B5543C" : "#1E3A2F") : "#C8BEAA";
+    var star = b.bonus ? '<path d="M52 24l2 4.2 4.6.6-3.4 3.2.9 4.5-4.1-2.2-4.1 2.2.9-4.5-3.4-3.2 4.6-.6z" fill="' + (earned ? "#FFD978" : "#DFD7C8") + '" stroke="#fff" stroke-width="1.2"/>' : "";
     return '<svg class="medal' + (earned ? " is-earned" : "") + '" viewBox="0 0 64 80" aria-hidden="true">' +
       '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + r1 + '"/><stop offset="1" stop-color="' + r2 + '"/></linearGradient></defs>' +
       '<path d="M15 0h13l9 30H24z" fill="' + rb1 + '"/><path d="M49 0H36l-9 30h13z" fill="' + rb2 + '"/>' +
