@@ -308,7 +308,7 @@ body.nav-open .sidebar { margin-left: 0; visibility: visible; transition: margin
 .lede { font-size: 1.1rem; color: var(--ink-2); max-width: 38em; margin-top: 12px; }
 .how { background: var(--paper); border-radius: var(--r-lg); padding: clamp(20px, 3vw, 28px); margin-bottom: 28px; }
 .how h2 { margin-bottom: 16px; }
-.how-steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 0; margin: 0 0 14px; counter-reset: s; }
+.how-steps { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 0; margin: 0 0 22px; counter-reset: s; }
 .how-steps li { counter-increment: s; display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: var(--r); background: var(--sky); font-size: .92rem; color: var(--ink-2); line-height: 1.45; }
 .how-steps b { font-family: var(--f-display); font-size: 1.05rem; color: var(--ink); }
 .how-steps b::before { content: counter(s) ". "; color: var(--violet); }
