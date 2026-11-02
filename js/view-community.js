@@ -58,11 +58,11 @@
       .map(function (b, i) { return { rank: i + 1, name: (store.player() || {}).name || "You", correct: b.correct, total: b.total, ms: b.ms, pid: "local" }; });
   }
 
-  /* ---------- Community panel (also shown at the bottom of Lesson 1) ---------- */
+  /* ---------- Word Battle and AI Tutor panel at the bottom of Lesson 1 ---------- */
   GU.communityPanel = function (el, full) {
     el.innerHTML =
       '<section class="zone' + (full ? " zone-full" : "") + '" aria-labelledby="zone-h">' +
-      '<div class="zone-head"><span class="zone-tag">' + ui.icon("users") + "Learning Community</span>" +
+      '<div class="zone-head"><span class="zone-tag">' + ui.icon("users") + "Vocabulary Practice</span>" +
       (full ? "" : '<h2 id="zone-h">Practise with Classmates and the AI Tutor</h2>') +
       (full ? "" : "<p>" + GU.COMMUNITY.blurb + "</p>") + "</div>" +
       '<div class="zone-grid">' +
@@ -86,22 +86,6 @@
       var loc = localEntries();
       lb.innerHTML = '<p class="zcard-sub">Personal Records on This Device</p>' + (loc.length ? boardTable(loc.slice(0, 3), "local", { noClass: true }) : '<p class="lb-empty">No battles completed on this device yet.</p>');
     });
-  };
-
-  GU.views.community = function (page) {
-    page.innerHTML =
-      '<header class="lesson-head zone-page-head">' +
-      '<a class="crumb" href="#/lesson-1">' + ui.icon("left") + "Lesson 1: Vocabulary</a>" +
-      '<p class="lesson-kicker">Vocabulary Module</p>' +
-      "<h1>" + GU.COMMUNITY.title + "</h1>" +
-      '<p class="lede">' + GU.COMMUNITY.blurb + "</p></header>" +
-      '<div id="zone"></div>' +
-      '<section class="guidelines"><h2>Community Guidelines</h2><ul>' +
-      "<li>Use a nickname on the leaderboard. Do not enter your full name or other personal information.</li>" +
-      "<li>Treat every classmate’s result with respect; the leaderboard is a tool for motivation, not judgement.</li>" +
-      "<li>Check AI answers against the textbook and a dictionary, and ask your teacher whenever an answer seems unclear.</li>" +
-      "</ul></section>";
-    GU.communityPanel(page.querySelector("#zone"), true);
   };
 
   /* ---------- Word Battle ---------- */
@@ -134,8 +118,8 @@
     function setup() {
       var p = store.player() || {};
       page.innerHTML =
-        '<header class="lesson-head zone-page-head"><a class="crumb" href="#/community">' + ui.icon("left") + "Learning Community</a>" +
-        '<p class="lesson-kicker">Learning Community <em class="tag-bonus">Bonus</em></p><h1>Word Battle</h1>' +
+        '<header class="lesson-head zone-page-head"><a class="crumb" href="#/lesson-1">' + ui.icon("left") + "Lesson 1: Vocabulary</a>" +
+        '<p class="lesson-kicker">Vocabulary Practice <em class="tag-bonus">Bonus</em></p><h1>Word Battle</h1>' +
         '<p class="lede">Fifteen questions on the thirty words of Unit 1, in four formats: meaning, word, listening and textbook context. The class leaderboard ranks players by accuracy, then by time.</p></header>' +
         '<div class="battle-grid">' +
         '<form class="zcard battle-setup" id="setup" autocomplete="off"><h2>Player Details</h2>' +
@@ -232,7 +216,7 @@
       store.addBattle(finishedRec);
       var firstBadge = store.award("battle");
       page.innerHTML =
-        '<header class="lesson-head zone-page-head"><a class="crumb" href="#/community">' + ui.icon("left") + "Learning Community</a><h1>Battle Results</h1></header>" +
+        '<header class="lesson-head zone-page-head"><a class="crumb" href="#/lesson-1">' + ui.icon("left") + "Lesson 1: Vocabulary</a><h1>Battle Results</h1></header>" +
         '<section class="results zcard"><div class="res-score"><span class="res-num">' + correct + '</span><span>/15</span></div>' +
         "<div><h2>Accuracy: " + Math.round(correct / 15 * 100) + "%</h2><p>Time: " + fmtTime(ms) + '. <span id="rank-line">Submitting your result…</span></p></div></section>' +
         '<div class="res-actions"><button class="btn btn-ghost" id="again">' + ui.icon("redo") + "Battle Again</button>" +
@@ -458,8 +442,8 @@
 
   GU.views.tutorPage = function (page) {
     page.innerHTML =
-      '<header class="lesson-head zone-page-head"><a class="crumb" href="#/community">' + ui.icon("left") + "Learning Community</a>" +
-      '<p class="lesson-kicker">Learning Community</p><h1>AI Tutor</h1>' +
+      '<header class="lesson-head zone-page-head"><a class="crumb" href="#/lesson-1">' + ui.icon("left") + "Lesson 1: Vocabulary</a>" +
+      '<p class="lesson-kicker">Vocabulary Practice</p><h1>AI Tutor</h1>' +
       '<p class="lede">The AI Tutor answers questions on the thirty words of Unit 1, including word forms, collocations, fixed phrases, meanings and examples, and then sets a short practice task.</p></header>' +
       '<div class="tutor-page" id="tp"></div>';
     return GU.tutor.mount(page.querySelector("#tp"), {});

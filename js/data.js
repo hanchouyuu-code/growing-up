@@ -403,8 +403,10 @@ GU.L2 = {
     title: "If—",
     author: "Rudyard Kipling",
     note: "<em>If—</em> by Rudyard Kipling (1910), in the public domain. Chinese translation prepared for this course.",
-    /* Recitation by Sir Michael Caine, embedded from Bilibili. */
-    recording: { bvid: "BV17g4y1B7JS", url: "https://www.bilibili.com/video/BV17g4y1B7JS/", reader: "Sir Michael Caine", length: "about 2.5 minutes" },
+    /* Audio recitation. Put the file in assets/audio/ and set audio to its path; cues are the start time
+       (in seconds) of each of the 32 lines and drive the line highlighting. With no audio file,
+       the poem is read line by line instead. */
+    recording: { audio: "", reader: "Sir Michael Caine", cues: [] },
     /* The textbook prints stanzas 1 and 4. Stanzas 2 and 3 are shown so that the full recitation can be followed. */
     excerpt: [0, 3],
     stanzas: [

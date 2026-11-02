@@ -65,10 +65,9 @@
           return '<li><a href="' + href + '"' + cur(href) + ">" + statusDot(activityState(a)) +
             "<span>" + a.title + (a.range ? ' <small class="nl-range">' + a.range + "</small>" : "") + (a.bonus ? ' <em class="tag-bonus">Bonus</em>' : "") + (opt ? ' <em class="tag-opt">Optional</em>' : "") + "</span></a></li>";
         }).join("") + "</ul>";
-        /* The Learning Community sits directly under the vocabulary module, in its own visual zone. */
+        /* Word Battle and the AI Tutor sit directly under the vocabulary module, in their own visual zone. */
         if (l.id === "lesson-1") {
           items += '<div class="nav-community">' +
-            '<a class="nc-head" href="#/community"' + cur("#/community") + '>' + ui.icon("users") + "<span>" + GU.COMMUNITY.title + "</span></a>" +
             '<a class="nc-item" href="#/community/battle"' + cur("#/community/battle") + ">" + ui.icon("trophy") + "<span>Word Battle</span></a>" +
             '<a class="nc-item" href="#/community/tutor"' + cur("#/community/tutor") + ">" + ui.icon("chat") + "<span>AI Tutor</span></a>" +
             "</div>";
@@ -143,7 +142,7 @@
   /* Floating AI Tutor button: available throughout the vocabulary module and the community. */
   function renderFab(view) {
     var fab = document.getElementById("tutor-fab");
-    var show = /^(lesson1|group|match|challenge|community)$/.test(view);
+    var show = /^(lesson1|group|match|challenge)$/.test(view);
     fab.hidden = !show;
     if (!fab.dataset.bound) {
       fab.dataset.bound = "1";
@@ -166,7 +165,7 @@
     else if (parts[0] === "lesson-1" && /^group-[123]$/.test(parts[1])) { view = "group"; params.group = +parts[1].slice(-1) - 1; }
     else if (parts[0] === "lesson-1" && parts[1] === "match") view = "match";
     else if (parts[0] === "lesson-1" && parts[1] === "challenge") view = "challenge";
-    else if (parts[0] === "community" && !parts[1]) view = "community";
+    else if (parts[0] === "community" && !parts[1]) { location.replace("#/community/battle"); return; }
     else if (parts[0] === "community" && parts[1] === "battle") view = "battle";
     else if (parts[0] === "community" && parts[1] === "tutor") view = "tutorPage";
     else if (parts[0] === "lesson-2" && !parts[1]) view = "lesson2";

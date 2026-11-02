@@ -106,7 +106,8 @@
       '<div class="sec-head"><h2 id="cs-h">Course Structure</h2><span class="sec-meta">' + ui.icon("clock") + "90 minutes in total</span></div>" +
       '<ol class="route">' + lessons + "</ol>" +
       '<div class="route-extra">' +
-      '<a class="route-community" href="#/community">' + ui.icon("users") + "<span><b>" + GU.COMMUNITY.title + "</b>" + GU.COMMUNITY.blurb + "</span></a>" +
+      '<a class="route-community" href="#/community/battle">' + ui.icon("trophy") + "<span><b>Word Battle</b>Timed questions on the thirty words, with a class leaderboard.</span></a>" +
+      '<a class="route-community" href="#/community/tutor">' + ui.icon("chat") + "<span><b>AI Tutor</b>Questions on word forms, collocations, phrases and usage.</span></a>" +
       '<a class="route-teacher" href="#/teacher">' + ui.icon("teacher") + "<span><b>" + GU.TEACHER.title + "</b>" + GU.TEACHER.blurb + "</span></a>" +
       "</div></section>" +
 

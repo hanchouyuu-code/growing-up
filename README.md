@@ -13,8 +13,8 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 |---|---|---|---|
 | Course Overview | 教材名称（中英）、Unit Overview、Introduction Video、课程结构、奖章 | — | 已完成 |
 | Lesson 1 | Vocabulary：30 个单词（minimum 之前），3 组，每组含 Set Read-Along | 20 分钟 | 已完成 |
-| Learning Community | Word Battle 排行榜 + AI Tutor | — | 已完成（需在 Vercel 连接两项服务） |
-| Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（Michael Caine 朗诵视频 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 20 分钟 | 已完成（班级讨论需连接 Upstash） |
+| Word Battle / AI Tutor | 位于 Vocabulary 下方：单词对战排行榜、AI 答疑 | — | 已完成（需在 Vercel 连接两项服务） |
+| Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（朗诵音频可调速 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 20 分钟 | 已完成（班级讨论需连接 Upstash） |
 | Lesson 3 | Reading: The Age of Majority | 30 分钟 | 待制作 |
 | Lesson 4 | Writing | 20 分钟 | 待制作 |
 | Teacher’s Corner | 课程安排、单词表 PDF、Lesson 2 参考答案、讨论区管理 | — | 部分完成 |
@@ -52,9 +52,12 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 ## Lesson 2 说明
 
 - **学习路径**：学生在 Lesson 2 首页选择路径，可随时更改；进度和奖章（Branching Out）按所选路径计算。路径以外的活动在左侧导航标注 Optional，仍可完成。
-- **先发后看**：三个讨论区都要求学生先发表自己的回答，才能看到同学的回答、点赞和回复；发帖后会出现 Teacher’s Example。讨论区沿用 Learning Community 的深色配色，便于识别。
+- **先发后看**：三个讨论区都要求学生先发表自己的回答，才能看到同学的回答、点赞和回复；发帖后会出现 Teacher’s Example。讨论区沿用 Word Battle 和 AI Tutor 的深绿配色，便于识别。
 - **视频**：嵌入 B 站 BV1zL7a6PEhg（外研社 Starting out 视频），旁边有“Open the Video on Bilibili”链接备用。
-- **诗歌朗诵**：嵌入 B 站上 Sir Michael Caine 的朗诵（BV17g4y1B7JS，约 2 分半，朗读全诗）。下方是全诗中英对照（课本只印第 1、4 节；第 2、3 节加了浅色底纹并标注“not printed in the textbook”，可切换为 Textbook Excerpt 只看课本节选）。点行号可单独听这一行（有道英式发音）。行号按全诗 1–32 编排。换视频：改 `js/data.js` 里 `GU.L2.poem.recording.bvid`。
+- **诗歌朗诵**：只有音频，没有视频。播放条可拖动，可调速（0.75× / 1× / 1.25×）。
+  - 放入 Michael Caine 的朗诵：把音频（mp3 或 m4a）放进 `assets/audio/`，在 `js/data.js` 的 `GU.L2.poem.recording` 里把 `audio` 改成文件路径；`cues` 填 32 行各自开始的秒数后，会逐行高亮，点行号会从这一行播放，选 Textbook Excerpt 时自动跳过第 2、3 节。
+  - 没有音频文件时，自动改为逐行英式朗读（有道），同样可调速、高亮当前行。
+  - 下方是全诗中英对照（课本只印第 1、4 节；第 2、3 节有浅色底纹并标注“not printed in the textbook”，可切换为 Textbook Excerpt）。行号按全诗 1–32 编排。
 - **图片**：三张成人礼照片引用自 Wikimedia Commons（CC BY 2.0，按许可要求在页脚署名摄影者）。若无法加载（如中国大陆网络），会自动显示对应的 emoji 图。
 - **答案反馈**：Activity 1 理解题为 Place / Age / How 填表，逐格判断（允许小的拼写错误），可显示答案和完整句子范例；Activity 2 主旨题按要点检查并给出参考答案；勾选题逐项给出诗句证据，点击 Line N 可跳到并朗读该行。
 - **完成提示**：完成一个活动后会弹出提示，直接进入路径中的下一个活动；回到已完成的活动时，页面顶部也会显示下一步按钮。

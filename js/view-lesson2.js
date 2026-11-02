@@ -414,12 +414,17 @@
     return stepper(page, a, steps, "In <em>If—</em>, written in 1910, Rudyard Kipling sets out the qualities a young person needs in order to grow into a mature adult.");
   };
 
-  /* Michael Caine's recitation, the poem in English and Chinese side by side, and a notes column. */
+  /* Audio recitation with speed control, the poem in English and Chinese side by side, and a notes column.
+     With a recording file (P.recording.audio) the player plays it; line cues, if given, drive the highlighting.
+     Without one, the poem is read line by line (Youdao British English). */
   function poemReader(el, P, done) {
     var showZh = store.ui("poemZh") !== false;
     var full = store.ui("poemFull") !== false;
-    var my = 0;
-    var r = P.recording;
+    var rate = store.ui("poemRate") || 1;
+    var rec = P.recording || {};
+    var lines = [].concat.apply([], P.stanzas);
+    var cues = rec.cues && rec.cues.length === lines.length ? rec.cues : null;
+    var media = null, playing = false, cur = 0, run = 0;
 
     var n = 0;
     var body = P.stanzas.map(function (st, si) {
@@ -434,13 +439,16 @@
         }).join("") + "</div>" +
         (si === 0 ? '<div class="stanza-gap" aria-hidden="true"><span></span><span>…</span><span lang="zh-CN">……</span></div>' : "");
     }).join("");
-    var lines = [].concat.apply([], P.stanzas);
 
     el.innerHTML =
-      '<p class="step-intro">Watch Sir Michael Caine’s recitation and follow the text. Select a line number to hear that line again, and write your thoughts in the notes column.</p>' +
-      '<div class="recital"><div class="bili-frame"><iframe src="' + bili(r.bvid) + '" title="If— recited by ' + r.reader + '" allow="fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" loading="lazy"></iframe></div>' +
-      '<div class="watch-bar"><span class="recital-by"><b>Recitation:</b> ' + r.reader + ", " + r.length + "</span>" +
-      '<a class="link-btn" href="' + r.url + '" target="_blank" rel="noopener">' + ui.icon("external") + "Open the Recording on Bilibili</a></div></div>" +
+      '<p class="step-intro">Listen to the poem and follow the text. Select a line number to hear that line again, and write your thoughts in the notes column.</p>' +
+      '<div class="ap" role="group" aria-label="Recitation player">' +
+      '<button class="ap-play" type="button" aria-label="Play">' + ui.icon("play") + "</button>" +
+      '<div class="ap-mid"><p class="ap-title"><b>' + P.title + '</b> <span class="ap-by"></span></p>' +
+      '<div class="ap-track"><input class="ap-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Position in the recitation"><span class="ap-time"></span></div></div>' +
+      '<div class="seg seg-ap" role="radiogroup" aria-label="Playback speed"><span class="seg-label">Speed</span>' +
+      [0.75, 1, 1.25].map(function (r) { return '<button role="radio" aria-checked="' + (r === rate) + '" data-rate="' + r + '">' + r + "×</button>"; }).join("") + "</div>" +
+      "</div>" +
       '<div class="poem-bar">' +
       '<div class="seg" role="radiogroup" aria-label="Text shown"><button role="radio" aria-checked="' + full + '" data-full="1">Full Poem</button><button role="radio" aria-checked="' + !full + '" data-full="0">Textbook Excerpt</button></div>' +
       '<label class="switch"><input type="checkbox" data-zh' + (showZh ? " checked" : "") + '><span class="switch-ui"></span>Chinese Translation</label>' +
@@ -456,19 +464,135 @@
       "</div>" +
       '<div class="poem-foot"><button class="btn btn-primary" type="button" data-read>' + (store.step("l2p-listen") ? ui.icon("check") + "Poem Read" : "I Have Listened to and Read the Poem") + "</button></div>";
 
+    var playBtn = el.querySelector(".ap-play"), seek = el.querySelector(".ap-seek"), timeEl = el.querySelector(".ap-time"), byEl = el.querySelector(".ap-by");
+    var readBtn = el.querySelector("[data-read]");
+
     function lineEl(k) { return el.querySelector('[data-line="' + k + '"]'); }
-    function clearOn() { el.querySelectorAll(".pl.is-on").forEach(function (x) { x.classList.remove("is-on"); }); }
-    function say(k) {
-      var mine = ++my;
-      clearOn();
-      lineEl(k).classList.add("is-on");
-      GU.audio.play(lines[k - 1][0], { rate: 0.9 }).then(function () { if (mine === my) clearOn(); });
+    function hidden(k) { return !full && lineEl(k).closest(".is-extra"); }
+    function visibleLines() { var a = []; for (var k = 1; k <= lines.length; k++) if (!hidden(k)) a.push(k); return a; }
+    function clock(s) { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
+    function mark(k, follow) {
+      el.querySelectorAll(".pl.is-on").forEach(function (x) { x.classList.remove("is-on"); });
+      var line = k ? lineEl(k) : null;
+      if (!line) return;
+      line.classList.add("is-on");
+      if (follow) {
+        var r = line.getBoundingClientRect();
+        if (r.top < 80 || r.bottom > window.innerHeight - 20) line.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
     }
-    function stop() { my++; GU.audio.stop(); clearOn(); }
+    function setPlaying(on) {
+      playing = on;
+      playBtn.innerHTML = ui.icon(on ? "pause" : "play");
+      playBtn.setAttribute("aria-label", on ? "Pause" : "Play");
+      el.querySelector(".ap").classList.toggle("is-playing", on);
+    }
+    function finished() {
+      readBtn.innerHTML = ui.icon("check") + "Poem Read";
+      done();
+    }
+
+    /* ----- Line-by-line voice (no recording file) ----- */
+    function voiceLabels() {
+      byEl.textContent = "read line by line";
+      seek.max = String(visibleLines().length);
+      seek.step = "1";
+      seek.value = String(Math.max(0, visibleLines().indexOf(cur) + 1));
+      timeEl.textContent = "Line " + (cur || 0) + " of " + lines.length;
+    }
+    function voiceFrom(k) {
+      var my = ++run;
+      setPlaying(true);
+      var list = visibleLines();
+      var i = Math.max(0, list.indexOf(k));
+      (function next() {
+        if (my !== run) return;
+        if (i >= list.length) { cur = 0; mark(0); setPlaying(false); voiceLabels(); finished(); return; }
+        cur = list[i];
+        mark(cur, true); voiceLabels();
+        GU.audio.play(lines[cur - 1][0], { rate: rate }).then(function () {
+          if (my !== run) return;
+          i++;
+          setTimeout(next, 380 / rate);
+        });
+      })();
+    }
+
+    /* ----- Recording file ----- */
+    function cueIndex(t) { var k = 0; for (var i = 0; i < cues.length; i++) if (t >= cues[i]) k = i + 1; return k; }
+    if (rec.audio) {
+      media = new Audio();
+      media.preload = "metadata";
+      media.src = rec.audio;
+      media.addEventListener("loadedmetadata", function () {
+        byEl.textContent = rec.reader ? "recited by " + rec.reader : "";
+        timeEl.textContent = clock(0) + " / " + clock(media.duration);
+      });
+      media.addEventListener("timeupdate", function () {
+        if (!media.duration) return;
+        seek.value = String(Math.round(media.currentTime / media.duration * 1000));
+        timeEl.textContent = clock(media.currentTime) + " / " + clock(media.duration);
+        if (cues) {
+          var k = cueIndex(media.currentTime);
+          if (k && hidden(k)) { var nx = visibleLines().filter(function (x) { return x > k; })[0]; if (nx) media.currentTime = cues[nx - 1]; return; }
+          if (k !== cur) { cur = k; mark(k, true); }
+        }
+      });
+      media.addEventListener("play", function () { setPlaying(true); });
+      media.addEventListener("pause", function () { setPlaying(false); });
+      media.addEventListener("ended", function () { cur = 0; mark(0); setPlaying(false); finished(); });
+      media.addEventListener("error", function () { media = null; voiceLabels(); });
+      byEl.textContent = rec.reader ? "recited by " + rec.reader : "";
+      timeEl.textContent = "0:00";
+    } else {
+      voiceLabels();
+    }
+
+    function stop() { run++; GU.audio.stop(); if (media) media.pause(); setPlaying(false); }
+
+    playBtn.addEventListener("click", function () {
+      if (playing) { stop(); return; }
+      if (media) {
+        GU.audio.stop();
+        media.playbackRate = rate;
+        var p = media.play();
+        if (p && p.catch) p.catch(function () { media = null; voiceLabels(); voiceFrom(cur || 1); });
+        return;
+      }
+      voiceFrom(cur || visibleLines()[0]);
+    });
+    seek.addEventListener("input", function () {
+      if (media && media.duration) { media.currentTime = (+seek.value / 1000) * media.duration; return; }
+      var list = visibleLines();
+      var k = list[Math.min(list.length - 1, Math.max(0, +seek.value - 1))];
+      cur = k; mark(k, true); voiceLabels();
+      if (playing) voiceFrom(k);
+    });
+    el.querySelectorAll("[data-rate]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        rate = +b.dataset.rate; store.ui("poemRate", rate);
+        el.querySelectorAll("[data-rate]").forEach(function (x) { x.setAttribute("aria-checked", x === b); });
+        if (media) media.playbackRate = rate;
+      });
+    });
+
+    /* A single line: from the recording when cues exist, otherwise read aloud on its own. */
+    function say(k) {
+      if (media && cues) {
+        GU.audio.stop();
+        media.currentTime = cues[k - 1]; media.playbackRate = rate;
+        media.play();
+        return;
+      }
+      stop();
+      var my = run;
+      cur = k; mark(k); if (!media) voiceLabels();
+      GU.audio.play(lines[k - 1][0], { rate: rate }).then(function () { if (my === run) mark(0); });
+    }
     /* Called from the qualities question: scroll to a line, flash it and read it. */
     function show(k) {
+      if (hidden(k)) setFull(true);
       var line = lineEl(k);
-      if (line.closest(".is-extra") && !full) setFull(true);
       line.scrollIntoView({ behavior: "smooth", block: "center" });
       line.classList.remove("is-flash"); void line.offsetWidth; line.classList.add("is-flash");
       say(k);
@@ -477,6 +601,7 @@
       full = on; store.ui("poemFull", on);
       el.querySelector(".poem-wrap").classList.toggle("is-excerpt", !on);
       el.querySelectorAll("[data-full]").forEach(function (x) { x.setAttribute("aria-checked", (x.dataset.full === "1") === on); });
+      if (!media) voiceLabels();
     }
 
     el.querySelectorAll("[data-full]").forEach(function (b) { b.addEventListener("click", function () { setFull(b.dataset.full === "1"); }); });
@@ -510,8 +635,7 @@
       document.body.appendChild(link); link.click(); link.remove();
       setTimeout(function () { URL.revokeObjectURL(link.href); }, 2000);
     });
-    var readBtn = el.querySelector("[data-read]");
-    readBtn.addEventListener("click", function () { readBtn.innerHTML = ui.icon("check") + "Poem Read"; done(); });
+    readBtn.addEventListener("click", finished);
 
     return { stop: stop, show: show };
   }

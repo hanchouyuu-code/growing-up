@@ -9,7 +9,7 @@
   function nextOf(a) {
     var i = L1.activities.indexOf(a);
     var n = L1.activities[i + 1];
-    return n ? { href: activityHref(n), label: "Proceed to " + n.title } : { href: "#/community", label: "Visit the Learning Community" };
+    return n ? { href: activityHref(n), label: "Proceed to " + n.title } : { href: "#/community/battle", label: "Proceed to the Word Battle" };
   }
   GU.lesson1Next = nextOf;
   GU.resumeHref = function () {

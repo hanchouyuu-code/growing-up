@@ -661,7 +661,7 @@ a.stage:hover .stage-plant img, a.stage:focus-visible .stage-plant img { transfo
 @media (max-width: 600px) { .sl-long { display: none; } .video-tools { justify-content: flex-start; } }
 .ov-goals { background: var(--ink); color: #fff; }
 .ov-goals > p { color: #CFD9CB; }
-.route-extra { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.route-extra { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
 .route-extra a { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border-radius: var(--r); text-decoration: none; font-size: .9rem; line-height: 1.45; }
 .route-extra a b { display: block; font-family: var(--f-display); font-size: 1.02rem; margin-bottom: 2px; }
 .route-extra .ic { width: 24px; height: 24px; flex: none; margin-top: 2px; }
@@ -1273,7 +1273,21 @@ input.bd-input { max-width: 260px; }
 .ft-ans::before { content: "Answer: "; font-weight: 400; color: var(--ink-3); }
 .ft-ans[hidden] { display: none; }
 
-/* Recitation */
-.recital { margin-bottom: 18px; }
-.recital-by { font-size: .9rem; color: var(--ink-2); }
-.recital .watch-bar .link-btn { margin-left: auto; }
+/* Recitation player */
+.ap { display: flex; align-items: center; gap: 14px 18px; flex-wrap: wrap; padding: 14px 18px; margin-bottom: 18px; border-radius: var(--r); color: var(--moon);
+  background: radial-gradient(80% 120% at 100% 0%, rgba(232, 182, 90, .16), transparent 60%), linear-gradient(150deg, var(--night-2), var(--night)); }
+.ap-play { width: 56px; height: 56px; flex: none; border-radius: 50%; border: 0; display: grid; place-items: center; cursor: pointer; background: var(--mint); color: #2A1D05; box-shadow: 0 4px 14px rgba(0, 0, 0, .25); transition: transform .15s; }
+.ap-play:hover { transform: scale(1.05); }
+.ap-play .ic { width: 26px; height: 26px; fill: currentColor; stroke: currentColor; stroke-width: 1.5; }
+.ap.is-playing .ap-play .ic { fill: none; stroke-width: 3; }
+.ap-mid { flex: 1 1 260px; min-width: 0; }
+.ap-title { margin: 0 0 6px; font-size: .92rem; color: var(--moon-2); }
+.ap-title b { font: 750 1.15rem var(--f-display); color: #fff; margin-right: 4px; }
+.ap-track { display: flex; align-items: center; gap: 12px; }
+.ap-seek { flex: 1; min-width: 0; accent-color: var(--mint); height: 20px; cursor: pointer; }
+.ap-time { font-size: .82rem; font-weight: 700; color: var(--moon-2); white-space: nowrap; font-variant-numeric: tabular-nums; min-width: 84px; text-align: right; }
+.seg-ap { background: rgba(255, 255, 255, .08); }
+.seg-ap .seg-label { color: var(--moon-2); }
+.seg-ap button { color: var(--moon-2); }
+.seg-ap button[aria-checked="true"] { background: var(--mint); color: #2A1D05; box-shadow: none; }
+@media (max-width: 600px) { .ap { padding: 14px; } .seg-ap { width: 100%; justify-content: space-between; } }
