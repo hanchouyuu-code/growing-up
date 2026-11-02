@@ -7,15 +7,15 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 线上地址：https://growing-up-five.vercel.app
 
-## 课程结构（共 90 分钟）
+## 课程结构（共 95 分钟）
 
 | 部分 | 内容 | 时长 | 状态 |
 |---|---|---|---|
 | Course Overview | 教材名称（中英）、Unit Overview、Introduction Video、课程结构、奖章 | — | 已完成 |
 | Lesson 1 | Vocabulary：30 个单词（minimum 之前），3 组，每组含 Set Read-Along | 20 分钟 | 已完成 |
 | Word Battle / AI Tutor | 位于 Vocabulary 下方：单词对战排行榜、AI 答疑 | — | 已完成（需在 Vercel 连接两项服务） |
-| Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（朗诵音频可调速 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 20 分钟 | 已完成（班级讨论需连接 Upstash） |
-| Lesson 3 | Reading: The Age of Majority | 30 分钟 | 待制作 |
+| Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（朗诵音频可调速 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 15 分钟（视频 7 + 诗歌 8） | 已完成（班级讨论需连接 Upstash） |
+| Lesson 3 | Understanding Ideas: The Age of Majority：导入（成年权利勾选）、课文录音与 transcript（人物卡片、逐句翻译、key expressions）、课文精讲视频 + 笔记 + 师生问答区、文本分析（标题选择、文本类型、三人信息填表、事实与观点） | 40 分钟 | 已上线；课文正文、录音和精讲视频待补充 |
 | Lesson 4 | Writing | 20 分钟 | 待制作 |
 | Teacher’s Corner | 课程安排、单词表 PDF、Lesson 2 参考答案、讨论区管理 | — | 部分完成 |
 
@@ -62,6 +62,13 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 - **答案反馈**：Activity 1 理解题为 Place / Age / How 填表，逐格判断（允许小的拼写错误），可显示答案和完整句子范例；Activity 2 主旨题按要点检查并给出参考答案；勾选题逐项给出诗句证据，点击 Line N 可跳到并朗读该行。
 - **完成提示**：完成一个活动后会弹出提示，直接进入路径中的下一个活动；回到已完成的活动时，页面顶部也会显示下一步按钮。
 
+## Lesson 3 说明
+
+- **待补充：** `js/data.js` 的 `GU.L3.passage.sections` 目前只有课文开头一段；三位人物的段落、对应中文翻译、key expressions 需要课文原文后补上。录音按段落人物生成（三人音色不同、男女对应），生成后填 `audio` 和逐句 `cues`。精讲视频填 `GU.L3.video.bvid`（B 站）或 `url`（其他网站，以新标签页打开）。
+- **导入勾选题** 的五项权利和答案在 `GU.L3.rights`，可按课本 Activity 1 的原有选项修改。
+- **师生问答区**（Activity 3）：学生提问后，问题对全班可见，同学可以回答；教师在 Teacher's Corner 保存 `TEACHER_KEY` 后，在活动页回答的内容会标为 Teacher 并把问题标记为已回答。Teacher's Corner 会列出尚未回答的问题，超过三天的标红。
+- **课程总时长**：现在为 20 + 15 + 40 + 20 = 95 分钟，首页和 Teacher's Corner 的总时长自动按各课时长计算。
+
 ## 文件结构
 
 ```
@@ -74,7 +81,8 @@ js/audio.js                发音、跟读录音
 js/ui.js                   图标、奖章、弹窗、图片
 js/shell.js                左侧导航、右上角奖章进度条、页面切换、AI Tutor 按钮
 js/discuss.js              班级讨论区（先发后看、点赞、回复、投票统计）
-js/view-*.js               各个页面（view-lesson2.js 为 Starting Out）
+js/kit.js                  活动页通用组件（分步解锁、完成提示、开放题、讨论步骤）
+js/view-*.js               各个页面（view-lesson2.js 为 Starting Out，view-lesson3.js 为 Understanding Ideas）
 api/leaderboard.js         排行榜服务（Vercel 函数）
 api/tutor.js               AI Tutor 服务（Vercel 函数）
 api/discuss.js             班级讨论服务（Vercel 函数）

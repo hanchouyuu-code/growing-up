@@ -17,7 +17,7 @@ GU.BOOK = {
 };
 
 GU.OVERVIEW = {
-  lede: "A 90-minute online course on the age of majority: the milestone that marks the start of adulthood, and the new freedoms and responsibilities it brings.",
+  lede: "An online course in four lessons on the age of majority: the milestone that marks the start of adulthood, and the new freedoms and responsibilities it brings.",
   theme: "People and Self",
   themeZh: "人与自我",
   themeParts: ["Knowing Yourself", "Enriching Yourself", "Improving Yourself"],
@@ -55,27 +55,35 @@ GU.LESSONS = [
     ]
   },
   {
-    id: "lesson-2", n: 2, title: "Starting Out", short: "Starting Out", minutes: 20,
+    id: "lesson-2", n: 2, title: "Starting Out", short: "Starting Out", minutes: 15,
     blurb: "Coming-of-age ceremonies around the world and Rudyard Kipling’s poem <em>If—</em>, with a choice of three learning paths.",
     activities: [
-      { id: "l2-video", title: "Video Time: Coming-of-Age Ceremonies", short: "Video Time", kind: "l2video", minutes: 10, label: "Activity 1", steps: ["l2v-warm", "l2v-watch", "l2v-q1", "l2v-q2"] },
-      { id: "l2-poem", title: "Poetry Reading: Rudyard Kipling’s If—", short: "Poetry Reading", kind: "l2poem", minutes: 10, label: "Activity 2", steps: ["l2p-listen", "l2p-q1", "l2p-q2", "l2p-q3"] }
+      { id: "l2-video", title: "Video Time: Coming-of-Age Ceremonies", short: "Video Time", kind: "l2video", minutes: 7, label: "Activity 1", steps: ["l2v-warm", "l2v-watch", "l2v-q1", "l2v-q2"] },
+      { id: "l2-poem", title: "Poetry Reading: Rudyard Kipling’s If—", short: "Poetry Reading", kind: "l2poem", minutes: 8, label: "Activity 2", steps: ["l2p-listen", "l2p-q1", "l2p-q2", "l2p-q3"] }
     ],
     paths: [
-      { id: "video", name: "Video Path", acts: ["l2-video"], minutes: 10, desc: "Activity 1 only: coming-of-age ceremonies around the world." },
-      { id: "poem", name: "Poetry Path", acts: ["l2-poem"], minutes: 10, desc: "Activity 2 only: Rudyard Kipling’s poem <em>If—</em>." },
-      { id: "both", name: "Complete Path", acts: ["l2-video", "l2-poem"], minutes: 20, desc: "Activities 1 and 2: the full Starting Out section.", recommended: true }
+      { id: "video", name: "Video Path", acts: ["l2-video"], minutes: 7, desc: "Activity 1 only: coming-of-age ceremonies around the world." },
+      { id: "poem", name: "Poetry Path", acts: ["l2-poem"], minutes: 8, desc: "Activity 2 only: Rudyard Kipling’s poem <em>If—</em>." },
+      { id: "both", name: "Complete Path", acts: ["l2-video", "l2-poem"], minutes: 15, desc: "Activities 1 and 2: the full Starting Out section.", recommended: true }
     ]
   },
   {
-    id: "lesson-3", n: 3, title: "Reading: The Age of Majority", short: "Reading", minutes: 30, soon: true,
-    blurb: "Three young people explain what turning 18 means, or meant, to them."
+    id: "lesson-3", n: 3, title: "Understanding Ideas: The Age of Majority", short: "Understanding Ideas", minutes: 40,
+    blurb: "Three young people explain what turning 18 means, or meant, to them: the passage with its recording, a video lecture and an analysis of the text.",
+    activities: [
+      { id: "l3-lead", title: "Lead-in: Adult Rights in China", short: "Lead-in", kind: "l3lead", minutes: 5, label: "Activity 1", steps: ["l3a-rights", "l3a-meet"] },
+      { id: "l3-read", title: "Listening and Reading: The Age of Majority", short: "Listening and Reading", kind: "l3read", minutes: 12, label: "Activity 2", steps: ["l3b-listen", "l3b-expr"] },
+      { id: "l3-video", title: "Video Lecture: A Close Reading of the Passage", short: "Video Lecture", kind: "l3video", minutes: 10, label: "Activity 3", steps: ["l3c-watch", "l3c-qa"] },
+      { id: "l3-text", title: "Text Analysis: Structure, Details and Viewpoints", short: "Text Analysis", kind: "l3text", minutes: 13, label: "Activity 4", steps: ["l3d-title", "l3d-type", "l3d-detail", "l3d-fact"] }
+    ]
   },
   {
     id: "lesson-4", n: 4, title: "Writing", short: "Writing", minutes: 20, soon: true,
     blurb: "A short written response on the responsibilities that come with turning 18."
   }
 ];
+
+GU.totalMinutes = function () { return GU.LESSONS.reduce(function (t, l) { return t + l.minutes; }, 0); };
 
 GU.COMMUNITY = {
   title: "Learning Community",
@@ -101,7 +109,7 @@ GU.BADGES = [
   { id: "challenge", name: "Keen Ear", desc: "Bonus: Completion of the Dictation Challenge", icon: "ear", bonus: true },
   { id: "battle", name: "Word Champion", desc: "Bonus: Completion of a Word Battle", icon: "trophy", bonus: true },
   { id: "lesson-2", name: "Branching Out", desc: "Completion of the chosen path in Lesson 2", icon: "sun" },
-  { id: "lesson-3", name: "In Full Leaf", desc: "Completion of Lesson 3", icon: "book", soon: true },
+  { id: "lesson-3", name: "In Full Leaf", desc: "Completion of Lesson 3", icon: "book" },
   { id: "lesson-4", name: "Coming of Age", desc: "Completion of Lesson 4", icon: "pen", soon: true }
 ];
 
@@ -486,5 +494,111 @@ GU.L2 = {
     maxChoices: 2,
     starters: ["… is the most important quality to me because …", "As I grow up, I want to develop … because …"],
     example: "Patience is the most important quality to me. Growing up is a gradual process, and many changes do not happen instantly, so I need to wait and keep working."
+  }
+};
+
+/* ---------- Lesson 3: Understanding Ideas, The Age of Majority ---------- */
+GU.L3 = {
+  speakers: [
+    { id: "bethany", name: "Bethany", age: 16, place: "Victoria, Australia", gender: "female", tone: "rose" },
+    { id: "linning", name: "Lin Ning", age: 19, place: "Shanghai, China", gender: "male", tone: "amber" },
+    { id: "morgan", name: "Morgan", age: 20, place: "Florida, the US", gender: "male", tone: "sage" }
+  ],
+
+  /* Activity 1: lead-in. The opening of the passage leads into the discussion of ages. */
+  opening: ["In most countries, turning 18 marks the start of adulthood.", "But what does reaching this milestone, the age of majority, really mean?"],
+  rights: {
+    prompt: "Discuss at what age you are allowed to do the following things in China. Tick the age for each one.",
+    ages: ["16", "18", "20", "22"],
+    /* answer = the ages that apply; note = the legal basis */
+    items: [
+      { text: "Get a full-time job", emoji: "💼", answer: ["16"], note: "The Labour Law does not allow employers to take on workers under 16." },
+      { text: "Get a driver’s licence for a car", emoji: "🚗", answer: ["18"], note: "Applicants for a small-car licence must be at least 18." },
+      { text: "Vote in elections", emoji: "🗳️", answer: ["18"], note: "The Constitution gives citizens who have reached 18 the right to vote and to stand for election." },
+      { text: "Get a bank loan", emoji: "🏦", answer: ["18"], note: "A loan is a contract, and full legal capacity begins at 18." },
+      { text: "Get married", emoji: "💍", answer: ["20", "22"], note: "The Civil Code sets the minimum age at 20 for women and 22 for men." }
+    ]
+  },
+  bridge: "Will you be completely in charge of your own life and able to express yourself in new and exciting ways? What new responsibilities will this freedom bring? Here, three young people tell us what turning 18 means, or meant, to them.",
+
+  /* Activity 2: the passage. Set when the text is added: sections of { speaker, sentences: [[en, zh], ...] }. */
+  passage: {
+    title: "The Age of Majority",
+    audio: "",
+    cues: [],
+    sections: [
+      { speaker: "intro", sentences: [
+        ["In most countries, turning 18 marks the start of adulthood.", "在大多数国家，年满 18 岁标志着成年的开始。"],
+        ["But what does reaching this milestone, the age of majority, really mean?", "但是，到达这个里程碑，也就是法定成年年龄，究竟意味着什么呢？"],
+        ["Will you be completely in charge of your own life and able to express yourself in new and exciting ways?", "你会完全掌控自己的生活，并能以全新而令人兴奋的方式表达自我吗？"],
+        ["What new responsibilities will this freedom bring?", "这种自由又会带来哪些新的责任？"],
+        ["Here, three young people tell us what turning 18 means, or meant, to them.", "下面，三位年轻人告诉我们，年满 18 岁对他们意味着什么，或曾经意味着什么。"]
+      ] }
+    ],
+    /* Key expressions highlighted in the text: phrase as it appears, meaning, dictionary example. */
+    expressions: [
+      { phrase: "marks the start of", base: "mark the start of sth", zh: "标志着……的开始", def: "to be a sign that something new is beginning",
+        dict: ["The birth of their first child marked the beginning of a new era in their life together.", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/beginning"] },
+      { phrase: "milestone", word: "milestone" },
+      { phrase: "the age of majority", base: "the age of majority", zh: "法定成年年龄", def: "(law) the age at which you are legally considered to be an adult",
+        dict: ["The age of majority in the United States is determined by the states, but it is usually 18.", "Oxford Advanced American Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/american_english/majority"] },
+      { phrase: "in charge of", base: "be in charge of sth", zh: "掌管；负责", def: "having control of or responsibility for somebody or something",
+        dict: ["I need to feel more in charge of my life.", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/charge_1"] },
+      { phrase: "express yourself", base: "express yourself", zh: "表达自己（的想法和感受）", def: "to speak, write or communicate in some other way what you think or feel",
+        dict: ["Some teenagers have difficulty expressing themselves.", "Oxford Advanced Learner’s Dictionary", "https://www.oxfordlearnersdictionaries.com/definition/english/express_1"] }
+    ]
+  },
+
+  /* Activity 3: video lecture (set bvid for a Bilibili video, or url for a link to another site). */
+  video: { bvid: "", url: "", title: "A Close Reading of The Age of Majority", length: "" },
+
+  /* Activity 4: text analysis */
+  titleQ: {
+    prompt: "Choose another suitable title for the passage and give your reasons.",
+    options: [
+      { text: "Eighteen – the Age of Indecision", why: "Too narrow. The speakers are not mainly unsure about what to do; they describe their hopes, the reality and their responsibilities." },
+      { text: "Teenagers’ Hopes for the Future", why: "Too narrow. Hopes are only part of the passage; the speakers also compare them with reality." },
+      { text: "The Right to Vote – Your Views", why: "Too narrow. Voting is only one detail in Bethany’s paragraph." },
+      { text: "Turning Eighteen – What Does It Mean?", why: "This title sums up the question raised in the introduction, which all three speakers answer." }
+    ],
+    answer: 3,
+    starters: ["I choose Title … because …", "The passage is mainly about …"]
+  },
+  typeQ: {
+    prompt: "Where could you read a text like this?",
+    options: [
+      { text: "A news report in a newspaper", why: "A news report tells what happened, when and where. This text collects people’s views instead." },
+      { text: "A column in a magazine", why: "A titled introduction raises a question, and named readers, with their ages and home towns, then share their personal opinions. This is typical of a magazine column." },
+      { text: "An entry in a personal diary", why: "A diary is written by one person for themselves. This text has three speakers and an introduction for readers." },
+      { text: "A chapter of a novel", why: "A novel tells an invented story. This text presents real people’s opinions on a question." }
+    ],
+    answer: 1
+  },
+  /* Reading for details. {answer|other accepted forms} marks a blank. */
+  details: [
+    { speaker: "bethany", rows: [
+      ["Expectations", ["have a right to {vote}", "earn a {wage} and pay {taxes|tax}", "get a driving {licence|license}"]],
+      ["Reality", ["{worry|worries|worrying} from her mother"]],
+      ["Understanding of responsibility", ["take {responsibility} for her life and the lives of other people"]]
+    ] },
+    { speaker: "linning", rows: [
+      ["Expectations", ["feel {different}", "step into a whole new {adult} world"]],
+      ["Reality", ["still {rules} and lessons", "more {gradual} and subtle changes", "offer of a {credit} card"]],
+      ["Understanding of responsibility", ["a sense of {social} responsibility, e.g. sign an {organ} donation agreement"]]
+    ] },
+    { speaker: "morgan", columns: ["Expectations", "Reality"], rows: [
+      ["more {independence}", "not so much independence"],
+      ["a {rented} apartment", "have to live at home with {parents} for a while longer"],
+      ["a {well-paid|well paid} job", "low {salary}"]
+    ] }
+  ],
+  factQ: {
+    prompt: "Read the sentences from the passage and decide whether they are facts (F) or opinions (O).",
+    items: [
+      { text: "Surely, if you’re old enough to earn a wage and pay taxes, you should be allowed to have a say on how the government spends them!", answer: "O", why: "“Surely” and “should” show what the speaker believes ought to happen." },
+      { text: "… I will be taking my driving test on the very day I turn 18.", answer: "F", why: "It states an arrangement that has already been made and can be checked." },
+      { text: "When I woke up the next day, there were still rules to obey and lessons to attend.", answer: "F", why: "It describes what actually happened." },
+      { text: "I guess some responsibilities are more about attitude than age.", answer: "O", why: "“I guess” introduces a personal belief that others may not share." }
+    ]
   }
 };

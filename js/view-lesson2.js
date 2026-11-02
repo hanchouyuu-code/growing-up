@@ -6,35 +6,16 @@
 
   function href(a) { return "#/lesson-2/" + a.id; }
   function act(id) { return L2.activities.filter(function (a) { return a.id === id; })[0]; }
-  function inPath(a) { return store.lessonActs(L2).indexOf(a) >= 0; }
   function pathOf() { var id = store.path("lesson-2") || "both"; return L2.paths.filter(function (p) { return p.id === id; })[0]; }
-  function emoji(e, cls) { return '<img class="' + (cls || "") + '" src="' + ui.emojiSrc(e) + '" alt="">'; }
-  function bili(bvid) { return "https://player.bilibili.com/player.html?isOutside=true&amp;bvid=" + bvid + "&amp;p=1&amp;autoplay=0&amp;danmaku=0"; }
+  function emoji(e, cls) { return GU.kit.emoji(e, cls); }
+  function bili(bvid) { return GU.kit.bili(bvid); }
   var PATH_PIC = { video: ["🎬"], poem: ["📜"], both: ["🎬", "📜"] };
 
-  /* Award the Lesson 2 badge once every activity on the chosen path is complete. */
-  function checkLesson(quiet) {
-    var acts = store.lessonActs(L2);
-    if (!acts.length || !acts.every(function (a) { return store.isDone(a.id); })) return false;
-    if (store.award("lesson-2")) {
-      if (!quiet) ui.celebrate("lesson-2", { href: "#/lesson-3", label: "Proceed to Lesson 3" });
-      else ui.toast("Badge earned: Branching Out");
-      return true;
-    }
-    return false;
-  }
-
-  /* Where to go after an activity: the next unfinished activity on the path, then Lesson 3.
-     An activity outside the path is offered as an optional extra. */
-  function nextAfter(a) {
-    var rest = store.lessonActs(L2).filter(function (x) { return x !== a && !store.isDone(x.id); })[0];
-    var extra = L2.activities.filter(function (x) { return x !== a && !inPath(x) && !store.isDone(x.id); })[0];
-    return {
-      main: rest ? { href: href(rest), label: "Proceed to " + rest.label + ": " + rest.short } : { href: "#/lesson-3", label: "Proceed to Lesson 3" },
-      extra: !rest && extra ? { href: href(extra), label: "Try the Optional " + extra.short } : null,
-      lessonDone: !rest
-    };
-  }
+  var K = GU.kit;
+  function inPath(a) { return K.inPath(L2, a); }
+  function checkLesson(quiet) { return K.checkLesson(L2, quiet); }
+  function stepper(page, a, steps, intro) { return K.stepper(page, L2, a, steps, intro); }
+  var startersHtml = K.startersHtml, bindStarters = K.bindStarters, openQuestion = K.openQuestion, boardStep = K.boardStep, lev1 = K.lev1;
 
   /* ---------- Landing ---------- */
   GU.views.lesson2 = function (page) {
@@ -58,7 +39,7 @@
       page.innerHTML =
         '<header class="lesson-head">' +
         '<a class="crumb" href="#/overview">' + ui.icon("left") + "Course Overview</a>" +
-        '<p class="lesson-kicker">Lesson 2 <span>20 minutes</span></p>' +
+        '<p class="lesson-kicker">Lesson 2 <span>' + L2.minutes + ' minutes</span></p>' +
         "<h1>Starting Out</h1>" +
         '<p class="lede">This lesson introduces the theme of the unit through coming-of-age ceremonies around the world and Rudyard Kipling’s poem <em>If—</em>, a father’s advice to his son on growing up.</p>' +
         "</header>" +
@@ -85,177 +66,7 @@
     draw();
   };
 
-  /* ---------- Shared pieces for the two activities ---------- */
-
-  function nextButtons(n) {
-    return '<a class="btn btn-primary" href="' + n.main.href + '">' + ui.esc(n.main.label) + ui.icon("right") + "</a>" +
-      (n.extra ? '<a class="link-quiet" href="' + n.extra.href + '">' + ui.esc(n.extra.label) + "</a>" : "");
-  }
-
-  /* Prompt shown the moment an activity is completed (the lesson badge has its own celebration). */
-  function completedPrompt(a, n) {
-    var html = '<div class="celebrate done-prompt">' +
-      '<span class="done-ic">' + ui.icon("check") + "</span>" +
-      '<p class="celebrate-kicker">' + a.label + " Completed</p>" +
-      "<h2>" + ui.esc(a.title) + "</h2>" +
-      "<p>" + (n.lessonDone ? "All activities on your learning path are completed." : "The next activity on your learning path is ready.") + "</p>" +
-      '<div class="celebrate-actions">' + nextButtons(n).replace('class="btn btn-primary"', 'class="btn btn-primary" data-autofocus') +
-      '<button class="btn btn-ghost" data-close>Remain on This Page</button></div></div>';
-    ui.modal(html, { cls: "modal-celebrate", label: a.label + " completed", onOpen: function (m, close) {
-      m.querySelectorAll("a.btn").forEach(function (x) { x.addEventListener("click", function () { close(); }); });
-    } });
-  }
-
-  /* Steps unlock one after another. Each step mounts once and keeps its own state. */
-  function stepper(page, a, steps, intro) {
-    var opt = !inPath(a);
-    page.innerHTML =
-      '<header class="act-hero">' +
-      '<div class="act-meta"><a class="crumb" href="#/lesson-2">' + ui.icon("left") + "Lesson 2</a>" +
-      "<span>" + a.label + "</span><span>" + a.minutes + " min</span>" + (opt ? '<span class="tag-opt">Optional</span>' : "") + "</div>" +
-      "<h1>" + a.title + "</h1>" +
-      '<p class="lede is-clamped" tabindex="0">' + intro + "</p>" +
-      '<ol class="step-track" aria-label="Steps">' + steps.map(function (s, i) {
-        return '<li data-track="' + i + '"><span class="stn">' + (i + 1) + '</span><span class="stl">' + s.title + "</span></li>";
-      }).join("") + "</ol>" +
-      '<div class="act-banner" hidden></div>' +
-      "</header>" +
-      steps.map(function (s, i) {
-        return '<section class="step" id="step-' + (i + 1) + '" data-step="' + i + '" aria-labelledby="sh-' + i + '">' +
-          '<header class="step-h"><div class="step-ht"><p class="step-k">Step ' + (i + 1) + " of " + steps.length + "</p>" +
-          '<h2 id="sh-' + i + '">' + s.title + '</h2></div><span class="step-st"></span></header>' +
-          '<div class="step-body"></div></section>';
-      }).join("") +
-      '<div class="act-end" hidden></div>';
-
-    var mounted = [];
-    var cleanups = [];
-
-    function sync(justDone) {
-      var unlocked = true;
-      steps.forEach(function (s, i) {
-        var sec = page.querySelector('[data-step="' + i + '"]');
-        var body = sec.querySelector(".step-body");
-        var done = store.step(s.key);
-        sec.classList.toggle("is-done", done);
-        sec.classList.toggle("is-locked", !unlocked);
-        sec.querySelector(".step-st").innerHTML = done ? '<span class="pill pill-done">' + ui.icon("check") + "Completed</span>" : "";
-        page.querySelector('[data-track="' + i + '"]').className = done ? "is-done" : unlocked ? "is-cur" : "";
-        if (unlocked && !mounted[i]) {
-          mounted[i] = true;
-          body.innerHTML = "";
-          var c = s.mount(body, function () { if (store.setStep(s.key)) sync(i); });
-          if (typeof c === "function") cleanups.push(c);
-        } else if (!unlocked) {
-          body.innerHTML = '<p class="step-lock">' + ui.icon("lock") + "This step opens after Step " + i + " is completed.</p>";
-        }
-        unlocked = unlocked && done;
-      });
-
-      if (!steps.every(function (s) { return store.step(s.key); })) {
-        if (justDone != null) {
-          var nx = page.querySelector('[data-step="' + (justDone + 1) + '"]');
-          setTimeout(function () { nx.scrollIntoView({ behavior: "smooth", block: "start" }); }, 250);
-        }
-        return;
-      }
-      var first = store.complete(a.id);
-      var n = nextAfter(a);
-      var end = page.querySelector(".act-end");
-      end.hidden = false;
-      end.innerHTML = '<span class="tag-done">' + ui.icon("check") + a.label + " completed</span>" +
-        '<div class="act-end-go">' + nextButtons(n) + "</div>";
-      /* Once finished, the step line gives way to the one next action. */
-      var ban = page.querySelector(".act-banner");
-      page.querySelector(".step-track").hidden = true;
-      ban.hidden = false;
-      ban.innerHTML = '<span class="tag-done">' + ui.icon("check") + "All " + steps.length + " steps completed</span>" + nextButtons(n);
-      if (first && !checkLesson(false)) completedPrompt(a, n);
-    }
-    sync(null);
-    return function () { cleanups.forEach(function (c) { try { c(); } catch (e) {} }); };
-  }
-
-  /* Adds a sentence starter and selects its first gap (…), so that typing fills it in. */
-  function insertStarter(ta, starter) {
-    var base = ta.value ? ta.value.replace(/\s*$/, " ") : "";
-    ta.value = base + starter;
-    ta.focus();
-    var gap = ta.value.indexOf("…", base.length);
-    if (gap >= 0) ta.setSelectionRange(gap, gap + 1);
-    else ta.setSelectionRange(ta.value.length, ta.value.length);
-    ta.dispatchEvent(new Event("input"));
-  }
-  GU.insertStarter = insertStarter;
-
-  function startersHtml(list) {
-    return '<div class="starters"><span>Sentence starters:</span>' + list.map(function (s) {
-      return '<button type="button" data-starter="' + ui.esc(s) + '">' + ui.esc(s) + "</button>";
-    }).join("") + "</div>";
-  }
-  function bindStarters(el, ta) {
-    el.querySelectorAll("[data-starter]").forEach(function (b) {
-      b.addEventListener("click", function () { insertStarter(ta, b.dataset.starter); });
-    });
-  }
-
-  /* Matches a keyword at the start of a word in the answer. */
-  function hasKey(text, kw) {
-    var t = " " + String(text).toLowerCase().replace(/[^a-z0-9]+/g, " ") + " ";
-    return t.indexOf(" " + kw) >= 0;
-  }
-
-  /* An open question with key-point feedback and the reference answer. */
-  function openQuestion(el, q, key, done) {
-    var saved = store.answer(key) || "";
-    el.innerHTML =
-      '<p class="q-prompt">' + q.prompt + "</p>" +
-      '<label class="sr-only" for="ta-' + key + '">Your answer</label>' +
-      '<textarea class="q-text" id="ta-' + key + '" rows="4" maxlength="800" placeholder="Write your answer in full sentences.">' + ui.esc(saved) + "</textarea>" +
-      startersHtml(q.starters) +
-      '<div class="q-actions"><button class="btn btn-primary" type="button" data-check>' + ui.icon("check") + "Check My Answer</button></div>" +
-      '<div class="q-fb" aria-live="polite"></div>';
-    var ta = el.querySelector("textarea");
-    var fb = el.querySelector(".q-fb");
-    bindStarters(el, ta);
-    ta.addEventListener("input", function () { store.answer(key, ta.value); });
-
-    function check(silent) {
-      var text = ta.value.trim();
-      if (text.split(/\s+/).length < 5) {
-        if (!silent) fb.innerHTML = '<p class="fb fb-info">' + ui.icon("bulb") + "Write at least one full sentence, then check your answer.</p>";
-        return;
-      }
-      store.answer(key, ta.value);
-      var hits = q.points.map(function (p) { return p.any.some(function (k) { return hasKey(text, k); }); });
-      var n = hits.filter(Boolean).length;
-      var all = n === q.points.length;
-      fb.innerHTML =
-        '<div class="kp"><p class="kp-h">Key Points</p><ul>' + q.points.map(function (p, i) {
-          return '<li class="' + (hits[i] ? "is-hit" : "is-miss") + '">' + (hits[i] ? ui.icon("check") : '<i aria-hidden="true"></i>') +
-            "<span>" + ui.esc(p.label) + (hits[i] ? "" : " <small>Not yet mentioned</small>") + "</span></li>";
-        }).join("") + "</ul></div>" +
-        '<p class="fb ' + (all ? "fb-ok" : "fb-info") + '">' + (all
-          ? ui.icon("check") + "<span>Well done. Your answer covers all " + q.points.length + " key points.</span>"
-          : ui.icon("bulb") + "<span>Your answer covers " + n + " of " + q.points.length + " key points. Add the missing " + (q.points.length - n === 1 ? "point" : "points") + " and check again, or compare your answer with the reference answer.</span>") + "</p>" +
-        '<div class="ref"><p class="ref-h">Reference Answer</p><p>' + ui.esc(q.reference) + "</p></div>";
-      done();
-    }
-    el.querySelector("[data-check]").addEventListener("click", function () { check(false); });
-    if (saved && store.step(key)) check(true);
-  }
-
   /* Table completion: Place is given; students fill in Age and How. */
-  function lev1(a, b) {
-    if (Math.abs(a.length - b.length) > 1) return false;
-    var i = 0, j = 0, diff = 0;
-    while (i < a.length && j < b.length) {
-      if (a[i] === b[j]) { i++; j++; continue; }
-      if (++diff > 1) return false;
-      if (a.length > b.length) i++; else if (b.length > a.length) j++; else { i++; j++; }
-    }
-    return diff + (a.length - i) + (b.length - j) <= 1;
-  }
   function howOk(text, keys) {
     var words = String(text).toLowerCase().replace(/[^a-z]+/g, " ").trim().split(" ").filter(Boolean);
     var joined = words.join("");
@@ -337,15 +148,6 @@
     el.querySelector("[data-check]").addEventListener("click", function () { check(false); });
     showBtn.addEventListener("click", show);
     if (store.step("l2v-q1") && Object.keys(saved).length) check(true);
-  }
-
-  function boardStep(o) {
-    return function (el, done) {
-      return GU.discuss.mount(el, {
-        board: o.board, prompts: o.prompts, choices: o.choices, maxChoices: o.maxChoices,
-        starters: o.starters, example: o.example, onPosted: done
-      });
-    };
   }
 
   function commonsUrl(file, w) { return "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(file) + "?width=" + (w || 800); }

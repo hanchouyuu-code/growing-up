@@ -50,7 +50,7 @@
       '<p class="lede">' + GU.TEACHER.blurb + "</p></header>" +
       '<section class="plan"><h2>Course Schedule</h2>' +
       '<div class="table-wrap"><table class="glance"><thead><tr><th>Part</th><th>Focus</th><th>Time</th><th>Status</th></tr></thead><tbody>' +
-      rows + '<tr class="total"><td colspan="2">Total</td><td>90 min</td><td></td></tr></tbody></table></div></section>' +
+      rows + '<tr class="total"><td colspan="2">Total</td><td>' + GU.totalMinutes() + ' min</td><td></td></tr></tbody></table></div></section>' +
       '<section class="plan"><h2>Teaching Resources</h2><ul class="res-list">' +
       '<li><a class="download" href="downloads/unit1-word-list.pdf" download>' + ui.icon("download") +
       "<span><b>Unit 1 Word List (PDF)</b>Thirty words with phonetics, meanings and textbook sentences</span></a></li>" +
@@ -63,15 +63,34 @@
       "<dt>Activity 2, The Qualities in the Poem</dt><dd>" + ui.esc(L2.pq2.reference) + " <i>Pride</i> is the distractor. Line numbers in the feedback refer to the full poem; the textbook prints stanzas 1 and 4 (lines 1–8 and 25–32).</dd>" +
       "<dt>Personal Responses</dt><dd>The warm-up and the two personal-response questions are open. Students post first and only then see their classmates’ answers, so that each student forms a view before the discussion begins.</dd>" +
       "</dl></section>" +
+      '<section class="plan"><h2>Lesson 3 Reference Answers</h2><dl class="keys">' +
+      "<dt>Activity 1, Rights and Ages</dt><dd>" + GU.L3.rights.items.map(function (it) { return ui.esc(it.text) + ": " + it.answer.join(" (women) / ") + (it.answer.length > 1 ? " (men)" : ""); }).join("; ") + ".</dd>" +
+      "<dt>Activity 4, Choosing a Title</dt><dd>" + ui.esc(GU.L3.titleQ.options[GU.L3.titleQ.answer].text) + "</dd>" +
+      "<dt>Activity 4, Text Type</dt><dd>" + ui.esc(GU.L3.typeQ.options[GU.L3.typeQ.answer].text) + ": an introduction followed by three personal opinions.</dd>" +
+      "<dt>Activity 4, Facts or Opinions</dt><dd>" + GU.L3.factQ.items.map(function (it, i) { return (i + 1) + " " + it.answer; }).join("  ") + "</dd>" +
+      "</dl></section>" +
+      '<section class="plan"><h2>Lesson 3 Questions from Students</h2>' +
+      "<p>Questions posted in Activity 3 of Lesson 3. Students are told that the teacher replies within three days. Save the teacher key below, then answer on the activity page; your replies are marked as the teacher’s answer.</p>" +
+      '<div class="tq-list"><p class="tkey-msg">Loading the questions…</p></div>' +
+      '<a class="btn btn-ghost btn-sm" href="#/lesson-3/l3-video">Open the Questions and Answers</a></section>' +
       '<section class="plan"><h2>Discussion Moderation</h2>' +
       "<p>Posts in the Lesson 2 class discussions appear immediately. Enter the teacher key (the <code>TEACHER_KEY</code> value set in Vercel) to show <b>Remove</b> buttons on posts and replies on this device.</p>" +
       '<form class="tkey" autocomplete="off"><label class="sr-only" for="tkey">Teacher key</label>' +
       '<input class="spell-in" id="tkey" type="password" placeholder="Teacher key" value="' + ui.esc(savedKey()) + '">' +
       '<button class="btn btn-primary btn-sm" type="submit">Save Key</button>' +
       '<button class="btn btn-ghost btn-sm" type="button" data-forget>Forget Key</button></form>' +
-      '<p class="tkey-msg" aria-live="polite">' + (savedKey() ? "A teacher key is saved on this device." : "") + "</p></section>";
+      '<p class="tkey-msg tkey-status" aria-live="polite">' + (savedKey() ? "A teacher key is saved on this device." : "") + "</p></section>";
 
-    var form = page.querySelector(".tkey"), msg = page.querySelector(".tkey-msg"), inp = page.querySelector("#tkey");
+    var tq = page.querySelector(".tq-list");
+    fetch("api/discuss?board=l3-qa", { cache: "no-store" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
+      var open = (d.posts || []).filter(function (p) { return !(p.replies || []).some(function (r) { return r.teacher; }); });
+      tq.innerHTML = open.length ? '<ul class="res-list tq">' + open.map(function (p) {
+        var days = Math.floor((Date.now() - p.at) / 86400000);
+        return "<li><span><b>" + ui.esc(p.name) + "</b> " + ui.esc(p.text) + '<small class="' + (days >= 3 ? "late" : "") + '">' + (days ? days + (days === 1 ? " day" : " days") + " ago" : "today") + "</small></span></li>";
+      }).join("") + "</ul>" : '<p class="tkey-msg">All questions have been answered.</p>';
+    }).catch(function () { tq.innerHTML = '<p class="tkey-msg">The question board is not connected yet. Connect Upstash Redis in Vercel to collect questions.</p>'; });
+
+    var form = page.querySelector(".tkey"), msg = page.querySelector(".tkey-status"), inp = page.querySelector("#tkey");
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var key = inp.value.trim();

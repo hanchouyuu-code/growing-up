@@ -42,25 +42,26 @@
     mount: function (el, o) {
       var board = o.board;
       var postedKey = "posted:" + board;
-      var posts = [], live = false, myHash = null, sort = "new", timer = null, selected = [];
+      var posts = [], live = false, myHash = null, sort = "new", timer = null, selected = [], justPosted = false;
       var max = o.maxChoices || 1;
 
       function me() { return store.player(); }
 
       function render() {
-        var posted = store.step(postedKey);
+        var qa = !!o.qa;
+        var posted = qa || store.step(postedKey);
         var p = me() || {};
         var choiceHtml = o.choices ? '<fieldset class="bd-choices"><legend>' + (max > 1 ? "Your choices (up to " + max + ")" : "Your choice") + "</legend>" +
           o.choices.map(function (c, i) {
             return '<button type="button" class="bd-choice' + (selected.indexOf(c) >= 0 ? " is-on" : "") + '" data-choice="' + i + '" aria-pressed="' + (selected.indexOf(c) >= 0) + '">' + ui.esc(c) + "</button>";
           }).join("") + "</fieldset>" : "";
-        var form = posted ? "" :
+        var form = posted && !qa ? "" :
           '<form class="bd-form" autocomplete="off">' + choiceHtml +
           (p.name ? "" : '<label class="bd-label" for="bd-name-' + board + '">Nickname</label><input class="bd-input" id="bd-name-' + board + '" maxlength="16" placeholder="e.g. Sapling 7" required>') +
-          '<label class="bd-label" for="bd-text-' + board + '">Your answer</label>' +
-          '<textarea class="bd-input bd-text" id="bd-text-' + board + '" rows="4" maxlength="600" placeholder="Write two or three sentences."></textarea>' +
+          '<label class="bd-label" for="bd-text-' + board + '">' + (qa ? "Your question" : "Your answer") + "</label>" +
+          '<textarea class="bd-input bd-text" id="bd-text-' + board + '" rows="' + (qa ? 3 : 4) + '" maxlength="600" placeholder="' + (qa ? "Ask about a word, a sentence or an idea in the passage." : "Write two or three sentences.") + '"></textarea>' +
           (o.starters ? '<div class="bd-starters"><span>Sentence starters:</span>' + o.starters.map(function (s) { return '<button type="button" data-starter="' + ui.esc(s) + '">' + ui.esc(s) + "</button>"; }).join("") + "</div>" : "") +
-          '<div class="bd-actions"><button class="btn btn-mint" type="submit">' + ui.icon("send") + "Post My Answer</button>" +
+          '<div class="bd-actions"><button class="btn btn-mint" type="submit">' + ui.icon("send") + (qa ? "Post My Question" : "Post My Answer") + "</button>" +
           '<span class="bd-fine">' + (p.name ? "Posting as <b>" + ui.esc(p.name) + "</b>. " : "") + "Use a nickname, not your full name.</span></div>" +
           '<p class="bd-msg" aria-live="polite"></p></form>';
 
@@ -69,17 +70,23 @@
           body = '<p class="bd-gate">' + ui.icon("lock") + "Post your own answer first. Your classmates’ answers will then appear here, and you can reply to them or like them.</p>";
         } else {
           body = (o.choices ? pollHtml() : "") +
-            '<div class="bd-bar"><div class="seg seg-dark" role="radiogroup" aria-label="Sort answers"><button role="radio" aria-checked="' + (sort === "new") + '" data-sort="new">Newest</button><button role="radio" aria-checked="' + (sort === "top") + '" data-sort="top">Most Liked</button></div>' +
+            (qa ? '<p class="qa-note">' + ui.icon("clock") + "The teacher answers every question within three days. You are welcome to answer your classmates’ questions too.</p>" : "") +
+            '<div class="bd-bar"><div class="seg seg-dark" role="radiogroup" aria-label="Sort"><button role="radio" aria-checked="' + (sort === "new") + '" data-sort="new">Newest</button>' +
+            (qa ? '<button role="radio" aria-checked="' + (sort === "open") + '" data-sort="open">Awaiting Answers</button>' : '<button role="radio" aria-checked="' + (sort === "top") + '" data-sort="top">Most Liked</button>') + "</div>" +
             '<button class="link-btn bd-refresh" type="button">' + ui.icon("redo") + "Refresh</button></div>" +
-            (live ? "" : '<p class="bd-note">The class discussion is not connected yet, so only your own answer, saved on this device, is shown.</p>') +
+            (live ? "" : '<p class="bd-note">' + (qa ? "The class Q&amp;A is not connected yet, so only your own questions, saved on this device, are shown." : "The class discussion is not connected yet, so only your own answer, saved on this device, is shown.") + "</p>") +
+            (qa && live && !posts.length ? '<p class="bd-gate">' + ui.icon("chat") + "No questions yet. Be the first to ask.</p>" : "") +
             (o.example ? '<article class="bd-post bd-teacher"><div class="bd-meta"><span class="bd-avatar t">T</span><b>Teacher’s Example</b></div><p>' + ui.esc(o.example) + "</p></article>" : "") +
             '<ul class="bd-posts">' + sorted().map(postHtml).join("") + "</ul>";
         }
+        var prevTa = el.querySelector(".bd-text"), keepText = prevTa ? prevTa.value : "";
         el.innerHTML = '<section class="disc" aria-label="Class discussion">' +
-          '<div class="bd-head"><span class="zone-tag">' + ui.icon("users") + "Class Discussion</span>" +
+          '<div class="bd-head"><span class="zone-tag">' + ui.icon(qa ? "chat" : "users") + (qa ? "Questions and Answers" : "Class Discussion") + "</span>" +
           '<span class="bd-live' + (live ? " is-live" : "") + '">' + (live ? "<i></i>Live" : "This device only") + "</span></div>" +
           (o.prompts ? '<ol class="bd-prompts">' + o.prompts.map(function (q) { return "<li>" + q + "</li>"; }).join("") + "</ol>" : "") +
           form + body + "</section>";
+        var ta = el.querySelector(".bd-text"); if (ta && keepText && !justPosted) ta.value = keepText;
+        justPosted = false;
         bind();
       }
 
@@ -101,30 +108,35 @@
       function sorted() {
         var a = posts.slice();
         if (sort === "top") a.sort(function (x, y) { return (y.likes || 0) - (x.likes || 0) || y.at - x.at; });
+        else if (sort === "open") a.sort(function (x, y) { return answered(x) - answered(y) || y.at - x.at; });
         else a.sort(function (x, y) { return y.at - x.at; });
         return a;
       }
 
+      function answered(p) { return (p.replies || []).some(function (r) { return r.teacher; }) ? 1 : 0; }
+
       function postHtml(p) {
         var mine = myHash && p.pid === myHash;
         var tk = teacherKey();
+        var qa = !!o.qa;
         return '<li class="bd-post' + (mine ? " is-mine" : "") + '" data-post="' + ui.esc(p.id) + '">' +
           '<div class="bd-meta"><span class="bd-avatar">' + ui.esc((p.name || "?").slice(0, 1).toUpperCase()) + "</span><b>" + ui.esc(p.name) + "</b>" +
           (mine ? '<em class="lb-you">You</em>' : "") + '<span class="bd-time">' + ago(p.at) + "</span>" +
           (tk && live ? '<button class="link-btn bd-del" data-del="' + ui.esc(p.id) + '">Remove</button>' : "") + "</div>" +
+          (qa ? (answered(p) ? '<span class="qa-st is-done">' + ui.icon("check") + "Answered by the teacher</span>" : '<span class="qa-st">' + ui.icon("clock") + "Awaiting the teacher’s reply</span>") : "") +
           ((p.choices || []).length ? '<div class="bd-tags">' + p.choices.map(function (c) { return "<span>" + ui.esc(c) + "</span>"; }).join("") + "</div>" : "") +
           "<p>" + ui.esc(p.text) + "</p>" +
           '<div class="bd-acts">' +
           (live ? '<button class="bd-like' + (p.liked ? " is-on" : "") + '" data-like="' + ui.esc(p.id) + '" aria-pressed="' + !!p.liked + '" aria-label="Like">' +
             '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>' + (p.likes || 0) + "</span></button>" +
-            '<button class="link-btn" data-reply="' + ui.esc(p.id) + '">' + ui.icon("chat") + "Reply" + (p.replies.length ? " (" + p.replies.length + ")" : "") + "</button>" : "") +
+            '<button class="link-btn" data-reply="' + ui.esc(p.id) + '">' + ui.icon("chat") + (qa ? (tk ? "Answer as Teacher" : "Answer") : "Reply") + (p.replies.length ? " (" + p.replies.length + ")" : "") + "</button>" : "") +
           "</div>" +
           (p.replies.length ? '<ul class="bd-replies">' + p.replies.map(function (r, i) {
-            return '<li><b>' + ui.esc(r.name) + '</b><span class="bd-time">' + ago(r.at) + "</span>" +
+            return '<li' + (r.teacher ? ' class="is-teacher"' : "") + '>' + (r.teacher ? '<span class="bd-avatar t">T</span>' : "") + "<b>" + ui.esc(r.name) + "</b>" + (r.teacher ? '<em class="qa-badge">Teacher</em>' : "") + '<span class="bd-time">' + ago(r.at) + "</span>" +
               (tk ? '<button class="link-btn bd-del" data-delr="' + ui.esc(p.id) + ":" + i + '">Remove</button>' : "") + "<p>" + ui.esc(r.text) + "</p></li>";
           }).join("") + "</ul>" : "") +
-          '<form class="bd-replyform" data-rform="' + ui.esc(p.id) + '" hidden><textarea class="bd-input" rows="2" maxlength="300" placeholder="Reply with a question or a comment that builds on this idea."></textarea>' +
-          '<button class="btn btn-mint btn-sm" type="submit">Reply</button></form></li>';
+          '<form class="bd-replyform" data-rform="' + ui.esc(p.id) + '" hidden><textarea class="bd-input" rows="2" maxlength="' + (tk ? 800 : 300) + '" placeholder="' + (qa ? (tk ? "Write the teacher’s answer." : "Answer this question, or add a follow-up question.") : "Reply with a question or a comment that builds on this idea.") + '"></textarea>' +
+          '<button class="btn btn-mint btn-sm" type="submit">' + (qa ? "Send" : "Reply") + "</button></form></li>";
       }
 
       function msg(t) { var m = el.querySelector(".bd-msg"); if (m) m.textContent = t; }
@@ -181,19 +193,22 @@
       function submit() {
         var text = el.querySelector(".bd-text").value.trim();
         if (o.choices && !selected.length) { msg("Choose an option first."); return; }
-        if (text.length < (o.minLen || 15)) { msg("Write at least one full sentence before posting."); return; }
+        if (text.length < (o.minLen || (o.qa ? 8 : 15))) { msg(o.qa ? "Write your question in a full sentence." : "Write at least one full sentence before posting."); return; }
         var p = ensurePlayer(); if (!p) return;
         var local = { id: "local-" + Date.now(), pid: "local", name: p.name, text: text, choices: selected.slice(), at: Date.now(), replies: [], likes: 0, liked: false };
-        store.answer("post:" + board, local);
+        if (o.qa) { var mine = store.answer("posts:" + board) || []; mine.push(local); store.answer("posts:" + board, mine); }
+        else store.answer("post:" + board, local);
         api.send({ action: "post", board: board, id: p.id, name: p.name, text: text, choices: selected.slice() }).then(function () {
+          justPosted = true;
           store.setStep(postedKey);
           if (o.onPosted) o.onPosted();
           load();
         }).catch(function (e) {
           if (e.status === 429 || e.status === 400) { msg(e.message); return; }
+          justPosted = true;
           store.setStep(postedKey);
           if (o.onPosted) o.onPosted();
-          live = false; posts = [local]; render();
+          live = false; posts = o.qa ? (store.answer("posts:" + board) || []) : [local]; render();
         });
       }
 
@@ -209,7 +224,9 @@
         text = String(text || "").trim();
         if (text.length < 2) return;
         var pl = ensurePlayer(); if (!pl) return;
-        api.send({ action: "reply", board: board, postId: id, id: pl.id, name: pl.name, text: text }).then(load)
+        var body = { action: "reply", board: board, postId: id, id: pl.id, name: pl.name, text: text };
+        if (o.qa && teacherKey()) body.key = teacherKey();
+        api.send(body).then(function () { if (o.onPosted) o.onPosted(); load(); })
           .catch(function (e) { ui.toast(e.message || "The reply could not be sent."); });
       }
 
@@ -230,7 +247,7 @@
         }).catch(function () {
           live = false;
           var own = store.answer("post:" + board);
-          posts = own ? [own] : [];
+          posts = o.qa ? (store.answer("posts:" + board) || []) : own ? [own] : [];
           myHash = "local";
           render();
         });
@@ -238,7 +255,12 @@
 
       render();
       load();
-      timer = setInterval(function () { if (!document.hidden && store.step(postedKey) && live) load(); }, 25000);
+      timer = setInterval(function () {
+        if (document.hidden || !live || !(o.qa || store.step(postedKey))) return;
+        /* Do not refresh while someone is typing a reply. */
+        if ([].some.call(el.querySelectorAll(".bd-replyform textarea"), function (t) { return t.value.trim(); })) return;
+        load();
+      }, 25000);
       return function () { clearInterval(timer); };
     }
   };

@@ -10,7 +10,7 @@
 const crypto = require("crypto");
 const { configured, pipeline } = require("./_redis");
 
-const BOARDS = ["l2-warmup", "l2-impression", "l2-qualities"];
+const BOARDS = ["l2-warmup", "l2-impression", "l2-qualities", "l3-qa"];
 const MAX_POSTS = 80;
 
 function pidOf(id) { return crypto.createHash("sha256").update(String(id)).digest("hex").slice(0, 16); }
@@ -92,12 +92,17 @@ module.exports = async function handler(req, res) {
     const pid = pidOf(id);
 
     if (action === "post" || action === "reply") {
-      const name = clean(b.name, 16);
-      const text = clean(b.text, action === "post" ? 600 : 300);
+      /* A reply sent with the teacher key is marked as the teacher's answer. */
+      const tkey = process.env.TEACHER_KEY;
+      const isTeacher = action === "reply" && !!tkey && String(b.key || "") === tkey;
+      const name = isTeacher ? "Teacher" : clean(b.name, 16);
+      const text = clean(b.text, action === "post" ? 600 : isTeacher ? 800 : 300);
       if (!name) return res.status(400).json({ error: "A nickname is required." });
       if (text.length < 2) return res.status(400).json({ error: "Please write a little more." });
-      const [ok] = await pipeline([["SET", "gu:d:rl:" + pid, "1", "EX", 5, "NX"]]);
-      if (ok === null) return res.status(429).json({ error: "Please wait a few seconds before posting again." });
+      if (!isTeacher) {
+        const [ok] = await pipeline([["SET", "gu:d:rl:" + pid, "1", "EX", 5, "NX"]]);
+        if (ok === null) return res.status(429).json({ error: "Please wait a few seconds before posting again." });
+      }
 
       if (action === "post") {
         const choices = Array.isArray(b.choices) ? b.choices.slice(0, 3).map((c) => clean(c, 60)).filter(Boolean) : [];
@@ -110,6 +115,7 @@ module.exports = async function handler(req, res) {
       const [exists] = await pipeline([["HEXISTS", K.data(board), postId]]);
       if (!exists) return res.status(404).json({ error: "This post no longer exists." });
       const rep = { pid, name, text, at: Date.now() };
+      if (isTeacher) rep.teacher = true;
       await pipeline([["RPUSH", K.replies(postId), JSON.stringify(rep)], ["LTRIM", K.replies(postId), -50, -1]]);
       return res.status(200).json({ ok: true, reply: rep });
     }

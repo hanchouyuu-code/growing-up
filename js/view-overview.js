@@ -88,7 +88,7 @@
       '<h1 class="ov-title"><span class="ov-unit">Unit 1</span>Growing up</h1>' +
       '<p class="ov-lede">' + GU.OVERVIEW.lede + "</p>" +
       '<div class="ov-cta"><a class="btn btn-primary btn-lg js-start" href="' + startHref + '">' + startLabel + "</a>" +
-      '<span class="ov-time">' + ui.icon("clock") + "90 minutes, four lessons</span></div>" +
+      '<span class="ov-time">' + ui.icon("clock") + GU.totalMinutes() + " minutes, four lessons</span></div>" +
       "</div>" + growth() +
       "</section>" +
 
@@ -103,7 +103,7 @@
       videoBlock() +
 
       '<section class="ov-sec ov-route" aria-labelledby="cs-h">' +
-      '<div class="sec-head"><h2 id="cs-h">Course Structure</h2><span class="sec-meta">' + ui.icon("clock") + "90 minutes in total</span></div>" +
+      '<div class="sec-head"><h2 id="cs-h">Course Structure</h2><span class="sec-meta">' + ui.icon("clock") + GU.totalMinutes() + " minutes in total</span></div>" +
       '<ol class="route">' + lessons + "</ol>" +
       '<div class="route-extra">' +
       '<a class="route-community" href="#/community/battle">' + ui.icon("trophy") + "<span><b>Word Battle</b>Timed questions on the thirty words, with a class leaderboard.</span></a>" +

@@ -168,10 +168,15 @@
     else if (parts[0] === "community" && !parts[1]) { location.replace("#/community/battle"); return; }
     else if (parts[0] === "community" && parts[1] === "battle") view = "battle";
     else if (parts[0] === "community" && parts[1] === "tutor") view = "tutorPage";
-    else if (parts[0] === "lesson-2" && !parts[1]) view = "lesson2";
-    else if (parts[0] === "lesson-2" && parts[1] === "l2-video") view = "l2video";
-    else if (parts[0] === "lesson-2" && parts[1] === "l2-poem") view = "l2poem";
-    else if (/^lesson-[34]$/.test(parts[0])) { view = "soon"; params.lesson = parts[0]; }
+    else if (/^lesson-[234]$/.test(parts[0])) {
+      /* Lessons 2–4: a landing page, then one page per activity (the view is named after the activity kind). */
+      var L = GU.LESSONS.filter(function (x) { return x.id === parts[0]; })[0];
+      var A = L.activities && parts[1] ? L.activities.filter(function (x) { return x.id === parts[1]; })[0] : null;
+      if (L.soon || !L.activities) { view = "soon"; params.lesson = parts[0]; }
+      else if (!parts[1]) view = "lesson" + L.n;
+      else if (A && GU.views[A.kind]) view = A.kind;
+      else { location.replace("#/" + L.id); return; }
+    }
     else if (parts[0] === "teacher") view = "teacher";
     else { location.replace("#/overview"); return; }
 
