@@ -1518,12 +1518,4 @@ input.bd-input { max-width: 260px; }
 .stanza:not(.is-extra) .stanza-tag { margin-top: 6px; }
 .act-end > .act-end-go { flex: 0 1 auto; min-width: 0; justify-content: flex-end; }
 
-/* Round 7: a narrower, more compact activity header card */
-.act-hero { max-width: 720px; margin-left: auto; margin-right: auto; padding: clamp(24px, 3.5vw, 36px) clamp(22px, 4vw, 40px) clamp(22px, 3vw, 30px); border-radius: 26px; margin-bottom: 56px; }
-.act-hero h1 { font-size: clamp(1.6rem, 1.25rem + 1.2vw, 2.05rem); }
-.act-hero .lede { font-size: .92rem; }
-.act-hero .step-track { margin-top: 26px; }
-.act-hero .step-track li { font-size: .74rem; }
-.act-hero .act-banner { margin-top: 24px; padding-top: 18px; }
-.act-hero .act-banner .btn-primary { min-height: 42px; padding: 0 18px; font-size: .92rem; }
 .act-meta .tag-opt { margin-left: 10px; }
