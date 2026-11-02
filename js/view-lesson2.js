@@ -426,10 +426,8 @@
     var n = 0;
     var body = P.stanzas.map(function (st, si) {
       var inBook = P.excerpt.indexOf(si) >= 0;
-      var voice = rec.voices && rec.audio ? rec.voices[si] : "";
       return '<div class="stanza' + (inBook ? "" : " is-extra") + '" data-stanza="' + si + '">' +
-        '<p class="stanza-tag">' + (inBook ? "" : "Stanza " + (si + 1) + ": not printed in the textbook") +
-        (voice ? '<span class="stanza-voice">' + voice + "</span>" : "") + "</p>" +
+        (inBook ? "" : '<p class="stanza-tag">Stanza ' + (si + 1) + ": not printed in the textbook</p>") +
         st.map(function (l) {
           n++;
           return '<div class="pl" data-line="' + n + '"><button class="pl-n" type="button" data-say="' + n + '" aria-label="Hear line ' + n + '">' + n + "</button>" +
