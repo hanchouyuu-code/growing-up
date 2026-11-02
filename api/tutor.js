@@ -113,7 +113,8 @@ module.exports = async function handler(req, res) {
   if (await rateLimited(req)) return res.status(429).json({ error: "Hourly question limit reached. Please try again later." });
 
   const system = systemPrompt(typeof body.word === "string" ? body.word : null) +
-    (body.context === "lesson-3" ? "\nThe student is now working on Lesson 3, the reading passage The Age of Majority. Focus on the passage, its key expressions and the speakers' views, and quote the passage where it helps." : "");
+    (body.context === "lesson-3" ? "\nThe student is now working on Lesson 3, the reading passage The Age of Majority. Focus on the passage, its key expressions and the speakers' views, and quote the passage where it helps." : "") +
+    (body.context === "lesson-4" ? "\nThe student is now working on Lesson 4, an 80-word essay titled Me at Eighteen: the right they most want as an adult, why, and the responsibility that comes with it. Help with ideas, vocabulary from the unit, linking words and sentence patterns, and check sentences they write. Never write the essay or whole paragraphs for them; give one example sentence at most and ask them to write their own." : "");
   try {
     let reply = "";
     if (anthropicKey) {

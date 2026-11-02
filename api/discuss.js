@@ -10,7 +10,9 @@
 const crypto = require("crypto");
 const { configured, pipeline } = require("./_redis");
 
-const BOARDS = ["l2-warmup", "l2-impression", "l2-qualities", "l3-qa"];
+const BOARDS = ["l2-warmup", "l2-impression", "l2-qualities", "l3-qa", "l4-right", "l4-adult", "l4-qa", "l4-showcase"];
+/* Boards that take longer posts (whole essays) */
+const LONG = { "l4-showcase": 1200 };
 const MAX_POSTS = 80;
 
 function pidOf(id) { return crypto.createHash("sha256").update(String(id)).digest("hex").slice(0, 16); }
@@ -96,7 +98,7 @@ module.exports = async function handler(req, res) {
       const tkey = process.env.TEACHER_KEY;
       const isTeacher = action === "reply" && !!tkey && String(b.key || "") === tkey;
       const name = isTeacher ? "Teacher" : clean(b.name, 16);
-      const text = clean(b.text, action === "post" ? 600 : isTeacher ? 800 : 300);
+      const text = clean(b.text, action === "post" ? (LONG[board] || 600) : isTeacher ? 800 : 300);
       if (!name) return res.status(400).json({ error: "A nickname is required." });
       if (text.length < 2) return res.status(400).json({ error: "Please write a little more." });
       if (!isTeacher) {

@@ -78,8 +78,12 @@ GU.LESSONS = [
     ]
   },
   {
-    id: "lesson-4", n: 4, title: "Writing", short: "Writing", minutes: 20, soon: true,
-    blurb: "A short written response on the responsibilities that come with turning 18."
+    id: "lesson-4", n: 4, title: "Writing", short: "Writing", minutes: 15, practice: true,
+    blurb: "A discussion of adult rights and responsibilities, followed by an 80-word essay, Me at Eighteen, with AI feedback and a class showcase.",
+    activities: [
+      { id: "l4-think", title: "Pre-writing", short: "Pre-writing", kind: "l4think", minutes: 5, label: "Activity 1", steps: ["l4t-right", "l4t-adult"] },
+      { id: "l4-write", title: "Guided Writing", short: "Guided Writing", kind: "l4write", minutes: 10, label: "Activity 2", steps: ["l4w-draft", "l4w-feedback", "l4w-qa", "l4w-share"] }
+    ]
   }
 ];
 
@@ -114,6 +118,20 @@ GU.PRACTICE = {
     battleLede: "Fifteen questions on the thirty key words of Unit 1, most of which appear in <em>The Age of Majority</em>, in four formats: meaning, word, listening and textbook context. The class leaderboard ranks players by accuracy, then by time."
   }
 };
+GU.PRACTICE["lesson-4"] = {
+  crumb: "Lesson 4: Writing", href: "#/lesson-4", tag: "Writing Support", battle: "#/lesson-4/battle", tutor: "#/lesson-4/tutor",
+  title: "Writing Support: AI Tutor and Word Battle",
+  blurb: "Consult the AI Tutor on ideas, words and sentence patterns for your essay, and review the unit’s key words in a timed battle with classmates.",
+  battleCard: "Fifteen timed questions on the thirty key words of the unit: a quick review before you write. Accuracy decides your place on the class leaderboard.",
+  tutorCard: "Ask about ideas, words, linking words and sentence patterns for your essay, or ask the tutor to check a sentence. The tutor guides you but does not write the essay for you.",
+  panelChips: ["Which linking words can I use to give a reason?", "How can I begin an essay about turning 18?", "Is this sentence correct: “I look forward to have a say.”", "How is “take responsibility for” used?"],
+  chips: ["Which linking words can I use to give a reason?", "How can I begin an essay about turning 18?", "Is this sentence correct: “I look forward to have a say.”", "How is “take responsibility for” used?", "Quiz me"],
+  greeting: "<p>Hello. I am the AI Tutor for Unit 1, Growing up.</p><p>Ask me about ideas, words and sentence patterns for your essay <i>Me at Eighteen</i>, or paste a sentence for me to check. I will help you write it, but I will not write it for you.</p>",
+  placeholder: "Ask about ideas, words or a sentence",
+  status: "Helps with ideas, words and sentences for your essay",
+  tutorLede: "The AI Tutor helps with ideas, vocabulary, linking words and sentence patterns for the essay <em>Me at Eighteen</em>, and checks sentences that you write. It guides you but does not write the essay for you.",
+  battleLede: "Fifteen questions on the thirty key words of Unit 1, in four formats: meaning, word, listening and textbook context. A quick review of words you can use in your essay."
+};
 GU.practiceId = "lesson-1";
 GU.practice = function () { return GU.PRACTICE[GU.practiceId] || GU.PRACTICE["lesson-1"]; };
 
@@ -144,7 +162,7 @@ GU.BADGES = [
   { id: "battle", name: "Word Champion", desc: "Bonus: Completion of a Word Battle", icon: "trophy", bonus: true },
   { id: "lesson-2", name: "Branching Out", desc: "Completion of the chosen path in Lesson 2", icon: "sun" },
   { id: "lesson-3", name: "In Full Leaf", desc: "Completion of Lesson 3", icon: "book" },
-  { id: "lesson-4", name: "Coming of Age", desc: "Completion of Lesson 4", icon: "pen", soon: true }
+  { id: "lesson-4", name: "Coming of Age", desc: "Completion of Lesson 4", icon: "pen" }
 ];
 
 var OALD = "Oxford Advanced Learner’s Dictionary";
@@ -709,4 +727,51 @@ GU.L3 = {
       { text: "I guess some responsibilities are more about attitude than age.", answer: "O", why: "“I guess” introduces a personal belief that others may not share." }
     ]
   }
+};
+
+/* ---------- Lesson 4: Writing ---------- */
+GU.L4 = {
+  /* Think & Share (textbook, Understanding ideas), questions 2 and 3. Sample answers are shown after posting. */
+  right: {
+    prompt: "What right are you most looking forward to having as an adult? Why?",
+    choices: ["Getting a driver’s licence", "Voting in elections", "Getting a credit card", "Getting a full-time job", "Renting an apartment", "Another right"],
+    starters: ["The right I am most looking forward to is …", "This is because …", "With this right, I will be able to …"],
+    example: "The right I am most looking forward to is getting a driver’s licence. Driving would give me more freedom, and I could take my grandparents to see the doctor. However, I know that being behind the wheel also means taking responsibility for my own life and the lives of other people."
+  },
+  adult: {
+    prompt: "What do you think it means to be a responsible adult?",
+    starters: ["To me, a responsible adult is someone who …", "For example, …", "A responsible adult does not …"],
+    example: "To me, a responsible adult is someone who thinks about how their choices affect other people. For example, a responsible adult keeps promises, manages money carefully and does not blame others for their own mistakes. Like Morgan says, some responsibilities are more about attitude than age."
+  },
+
+  /* The writing task, in the format of the gaokao applied writing task (about 80 words). */
+  task: {
+    title: "Me at Eighteen",
+    zh: [
+      "假定你是李华，你校英文报 “Growing Up” 栏目正在开展以“我的十八岁”（Me at Eighteen）为题的征文活动。请你写一篇短文投稿，内容包括：",
+      "1. 成年后你最希望拥有的一项权利；",
+      "2. 你希望拥有这项权利的理由；",
+      "3. 你对这项权利所对应责任的理解。",
+      "注意：1. 写作词数应为 80 左右；2. 短文的题目已为你写好。"
+    ],
+    en: "Write about 80 words for the school English newspaper: the right you most want to have as an adult, why you want it, and the responsibility that comes with it.",
+    points: [
+      { id: "right", label: "The right you most want to have", any: ["right", "vote", "voting", "licence", "license", "drive", "driving", "credit card", "loan", "job", "work", "rent", "apartment", "sign", "decide", "decision", "travel"] },
+      { id: "reason", label: "Your reason for wanting it", any: ["because", "since", "as ", "so that", "so i", "reason", "in order to", "which means", "will be able to", "allow me", "allows me", "give me", "help me"] },
+      { id: "duty", label: "The responsibility that comes with it", any: ["responsib", "duty", "duties", "must", "should", "have to", "careful", "obey", "respect", "take care", "consequence", "commitment"] }
+    ],
+    model: "Turning eighteen, I look forward most to the right to vote. As an adult citizen, I will finally have a say in decisions that shape my community and my country. However, every right comes with responsibility. Before voting, I must learn about the candidates and think carefully instead of simply following others. I should also respect the result, even if it is not what I chose. To me, being eighteen means not only enjoying new freedom but also taking responsibility for my choices."
+  },
+
+  /* Sentence patterns for the language bank: [heading, [patterns]] */
+  patterns: [
+    ["Opening", ["As I am about to turn eighteen, …", "Turning eighteen marks the start of adulthood, and …", "What I look forward to most is the right to …"]],
+    ["Reasons", ["The main reason is that …", "With this right, I will be able to …", "This right matters to me because …"]],
+    ["Responsibility", ["However, every right comes with responsibility.", "This means that I must …", "I should also take responsibility for …"]],
+    ["Conclusion", ["To me, being eighteen means not only … but also …", "In short, …", "I am ready to …"]]
+  ],
+  linking: ["however", "therefore", "in addition", "besides", "what’s more", "as a result", "first", "finally", "in short", "not only … but also", "because", "although", "instead of"],
+
+  /* Gaokao applied writing: 15 marks in five bands. */
+  bands: [[13, 15, "Band 5", "第五档"], [10, 12, "Band 4", "第四档"], [7, 9, "Band 3", "第三档"], [4, 6, "Band 2", "第二档"], [1, 3, "Band 1", "第一档"]]
 };

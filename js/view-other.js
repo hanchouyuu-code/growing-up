@@ -69,10 +69,17 @@
       "<dt>Activity 1, Text Structure</dt><dd>" + ui.esc(GU.L3.typeQ.options[GU.L3.typeQ.answer].text) + ": an introduction followed by three personal opinions.</dd>" +
       "<dt>Activity 4, Fact and Opinion</dt><dd>" + GU.L3.factQ.items.map(function (it, i) { return (i + 1) + " " + it.answer; }).join("  ") + "</dd>" +
       "</dl></section>" +
-      '<section class="plan"><h2>Lesson 3 Questions from Students</h2>' +
-      "<p>Questions posted in Activity 3 of Lesson 3. Students are told that the teacher replies within three days. Save the teacher key below, then answer on the activity page; your replies are marked as the teacher’s answer.</p>" +
+      '<section class="plan"><h2>Lesson 4 Reference Answers</h2><dl class="keys">' +
+      "<dt>Activity 1, Rights in Adulthood (sample answer)</dt><dd><i>" + ui.esc(GU.L4.right.prompt) + "</i><br>" + ui.esc(GU.L4.right.example) + "</dd>" +
+      "<dt>Activity 1, Responsible Adulthood (sample answer)</dt><dd><i>" + ui.esc(GU.L4.adult.prompt) + "</i><br>" + ui.esc(GU.L4.adult.example) + "</dd>" +
+      "<dt>Activity 2, Writing Task</dt><dd lang=\"zh-CN\">" + GU.L4.task.zh.map(ui.esc).join("<br>") + "</dd>" +
+      "<dt>Activity 2, Model Essay (" + GU.L4.task.model.split(/\s+/).length + " words)</dt><dd><b>" + GU.L4.task.title + "</b><br>" + ui.esc(GU.L4.task.model) + "</dd>" +
+      "<dt>Marking</dt><dd>Gaokao applied writing, 15 marks: " + GU.L4.bands.map(function (b) { return b[2] + " (" + b[0] + "–" + b[1] + ")"; }).join(", ") + ". The AI feedback uses these bands; without the AI service, students receive an automatic estimate.</dd>" +
+      "</dl></section>" +
+      '<section class="plan"><h2>Questions from Students</h2>' +
+      "<p>Questions posted in Lesson 3 (Video Lecture) and Lesson 4 (Guided Writing). Students are told that the teacher replies within three days. Save the teacher key below, then answer on the activity page; your replies are marked as the teacher’s answer.</p>" +
       '<div class="tq-list"><p class="tkey-msg">Loading the questions…</p></div>' +
-      '<a class="btn btn-ghost btn-sm" href="#/lesson-3/l3-video">Open the Questions and Answers</a></section>' +
+      '<div class="q-actions"><a class="btn btn-ghost btn-sm" href="#/lesson-3/l3-video">Open the Lesson 3 Questions</a><a class="btn btn-ghost btn-sm" href="#/lesson-4/l4-write">Open the Lesson 4 Questions</a></div></section>' +
       '<section class="plan"><h2>Class Discussion and Q&amp;A Service</h2>' +
       '<p class="svc"><span class="svc-dot"></span><span class="svc-txt">Checking the connection…</span></p>' +
       '<ol class="svc-steps" hidden>' +
@@ -105,13 +112,16 @@
         page.querySelector(".svc-steps").hidden = false;
       });
     var tq = page.querySelector(".tq-list");
-    fetch("api/discuss?board=l3-qa", { cache: "no-store" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
-      var open = (d.posts || []).filter(function (p) { return !(p.replies || []).some(function (r) { return r.teacher; }); });
+    Promise.all(["l3-qa", "l4-qa"].map(function (b) {
+      return fetch("api/discuss?board=" + b, { cache: "no-store" }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+        .then(function (d) { return (d.posts || []).map(function (p) { p.lesson = b === "l3-qa" ? "Lesson 3" : "Lesson 4"; return p; }); });
+    })).then(function (lists) {
+      var open = lists[0].concat(lists[1]).filter(function (p) { return !(p.replies || []).some(function (r) { return r.teacher; }); }).sort(function (a, b) { return a.at - b.at; });
       tq.innerHTML = open.length ? '<ul class="res-list tq">' + open.map(function (p) {
         var days = Math.floor((Date.now() - p.at) / 86400000);
-        return "<li><span><b>" + ui.esc(p.name) + "</b> " + ui.esc(p.text) + '<small class="' + (days >= 3 ? "late" : "") + '">' + (days ? days + (days === 1 ? " day" : " days") + " ago" : "today") + "</small></span></li>";
+        return "<li><span><b>" + ui.esc(p.name) + "</b> " + ui.esc(p.text) + '<small class="' + (days >= 3 ? "late" : "") + '">' + p.lesson + " · " + (days ? days + (days === 1 ? " day" : " days") + " ago" : "today") + "</small></span></li>";
       }).join("") + "</ul>" : '<p class="tkey-msg">All questions have been answered.</p>';
-    }).catch(function () { tq.innerHTML = '<p class="tkey-msg">The question board is not connected yet. Connect Upstash Redis in Vercel to collect questions.</p>'; });
+    }).catch(function () { tq.innerHTML = '<p class="tkey-msg">The question boards are not connected yet. Connect Upstash Redis in Vercel to collect questions.</p>'; });
 
     var form = page.querySelector(".tkey"), msg = page.querySelector(".tkey-status"), inp = page.querySelector("#tkey");
     form.addEventListener("submit", function (e) {

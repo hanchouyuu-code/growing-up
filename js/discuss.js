@@ -49,6 +49,7 @@
 
       function render() {
         var qa = !!o.qa;
+        var L = o.labels || {};
         var posted = qa || store.step(postedKey);
         var p = me() || {};
         var choiceHtml = o.choices ? '<fieldset class="bd-choices"><legend>' + (max > 1 ? "Your choices (up to " + max + ")" : "Your choice") + "</legend>" +
@@ -58,16 +59,16 @@
         var form = posted && !qa ? "" :
           '<form class="bd-form" autocomplete="off">' + choiceHtml +
           (p.name ? "" : '<label class="bd-label" for="bd-name-' + board + '">Nickname</label><input class="bd-input" id="bd-name-' + board + '" maxlength="16" placeholder="e.g. Sapling 7" required>') +
-          '<label class="bd-label" for="bd-text-' + board + '">' + (qa ? "Your question" : "Your answer") + "</label>" +
-          '<textarea class="bd-input bd-text" id="bd-text-' + board + '" rows="' + (qa ? 3 : 4) + '" maxlength="600" placeholder="' + (qa ? "Ask about a word, a sentence or an idea in the passage." : "Write two or three sentences.") + '"></textarea>' +
+          '<label class="bd-label" for="bd-text-' + board + '">' + (L.answer || (qa ? "Your question" : "Your answer")) + "</label>" +
+          '<textarea class="bd-input bd-text" id="bd-text-' + board + '" rows="' + (L.rows || (qa ? 3 : 4)) + '" maxlength="' + (o.maxLen || 600) + '" placeholder="' + (L.placeholder || (qa ? "Ask about a word, a sentence or an idea in the passage." : "Write two or three sentences.")) + '"></textarea>' +
           (o.starters ? '<div class="bd-starters"><span>Sentence starters:</span>' + o.starters.map(function (s) { return '<button type="button" data-starter="' + ui.esc(s) + '">' + ui.esc(s) + "</button>"; }).join("") + "</div>" : "") +
-          '<div class="bd-actions"><button class="btn btn-mint" type="submit">' + ui.icon("send") + (qa ? "Post My Question" : "Post My Answer") + "</button>" +
+          '<div class="bd-actions"><button class="btn btn-mint" type="submit">' + ui.icon("send") + (L.button || (qa ? "Post My Question" : "Post My Answer")) + "</button>" +
           '<span class="bd-fine">' + (p.name ? "Posting as <b>" + ui.esc(p.name) + "</b>. " : "") + "Use a nickname, not your full name.</span></div>" +
           '<p class="bd-msg" aria-live="polite"></p></form>';
 
         var body;
         if (!posted) {
-          body = '<p class="bd-gate">' + ui.icon("lock") + "Post your own answer first. Your classmates’ answers will then appear here, and you can reply to them or like them.</p>";
+          body = '<p class="bd-gate">' + ui.icon("lock") + (L.gate || "Post your own answer first. Your classmates’ answers will then appear here, and you can reply to them or like them.") + "</p>";
         } else {
           body = (o.choices ? pollHtml() : "") +
             (qa ? '<p class="qa-note">' + ui.icon("clock") + "The teacher answers every question within three days. You are welcome to answer your classmates’ questions too.</p>" : "") +
@@ -76,16 +77,17 @@
             '<button class="link-btn bd-refresh" type="button">' + ui.icon("redo") + "Refresh</button></div>" +
             (live ? "" : '<p class="bd-note">' + (qa ? "The class Q&amp;A is not connected yet, so only your own questions, saved on this device, are shown." : "The class discussion is not connected yet, so only your own answer, saved on this device, is shown.") + "</p>") +
             (qa && live && !posts.length ? '<p class="bd-gate">' + ui.icon("chat") + "No questions yet. Be the first to ask.</p>" : "") +
-            (o.example ? '<article class="bd-post bd-teacher"><div class="bd-meta"><span class="bd-avatar t">T</span><b>Teacher’s Example</b></div><p>' + ui.esc(o.example) + "</p></article>" : "") +
+            (o.example ? '<article class="bd-post bd-teacher"><div class="bd-meta"><span class="bd-avatar t">T</span><b>' + (L.example || "Teacher’s Example") + "</b></div><p>" + ui.esc(o.example) + "</p></article>" : "") +
             '<ul class="bd-posts">' + sorted().map(postHtml).join("") + "</ul>";
         }
         var prevTa = el.querySelector(".bd-text"), keepText = prevTa ? prevTa.value : "";
         el.innerHTML = '<section class="disc" aria-label="Class discussion">' +
-          '<div class="bd-head"><span class="zone-tag">' + ui.icon(qa ? "chat" : "users") + (qa ? "Questions and Answers" : "Class Discussion") + "</span>" +
+          '<div class="bd-head"><span class="zone-tag">' + ui.icon(qa ? "chat" : "users") + (L.tag || (qa ? "Questions and Answers" : "Class Discussion")) + "</span>" +
           '<span class="bd-live' + (live ? " is-live" : "") + '">' + (live ? "<i></i>Live" : "This device only") + "</span></div>" +
           (o.prompts ? '<ol class="bd-prompts">' + o.prompts.map(function (q) { return "<li>" + q + "</li>"; }).join("") + "</ol>" : "") +
           form + body + "</section>";
         var ta = el.querySelector(".bd-text"); if (ta && keepText && !justPosted) ta.value = keepText;
+        else if (ta && !ta.value && o.prefill) ta.value = o.prefill() || "";
         justPosted = false;
         bind();
       }

@@ -322,7 +322,7 @@
       return n.indexOf(ui.normalize(y.phrase)) >= 0 || n.indexOf(ui.normalize(y.base.replace(/\b(sth|sb)\b/g, "").trim())) >= 0;
     })[0];
     if (!x) {
-      if (findWord(q)) return null;
+      if (findWord(q) || GU.practiceId !== "lesson-3") return null;
       return "<p>In teacher-hint mode I can explain the key expressions of the passage. Choose one:</p><div class=\"tchips\">" +
         ui.shuffle(xs).slice(0, 6).map(function (y) { return '<button data-tq="How is ' + ui.esc(y.base) + ' used?">' + ui.esc(y.base) + "</button>"; }).join("") + "</div>";
     }
@@ -333,6 +333,26 @@
       "<p class=\"tfollow\">Your turn: write one sentence of your own with <b>" + ui.esc(x.base) + "</b>, or type <i>quiz me</i>.</p>";
   }
 
+  /* Teacher-hint answers on writing (Lesson 4): linking words and sentence patterns for the essay. */
+  function writingAnswer(q, intent) {
+    if (!GU.L4) return null;
+    var n = q.toLowerCase();
+    var P = {}; GU.L4.patterns.forEach(function (g) { P[g[0]] = g[1]; });
+    function pats(name) { return "<p><b>" + name + "</b> patterns for your essay:</p>" + list(P[name].map(function (x) { return ui.esc(x); })); }
+    var tail = "<p class=\"tfollow\">Your turn: write the sentence for your own essay, then compare it with the model essay in Guided Writing.</p>";
+    if (/correct|check|mistake|is this sentence|right sentence/.test(n)) {
+      return "<p>In teacher-hint mode I cannot check your sentence. Compare it with these points:</p>" +
+        list(["Does every sentence begin with a capital letter and end with a full stop?", "After <b>look forward to</b>, use a noun or an <i>-ing</i> form: <i>I look forward to having a say.</i>", "After <b>be able to</b>, <b>must</b> and <b>should</b>, use the base form of the verb.", "Post the sentence in Questions and Answers, and the teacher will check it."]);
+    }
+    if (/link|connect|transition/.test(n)) return "<p>Linking words for your essay:</p>" + list(GU.L4.linking.map(function (x) { return "<b>" + ui.esc(x) + "</b>"; })) + "<p>Use <b>however</b> to turn from the right to the responsibility, and <b>in addition</b> or <b>what’s more</b> to add a second point.</p>" + tail;
+    if (/begin|start|open|introduc|first sentence/.test(n)) return pats("Opening") + tail;
+    if (/conclu|end|finish|last sentence/.test(n)) return pats("Conclusion") + tail;
+    if (/reason|why/.test(n)) return pats("Reasons") + tail;
+    if (/responsib|duty/.test(n) && !/take responsibility|taking responsibility/.test(n)) return pats("Responsibility") + tail;
+    if (/structure|organi[sz]e|plan|outline|paragraph/.test(n)) return "<p>A simple plan for about 80 words:</p>" + list(["Sentence 1: the right you most look forward to.", "Sentences 2–3: why you want it, with an example.", "Sentences 4–5: the responsibility that comes with it, beginning with <b>However</b>.", "Sentence 6: what turning eighteen means to you."]) + tail;
+    return null;
+  }
+
   function hintAnswer(q) {
     if (pendingQuiz) {
       var pq = pendingQuiz; pendingQuiz = null;
@@ -341,7 +361,8 @@
         "The full sentence reads: “" + ui.highlight(pq.book, pq.answer) + "”</p><p>Would you like another question? Type <i>quiz me</i>.</p>";
     }
     var intent = intentOf(q);
-    if (GU.practiceId === "lesson-3") { var xa = exprAnswer(q, intent); if (xa) return xa; }
+    if (GU.practiceId === "lesson-4") { var wa = writingAnswer(q, intent); if (wa) return wa; }
+    if (GU.practiceId === "lesson-3" || GU.practiceId === "lesson-4") { var xa = exprAnswer(q, intent); if (xa) return xa; }
     var w = findWord(q) || (intent && intent !== "quiz" ? GU.currentWord : null);
     if (intent === "quiz") {
       var pool = GU.currentWord ? GU.WORDS.filter(function (x) { return GU.groupWords(Math.floor(GU.WORDS.indexOf(GU.currentWord) / 10)).indexOf(x) >= 0; }) : GU.WORDS;

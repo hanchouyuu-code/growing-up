@@ -7,7 +7,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 线上地址：https://growing-up-five.vercel.app
 
-## 课程结构（共 95 分钟）
+## 课程结构（共 90 分钟）
 
 | 部分 | 内容 | 时长 | 状态 |
 |---|---|---|---|
@@ -16,20 +16,20 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 | Word Battle / AI Tutor | 位于 Vocabulary 下方：单词对战排行榜、AI 答疑 | — | 已完成（需在 Vercel 连接两项服务） |
 | Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（朗诵音频可调速 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 15 分钟（视频 7 + 诗歌 8） | 已完成（班级讨论需连接 Upstash） |
 | Lesson 3 | Understanding Ideas: The Age of Majority：导入（成年权利勾选）、课文录音与 transcript（人物卡片、逐句翻译、key expressions）、课文精讲视频 + 笔记 + 师生问答区、文本分析（标题选择、文本类型、三人信息填表、事实与观点） | 40 分钟 | 已完成（问答区需连接 Upstash） |
-| Lesson 4 | Writing | 20 分钟 | 待制作 |
-| Teacher’s Corner | 课程安排、单词表 PDF、Lesson 2 参考答案、讨论区管理 | — | 部分完成 |
+| Lesson 4 | Writing：Pre-writing（课本 Think & Share 两个开放问题 + 班级讨论 + AI Tutor / Word Battle）；Guided Writing（高考应用文格式的 80 词短文 Me at Eighteen，旁边有语言库；写完后 AI 评分与润色、教师问答区、班级习作展示） | 15 分钟（思考 5 + 写作 10） | 已完成（AI 评价需 AI 密钥，问答区和展示区需连接 Upstash） |
+| Teacher’s Corner | 课程安排、单词表 PDF、Lesson 2–4 参考答案与范文、待回答的学生问题、讨论区管理 | — | 已完成 |
 
 ## 需要你在 Vercel 上做的设置
 
-不做这些设置网站也能正常使用：排行榜和 Lesson 2 班级讨论会显示“本设备记录”（只看到自己的回答），AI Tutor 会用教师预设提示回答。
+不做这些设置网站也能正常使用：排行榜和各课班级讨论会显示“本设备记录”（只看到自己的回答），AI Tutor 会用教师预设提示回答，作文评价会显示本地估分。
 
-### 1. 班级排行榜和 Lesson 2 班级讨论（Upstash Redis，免费）
+### 1. 班级排行榜、讨论区和问答区（Upstash Redis，免费）
 
 1. 打开 Vercel 项目 → **Storage** → **Create Database** → 选 **Upstash for Redis**（免费档即可）。
 2. 创建后点 **Connect Project**，选择 growing-up 项目。Vercel 会自动加上 `KV_REST_API_URL` 和 `KV_REST_API_TOKEN` 两个环境变量。
 3. 到 **Deployments**，对最新一次部署点 **Redeploy**。
 
-同一个数据库同时用于 Word Battle 排行榜和 Lesson 2 的三个讨论区（Warm-Up、Personal Response ×2）。
+同一个数据库同时用于 Word Battle 排行榜、Lesson 2–4 的所有讨论区、问答区和习作展示区。
 
 ### 2. AI Tutor（需要一个 AI 接口密钥）
 
@@ -38,9 +38,11 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 - Claude：`ANTHROPIC_API_KEY` =（你的密钥）。可选 `ANTHROPIC_MODEL`，默认 `claude-haiku-5-5`。
 - 或任何 OpenAI 兼容接口（如 DeepSeek、通义千问）：`OPENAI_API_KEY`、`OPENAI_MODEL`，以及 `OPENAI_BASE_URL`（例如 `https://api.deepseek.com/v1`）。
 
-接上 Upstash 后，AI Tutor 会自动限流：每个网络连接每小时最多 30 个问题，防止费用失控。
+同一组密钥也用于 Lesson 4 的 AI 作文评价（`api/feedback.js`）。没有密钥时，作文页面会改为本地自动检查（要点、词数、词汇、连接词），并标注为 Estimate。
 
-### 3. 讨论区管理密钥（可选，Lesson 3 问答区教师回复需要）
+接上 Upstash 后会自动限流，防止费用失控：AI Tutor 每个网络连接每小时最多 30 个问题，作文评价每小时最多 12 次。
+
+### 3. 讨论区管理密钥（可选，Lesson 3 / Lesson 4 问答区教师回复需要）
 
 在 **Environment Variables** 添加 `TEACHER_KEY` =（自己设定的一串密码），Redeploy。之后在网站 Teacher’s Corner → Discussion Moderation 输入这串密码，本设备上的讨论区会出现 **Remove** 按钮，可以删除不当的帖子或回复。
 
@@ -71,7 +73,18 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 - **Activity 4 Reading Comprehension**：Title Selection、Detailed Reading（三人信息填表）、Fact and Opinion。
 - **Word Battle 与 AI Tutor**：左侧导航在 Vocabulary 和 Understanding Ideas 下各有一组入口（`#/community/...` 与 `#/lesson-3/battle`、`#/lesson-3/tutor`）。同一个排行榜；AI Tutor 在 Lesson 3 中以课文和 key expressions 为重点，提示问题、开场白和教师提示模式都按课分别设置（`GU.PRACTICE`），两课的对话记录分开保存。
 - **人物照片**：`assets/img/speakers/`，取自课本页面截图。重新生成录音：`python3 tools/make-passage-audio.py passage.json <模型目录> assets/audio/age-of-majority.m4a`，把输出的 cues 填回 `GU.L3.passage.cues`。
-- **课程总时长**：20 + 15 + 40 + 20 = 95 分钟。
+- **课程总时长**：20 + 15 + 40 + 15 = 90 分钟。
+
+## Lesson 4 说明
+
+- **Activity 1 Pre-writing（5 分钟）**：课本 Think & Share 的第 2、3 题（What right are you most looking forward to having as an adult? Why? / What do you think it means to be a responsible adult?）。两题都是先发后看的班级讨论，有句子开头提示，发帖后显示参考回答。第二题下方接 Writing Support（AI Tutor 与 Word Battle）。左侧导航 Writing 下也有这两个入口（`#/lesson-4/tutor`、`#/lesson-4/battle`）。
+- **Activity 2 Guided Writing（10 分钟）**：
+  - **Essay Draft**：高考应用文格式的中文题目（假定你是李华……“我的十八岁”征文，三个要点，80 词左右），附英文要点。编辑器自动保存，显示词数（80 词标记）和三个要点的完成情况，至少 50 词才能提交，可下载。右侧语言库分三栏：Words（Vocabulary 30 词）、Expressions（Lesson 3 的 key expressions）、Patterns（开头、理由、责任、结尾句型），点击插入到光标处，已用到的会打勾。
+  - **Feedback and Revision**：AI 按高考应用文 15 分五档评分，给出优点、改进建议、语言错误（在原文中标出）和润色后的版本对照。没有 AI 密钥时显示本地估分。可返回编辑器修改后重新评价，可展开范文。
+  - **Questions and Answers**：师生问答区（教师回复需 `TEACHER_KEY`），没有问题可直接跳过。
+  - **Writing Showcase**：习作展示区，自动填入学生的作文，先发后看，发帖后显示范文。
+- **AI Tutor**：Lesson 4 的 AI Tutor 帮助学生想思路、查用词、检查句子，但不会代写作文。
+- 题目、要点、范文（83 词）、语言库和评分档次都在 `js/data.js` 的 `GU.L4` 中修改。
 
 ## 文件结构
 
@@ -86,10 +99,11 @@ js/ui.js                   图标、奖章、弹窗、图片
 js/shell.js                左侧导航、右上角奖章进度条、页面切换、AI Tutor 按钮
 js/discuss.js              班级讨论区（先发后看、点赞、回复、投票统计）
 js/kit.js                  活动页通用组件（分步解锁、完成提示、开放题、讨论步骤）
-js/view-*.js               各个页面（view-lesson2.js 为 Starting Out，view-lesson3.js 为 Understanding Ideas）
+js/view-*.js               各个页面（view-lesson2.js 为 Starting Out，view-lesson3.js 为 Understanding Ideas，view-lesson4.js 为 Writing）
 api/leaderboard.js         排行榜服务（Vercel 函数）
 api/tutor.js               AI Tutor 服务（Vercel 函数）
 api/discuss.js             班级讨论服务（Vercel 函数）
+api/feedback.js            Lesson 4 作文 AI 评价（Vercel 函数）
 assets/img/                首页小树苗（取自课本 Starting Out 页）、左侧导航的课本封面 cover.jpg
 assets/emoji/              Twemoji 图片（CC BY 4.0）
 assets/video/              介绍视频

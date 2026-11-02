@@ -143,7 +143,7 @@
   /* Floating AI Tutor button: available throughout the vocabulary module and the community. */
   function renderFab(view) {
     var fab = document.getElementById("tutor-fab");
-    var show = /^(lesson1|group|match|challenge|lesson3|l3lead|l3read|l3video|l3text)$/.test(view);
+    var show = /^(lesson1|group|match|challenge|lesson3|l3lead|l3read|l3video|l3text|lesson4|l4think|l4write)$/.test(view);
     fab.hidden = !show;
     if (!fab.dataset.bound) {
       fab.dataset.bound = "1";
@@ -183,7 +183,7 @@
     else { location.replace("#/overview"); return; }
 
     /* Which lesson the Word Battle and AI Tutor belong to on this page */
-    GU.practiceId = parts[0] === "lesson-3" ? "lesson-3" : "lesson-1";
+    GU.practiceId = GU.PRACTICE[parts[0]] ? parts[0] : "lesson-1";
     page.innerHTML = "";
     page.className = "page page-" + view;
     document.body.dataset.view = view;
