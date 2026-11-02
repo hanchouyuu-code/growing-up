@@ -360,11 +360,11 @@ GU.wordById = function (id) { for (var i = 0; i < GU.WORDS.length; i++) if (GU.W
 GU.L2 = {
   /* Photos from Wikimedia Commons (Creative Commons Attribution 2.0). */
   photos: [
-    { file: "2003-01-13_Coming_of_Age_Day_at_Atsuta_Shrine.jpg", place: "Japan", caption: "Coming of Age Day at a shrine in Nagoya",
+    { file: "2003-01-13_Coming_of_Age_Day_at_Atsuta_Shrine.jpg", place: "Japan", caption: "Coming of Age Day at a shrine in Nagoya", short: "Coming of Age Day",
       credit: "Bruce Dailey", licence: "CC BY 2.0", emoji: "👘" },
-    { file: "Quinceañera._Santa_Fe_(14369403262).jpg", place: "Latin American tradition", caption: "Girls celebrating a quinceañera",
+    { file: "Quinceañera._Santa_Fe_(14369403262).jpg", place: "Latin America", caption: "Girls celebrating a quinceañera", short: "A quinceañera at fifteen",
       credit: "Christopher Michel", licence: "CC BY 2.0", emoji: "👗" },
-    { file: "Michael's_Bar_Mitzvah_6.jpg", place: "Jewish tradition", caption: "A boy reading the Torah at his bar mitzvah",
+    { file: "Michael's_Bar_Mitzvah_6.jpg", place: "Jewish tradition", caption: "A boy reading the Torah at his bar mitzvah", short: "A bar mitzvah at thirteen",
       credit: "Eli", licence: "CC BY 2.0", emoji: "📜" }
   ],
   warmupPrompts: [

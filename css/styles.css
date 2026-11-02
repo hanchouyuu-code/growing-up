@@ -1291,3 +1291,147 @@ input.bd-input { max-width: 260px; }
 .seg-ap button { color: var(--moon-2); }
 .seg-ap button[aria-checked="true"] { background: var(--mint); color: #2A1D05; box-shadow: none; }
 @media (max-width: 600px) { .ap { padding: 14px; } .seg-ap { width: 100%; justify-content: space-between; } }
+
+/* =====================================================================
+   Round 4: whitespace and a calmer hierarchy
+   Secondary text moves to soft taupe; the activity title carries the page.
+   ===================================================================== */
+:root { --taupe: #756B5D; --taupe-2: #8A7F70; --taupe-3: #B4AA9B; --sage: #9DB8A3; }
+
+/* Page rhythm */
+.main { padding-top: 40px; }
+.lesson-head { margin-bottom: 52px; }
+.crumb { font-weight: 500; font-size: .84rem; color: var(--taupe-2); margin-bottom: 26px; letter-spacing: .01em; }
+.crumb .ic { width: 16px; height: 16px; }
+.crumb:hover { color: var(--violet); }
+.lesson-kicker { font-size: .78rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--taupe-2); margin-bottom: 12px; }
+.lesson-kicker span { color: var(--taupe-3); font-weight: 500; margin-left: 12px; }
+.lesson-kicker .tag-opt { text-transform: none; letter-spacing: 0; }
+.lesson-head h1 { letter-spacing: -0.02em; }
+.lede { font-size: 1.04rem; line-height: 1.75; color: var(--taupe); margin-top: 18px; }
+
+/* Step progress: one thin line, only the current step is emphasised */
+.step-track { display: flex; gap: 6px; margin: 40px 0 0; padding: 0; list-style: none; flex-wrap: nowrap; }
+.step-track li { flex: 1 1 0; min-width: 0; display: flex; align-items: baseline; gap: 8px; padding: 12px 0 0; border: 0; border-top: 2px solid var(--line); border-radius: 0; background: none;
+  font-size: .8rem; font-weight: 500; color: var(--taupe-3); white-space: nowrap; transition: color .2s, border-color .2s; }
+.step-track li span { width: auto; height: auto; display: inline; background: none; border-radius: 0; font-size: inherit; }
+.step-track .stn { font-variant-numeric: tabular-nums; opacity: .8; }
+.step-track .stl { overflow: hidden; text-overflow: ellipsis; }
+.step-track li.is-done { color: var(--taupe-3); border-top-color: var(--sage); }
+.step-track li.is-done span { background: none; color: inherit; }
+.step-track li.is-cur { color: var(--violet); font-weight: 700; border-top-color: var(--violet); }
+.step-track li.is-cur span { background: none; color: inherit; }
+@media (max-width: 640px) {
+  .step-track li .stl { display: none; }
+  .step-track li.is-cur { flex: 4 1 0; }
+  .step-track li.is-cur .stl { display: inline; }
+}
+
+/* Steps: generous padding and space between cards */
+.step { margin-bottom: 36px; border-radius: 24px; box-shadow: 0 1px 0 rgba(31, 43, 37, .03); }
+.step-h { gap: 16px; padding: 32px clamp(20px, 4.5vw, 44px) 0; }
+.step-n { width: 34px; height: 34px; border-radius: 50%; background: transparent; border: 1.5px solid var(--line-2); color: var(--taupe-2); font-size: .92rem; font-weight: 600; }
+.step.is-done .step-n { background: transparent; border-color: var(--sage); color: var(--green); }
+.step-k { font-size: .72rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--taupe-3); margin-bottom: 4px; }
+.step-h h2 { font-size: 1.3rem; }
+.step-st .pill-done { background: none; padding: 0; font-weight: 600; font-size: .78rem; color: var(--sage); }
+.step-st .pill-done .ic { width: 14px; height: 14px; }
+.step-body { padding: 26px clamp(20px, 4.5vw, 44px) clamp(28px, 4.5vw, 44px); }
+.step.is-locked { border: 1px dashed var(--line-2); box-shadow: none; }
+.step.is-locked .step-h { padding-top: 24px; }
+.step.is-locked .step-body { padding-top: 14px; padding-bottom: 26px; }
+.step.is-locked .step-n { border-color: var(--line); color: var(--taupe-3); }
+.step.is-locked h2 { color: var(--taupe-3); font-size: 1.15rem; }
+.step-lock { font-size: .86rem; color: var(--taupe-3); }
+.step-intro { color: var(--taupe); line-height: 1.7; margin-bottom: 30px; max-width: 46em; }
+
+/* Content spacing inside steps */
+.q-prompt { margin-bottom: 18px; line-height: 1.45; }
+.starters { margin-top: 16px; gap: 8px; }
+.starters > span { color: var(--taupe-2); font-weight: 500; }
+.starters button { color: var(--taupe); border-color: var(--line-2); }
+.q-actions { margin-top: 26px; gap: 14px; align-items: center; }
+.q-fb { margin-top: 24px; }
+.kp, .ref { margin-top: 16px; }
+.focus { margin-bottom: 26px; padding: 16px 20px; }
+.focus ul { color: var(--taupe); line-height: 1.75; }
+.watch-bar { margin-top: 22px; gap: 10px 22px; }
+.watch-len { font-weight: 500; color: var(--taupe-2); }
+.ft-wrap { margin-top: 4px; }
+.ap { margin-bottom: 32px; padding: 18px 22px; }
+.poem-bar { margin-bottom: 24px; gap: 14px 22px; }
+.poem-foot { margin-top: 28px; }
+.ticks { gap: 14px; }
+.evidence { gap: 8px; margin-top: 18px; }
+.disc { padding: clamp(20px, 3.5vw, 34px); }
+.bd-prompts { margin-bottom: 22px; line-height: 1.55; }
+.bd-form { padding: 18px; gap: 8px; }
+.bd-posts { gap: 14px; }
+.bd-post { padding: 18px 20px; }
+.bd-poll { margin-bottom: 20px; }
+.bd-bar { margin-bottom: 18px; }
+
+/* Photographs: lighter frames, quiet captions on one line */
+.gallery { gap: 22px; margin-bottom: 40px; }
+.ph { background: none; border-radius: 0; overflow: visible; }
+.ph-img { border-radius: 16px; aspect-ratio: 3 / 2; box-shadow: 0 6px 18px -10px rgba(31, 43, 37, .35); }
+.ph-img.is-fallback { box-shadow: none; }
+.ph figcaption { padding: 12px 2px 0; gap: 3px; min-width: 0; }
+.ph figcaption b { font-family: var(--f-body); font-size: .72rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--taupe-2); }
+.ph figcaption span { font-size: .88rem; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 640px) { .gallery { grid-auto-columns: 74%; gap: 14px; } }
+
+/* Completion: a quiet tag; one strong action, one quiet link */
+.tag-done { display: inline-flex; align-items: center; gap: 5px; font-size: .76rem; font-weight: 600; color: var(--green); background: var(--green-50); padding: 3px 10px 3px 8px; border-radius: 999px; margin-right: auto; }
+.tag-done .ic { width: 13px; height: 13px; stroke-width: 2.8; }
+.act-banner { margin-top: 30px; padding: 0; background: none; border: 0; gap: 12px 22px; }
+.link-quiet { font-size: .9rem; font-weight: 500; color: var(--taupe); text-decoration: none; border-bottom: 1px solid var(--line-2); padding-bottom: 1px; }
+.link-quiet:hover { color: var(--violet); border-bottom-color: var(--violet); }
+.act-end { margin-top: 8px; padding: 28px clamp(20px, 4.5vw, 44px); gap: 18px 22px; background: var(--paper); border: 1px solid var(--line); border-radius: 24px; }
+.act-end-ic { width: 40px; height: 40px; background: var(--green-50); color: var(--green); }
+.act-end-ic .ic { width: 20px; height: 20px; }
+.act-end h2 { font-size: 1.12rem; }
+.act-end p { color: var(--taupe); }
+.act-end-go { align-items: center; gap: 12px 22px; }
+.done-prompt .celebrate-actions { flex-direction: column; align-items: center; gap: 14px; }
+.done-prompt .link-quiet { font-size: .92rem; }
+.done-prompt [data-close] { border: 0; background: none; color: var(--taupe-2); font-weight: 500; min-height: 0; padding: 4px 8px; }
+.done-prompt [data-close]:hover { color: var(--violet); }
+
+/* Landing pages share the same breathing room */
+.how { padding: clamp(24px, 4vw, 40px); margin-bottom: 40px; }
+.how-note { color: var(--taupe); }
+.path-grid { gap: 18px; margin: 24px 0 28px; }
+.path-card { padding: 20px 20px 18px; gap: 8px; }
+.path-desc { color: var(--taupe); }
+.path-min { color: var(--taupe-2); font-weight: 500; }
+.acts { margin-top: 18px; }
+.act { padding: 22px clamp(16px, 3vw, 28px); }
+.act-body p { color: var(--taupe); line-height: 1.6; margin-top: 4px; }
+.act-time { color: var(--taupe-2); font-weight: 500; }
+
+/* Sidebar: smaller, softer sub-items with more air */
+.sb-scroll { padding: 22px 18px 16px; }
+.book { padding-bottom: 20px; }
+.sb-unit { padding: 18px 4px; }
+.cp { margin-bottom: 20px; }
+.course-nav a { color: var(--ink-2); }
+.nav-solo { font-size: .9rem; font-weight: 600; padding: 10px; }
+.nl { margin-top: 10px; }
+.nl-head { padding: 10px; }
+.nl-text b { font-size: .92rem; font-weight: 650; color: var(--ink); }
+.nl-text small { font-size: .74rem; color: var(--taupe-3); margin-top: 2px; }
+.nl-count { font-weight: 600; color: var(--taupe-2); background: none; padding: 0 2px; }
+.nl-items { margin: 4px 0 10px 22px; padding-left: 12px; border-left: 1px solid var(--line); }
+.nl-items li + li { margin-top: 2px; }
+.nl-items a { font-size: .84rem; color: var(--taupe-2); padding: 9px 10px; gap: 10px; line-height: 1.4; }
+.nl-items a:hover { color: var(--ink); }
+.nl-items a .st { width: 18px; height: 18px; }
+.nl-items a .st .ic { width: 11px; height: 11px; }
+.nl-items a[aria-current="page"] { color: var(--violet-d); font-weight: 650; }
+.nl-range { color: var(--taupe-3); font-size: .74rem; }
+.course-nav .nav-community { margin: 8px 0 12px 22px; padding: 6px; }
+.course-nav .nav-community a { font-size: .84rem; padding: 9px 10px; }
+.nav-teacher { margin-top: 10px; }
+.nl-items .st-done { background: var(--sage); }
+.lesson-kicker .tag-bonus { text-transform: none; letter-spacing: 0; }

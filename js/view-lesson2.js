@@ -89,7 +89,7 @@
 
   function nextButtons(n) {
     return '<a class="btn btn-primary" href="' + n.main.href + '">' + ui.esc(n.main.label) + ui.icon("right") + "</a>" +
-      (n.extra ? '<a class="btn btn-ghost" href="' + n.extra.href + '">' + ui.esc(n.extra.label) + "</a>" : "");
+      (n.extra ? '<a class="link-quiet" href="' + n.extra.href + '">' + ui.esc(n.extra.label) + "</a>" : "");
   }
 
   /* Prompt shown the moment an activity is completed (the lesson badge has its own celebration). */
@@ -116,7 +116,7 @@
       "<h1>" + a.title + "</h1>" +
       '<p class="lede">' + intro + "</p>" +
       '<ol class="step-track" aria-label="Steps">' + steps.map(function (s, i) {
-        return '<li data-track="' + i + '"><span>' + (i + 1) + "</span>" + s.title + "</li>";
+        return '<li data-track="' + i + '"><span class="stn">' + (i + 1) + '</span><span class="stl">' + s.title + "</span></li>";
       }).join("") + "</ol>" +
       '<div class="act-banner" hidden></div>' +
       "</header>" +
@@ -171,7 +171,7 @@
       if (wasDone) {
         var ban = page.querySelector(".act-banner");
         ban.hidden = false;
-        ban.innerHTML = '<span>' + ui.icon("check") + "This activity is completed.</span>" + nextButtons(n);
+        ban.innerHTML = '<span class="tag-done">' + ui.icon("check") + "Completed</span>" + nextButtons(n);
       }
       if (first && !checkLesson(false)) completedPrompt(a, n);
     }
@@ -362,7 +362,7 @@
           '<p class="step-intro">Look at the photographs of coming-of-age celebrations. Then answer the questions in the class discussion.</p>' +
           '<div class="gallery">' + D.photos.map(function (p, i) {
             return '<figure class="ph"><div class="ph-img" data-ph="' + i + '"><img src="' + commonsUrl(p.file) + '" alt="' + ui.esc(p.caption) + '" loading="lazy"></div>' +
-              "<figcaption><b>" + ui.esc(p.place) + "</b><span>" + ui.esc(p.caption) + "</span></figcaption></figure>";
+              "<figcaption><b>" + ui.esc(p.place) + '</b><span title="' + ui.esc(p.caption) + '">' + ui.esc(p.short || p.caption) + "</span></figcaption></figure>";
           }).join("") + "</div>" +
           '<div class="disc-slot"></div>';
         el.querySelectorAll(".ph-img img").forEach(function (img) {
