@@ -134,7 +134,7 @@ GU.COMMUNITY = {
 
 GU.TEACHER = {
   id: "teacher", title: "Teacher Resources",
-  blurb: "Background notes, sentence analyses, a writing guide and answer keys for teachers."
+  blurb: "A word list, background notes, difficult sentences and a writing guide for teachers."
 };
 
 /* Badges: a growth sequence from seed to coming of age. */

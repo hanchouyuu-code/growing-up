@@ -25,6 +25,7 @@
     return new Date(t).toLocaleDateString([], { month: "short", day: "numeric" });
   }
   function teacherKey() { try { return localStorage.getItem("gu-teacher-key") || ""; } catch (e) { return ""; } }
+  function setTeacherKey(k) { try { if (k) localStorage.setItem("gu-teacher-key", k); else localStorage.removeItem("gu-teacher-key"); } catch (e) {} }
 
   var api = {
     list: function (board, pid) {
@@ -43,6 +44,7 @@
       var board = o.board;
       var postedKey = "posted:" + board;
       var posts = [], live = false, myHash = null, sort = "new", timer = null, selected = [], justPosted = false;
+      var tkOpen = false, tkMsg = "";
       var max = o.maxChoices || 1;
 
       function me() { return store.player(); }
@@ -109,7 +111,7 @@
           '<div class="bd-head"><span class="zone-tag">' + ui.icon(qa ? "chat" : "users") + (L.tag || (qa ? "Questions and Answers" : "Class Discussion")) + "</span>" +
           '<span class="bd-live' + (live ? " is-live" : "") + '">' + (live ? "<i></i>Live" : "This device only") + "</span></div>" +
           (o.prompts ? '<ol class="bd-prompts">' + o.prompts.map(function (q) { return "<li>" + q + "</li>"; }).join("") + "</ol>" : "") +
-          review + form + body + "</section>";
+          review + form + body + (qa ? teacherHtml() : "") + "</section>";
         var ri = el.querySelector(".bd-right"); if (ri && keepRight && !justPosted) ri.value = keepRight;
         var ta = el.querySelector(".bd-text"); if (ta && keepText && !justPosted) ta.value = keepText;
         else if (ta && !ta.value && o.prefill) ta.value = o.prefill() || "";
@@ -140,6 +142,19 @@
                   (nm ? ui.esc(nm) : "<em>" + ui.esc(p.text.split(/\s+/).slice(0, 10).join(" ")) + "…</em>") + "</li>";
               }).join("") + "</ul></details>";
           }).join("") + "</div>";
+      }
+
+      /* Question boards end with a quiet sign-in for the teacher: with the key saved, the teacher's answers are
+         marked as the teacher's and Remove buttons appear on every board on this device. */
+      function teacherHtml() {
+        var tk = teacherKey();
+        return '<details class="bd-tk"' + (tkOpen ? " open" : "") + "><summary>" + ui.icon("teacher") + (tk ? "Teacher key saved on this device" : "For teachers") + "</summary>" +
+          '<form class="bd-tkf" autocomplete="off"><label class="sr-only" for="bd-tk-' + board + '">Teacher key</label>' +
+          '<input class="bd-input" type="password" id="bd-tk-' + board + '" placeholder="Teacher key">' +
+          '<button class="btn btn-mint btn-sm" type="submit">Save Key</button>' +
+          (tk ? '<button class="link-btn" type="button" data-tkforget>Forget Key</button>' : "") + "</form>" +
+          '<p class="bd-tkmsg" aria-live="polite">' + tkMsg + "</p>" +
+          '<p class="bd-fine">Enter the <code>TEACHER_KEY</code> value set in Vercel to answer questions as the teacher and to remove posts on this device.</p></details>';
       }
 
       function pollHtml() {
@@ -229,6 +244,26 @@
         if (form) form.addEventListener("submit", function (e) { e.preventDefault(); submit(); });
         el.querySelectorAll("[data-sort]").forEach(function (b) { b.addEventListener("click", function () { sort = b.dataset.sort; render(); }); });
         var rf = el.querySelector(".bd-refresh"); if (rf) rf.addEventListener("click", load);
+        var tkd = el.querySelector(".bd-tk");
+        if (tkd) {
+          tkd.addEventListener("toggle", function () { tkOpen = tkd.open; });
+          tkd.querySelector(".bd-tkf").addEventListener("submit", function (e) {
+            e.preventDefault();
+            var key = tkd.querySelector("input").value.trim();
+            if (!key) { tkd.querySelector(".bd-tkmsg").textContent = "Enter the key first."; return; }
+            tkd.querySelector(".bd-tkmsg").textContent = "Checking…";
+            api.send({ action: "check-key", board: board, key: key }).then(function (d) {
+              if (d.ok) { setTeacherKey(key); tkMsg = "Key confirmed. You can now answer as the teacher and remove posts on this device."; }
+              else tkMsg = d.set ? "This key does not match the TEACHER_KEY value in Vercel." : "No TEACHER_KEY has been set in Vercel yet.";
+              render();
+            }).catch(function (err) {
+              tkMsg = err.status === 503 ? "The discussion service is not connected yet." : (err.message || "The key could not be checked.");
+              render();
+            });
+          });
+          var fg = tkd.querySelector("[data-tkforget]");
+          if (fg) fg.addEventListener("click", function () { setTeacherKey(""); tkMsg = "The key has been removed from this device."; render(); });
+        }
         el.querySelectorAll("[data-like]").forEach(function (b) { b.addEventListener("click", function () { like(b.dataset.like); }); });
         el.querySelectorAll("[data-reply]").forEach(function (b) {
           b.addEventListener("click", function () {
@@ -332,7 +367,7 @@
       timer = setInterval(function () {
         if (document.hidden || !live || !(o.qa || store.step(postedKey))) return;
         /* Do not refresh while someone is typing a reply. */
-        if ([].some.call(el.querySelectorAll(".bd-replyform textarea"), function (t) { return t.value.trim(); })) return;
+        if ([].some.call(el.querySelectorAll(".bd-replyform textarea, .bd-tkf input"), function (t) { return t.value.trim(); })) return;
         load();
       }, 25000);
       return function () { clearInterval(timer); };

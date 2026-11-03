@@ -1,4 +1,4 @@
-/* Teacher Resources: background notes (Starting Out), sentence notes (Understanding Ideas) and the writing guide.
+/* Teacher Resources: background notes (Starting Out), difficult sentences (Understanding Ideas) and the writing guide.
    The background notes and sentence notes are taken from the teacher's book for this unit (FLTRP). */
 GU.TR = {
   about: "Are you using this curriculum in your classroom? Take advantage of these additional resources to help you support your students’ success.",
@@ -140,24 +140,6 @@ GU.TR = {
         { phrase: "close the door on sth", k: ["closed the door on", "close the door on"], who: "linning", src: "… as if I had closed the door on my childhood and stepped into a whole new adult world.", eg: "At 18, I will not simply close the door on my childhood; I will step into adulthood ready to take on new duties." },
         { phrase: "more subtle and gradual than …", k: ["more subtle and gradual than", "more gradual than"], who: "linning", src: "In fact, the change has been more subtle and gradual than I imagined.", eg: "Growing up may be more gradual than I imagine, but I am ready for it." }
       ]]
-    ],
-    /* The model essay, sentence by sentence, with the part each sentence plays. */
-    annotated: [
-      ["Opening · Point 1", "Turning eighteen, I look forward most to the right to vote."],
-      ["Reason · Point 2", "As an adult citizen, I will finally have a say in decisions that shape my community and my country."],
-      ["Turn", "However, every right comes with responsibility."],
-      ["Responsibility · Point 3", "Before voting, I must learn about the candidates and think carefully instead of simply following others."],
-      ["Responsibility · Point 3", "I should also respect the result, even if it is not what I chose."],
-      ["Closing", "To me, being eighteen means not only enjoying new freedom but also taking responsibility for my choices."]
-    ],
-    highlight: ["have a say", "However", "instead of", "even if", "not only", "but also", "taking responsibility for"],
-    /* Errors students often make in this task. */
-    errors: [
-      ["I look forward to have a say.", "I look forward to having a say.", "look forward to + noun or -ing form"],
-      ["I hope to have the right of voting.", "I hope to have the right to vote.", "the right to do sth"],
-      ["I must to obey the traffic rules.", "I must obey the traffic rules.", "must / should / can + base form"],
-      ["I will take responsibility of my choices.", "I will take responsibility for my choices.", "take responsibility for sth"],
-      ["As an 18 years old student, …", "As an 18-year-old student, …", "18-year-old: hyphens, with “year” in the singular"]
     ]
   }
 };

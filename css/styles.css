@@ -1927,10 +1927,11 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .tc-about { background: var(--paper); border-radius: var(--r-lg); padding: clamp(22px, 3.4vw, 34px); margin-bottom: 8px; }
 .tc-about h2 { font-size: 1.25rem; margin: 0; }
 .tc-about .lede { margin: 8px 0 26px; }
-.tc-index { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.tc-index button { width: 100%; height: 100%; display: flex; gap: 12px; align-items: flex-start; text-align: left; padding: 14px 16px; border-radius: var(--r); border: 1px solid var(--line); background: var(--paper); cursor: pointer; font: inherit; color: var(--taupe); font-size: .86rem; line-height: 1.45; transition: border-color .15s, background .15s; }
+.tc-index { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.tc-index small { display: block; font-size: .74rem; font-weight: 700; color: var(--taupe-2); margin-bottom: 2px; }
+.tc-index button { width: 100%; height: 100%; display: flex; gap: 12px; align-items: center; text-align: left; padding: 14px 16px; border-radius: var(--r); border: 1px solid var(--line); background: var(--paper); cursor: pointer; font: inherit; color: var(--taupe); font-size: .86rem; line-height: 1.45; transition: border-color .15s, background .15s; }
 .tc-index button:hover { border-color: var(--sage); background: var(--sky); }
-.tc-index b { display: block; color: var(--ink); font-size: .98rem; margin-bottom: 2px; }
+.tc-index b { display: block; color: var(--ink); font-size: 1rem; }
 .tc-ic { flex: none; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--sky); color: var(--violet); }
 .tc-ic .ic { width: 20px; height: 20px; }
 .tc-sec { margin-top: clamp(44px, 6vw, 64px); scroll-margin-top: 84px; }
@@ -1942,7 +1943,6 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .tc-h3 { font-size: 1.1rem; margin: 30px 0 10px; }
 .tc-sec-h + .tc-h3 { margin-top: 0; }
 .tc-p { margin: 0 0 14px; color: var(--ink-2); max-width: 46em; }
-.tc-dl { margin-top: 14px; }
 
 .tc-bgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .tc-bg { display: flex; flex-direction: column; background: var(--paper); border-radius: var(--r-lg); padding: 22px 22px 18px; }
@@ -1991,17 +1991,7 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .tc-src-k .tc-face { width: 18px; height: 18px; }
 .tc-use-eg { padding-top: 6px; border-top: 1px dashed var(--line); }
 
-.tc-model { background: var(--paper); border-radius: var(--r-lg); padding: 20px 22px; }
-.tc-model-t { margin: 0 0 10px; font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: 1.1rem; }
-.tc-model-t small { margin-left: 10px; font-family: var(--f-body); font-weight: 400; font-size: .8rem; color: var(--taupe); }
-.tc-model ol { list-style: none; margin: 0; padding: 0; }
-.tc-model li { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--line); line-height: 1.6; }
-.tc-model li > span:last-child { font-family: Georgia, "Times New Roman", serif; }
-.tc-tag { font-size: .78rem; font-weight: 700; color: var(--taupe-2); }
 
-.tc-err s { color: var(--taupe); text-decoration-color: #C4573A; }
-.tc-err b { color: var(--violet); font-weight: 600; }
-.tc-err td:last-child { color: var(--taupe); font-size: .88rem; }
 
 .tc-sec .keys + .tc-h3 { margin-top: 26px; }
 
@@ -2013,16 +2003,15 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
   .tc-index, .tc-lang-l { grid-template-columns: 1fr; }
   .tc-sent summary { padding: 14px 16px; gap: 10px; }
   .tc-sent-b { padding: 0 16px 18px; }
-  .tc-model li { grid-template-columns: 1fr; gap: 2px; }
   .tc-plan td:first-child { white-space: normal; }
   /* The plan and error tables become stacked cards on phones. */
-  .tc-plan thead, .tc-err thead { display: none; }
-  .tc-plan, .tc-plan tbody, .tc-plan tr, .tc-err, .tc-err tbody, .tc-err tr { display: block; }
-  .tc-plan tr, .tc-err tr { padding: 12px 16px; border-bottom: 1px solid var(--line); }
-  .tc-plan tr:last-child, .tc-err tr:last-child { border-bottom: 0; }
-  .tc-plan td, .tc-err td { display: block; padding: 2px 0; border: 0; }
+  .tc-plan thead { display: none; }
+  .tc-plan, .tc-plan tbody, .tc-plan tr { display: block; }
+  .tc-plan tr { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .tc-plan tr:last-child { border-bottom: 0; }
+  .tc-plan td { display: block; padding: 2px 0; border: 0; }
   .tc-plan td[data-l] { display: inline-block; margin-right: 16px; font-size: .86rem; color: var(--taupe); }
-  .tc-plan td[data-l]::before, .tc-err td[data-l]::before { content: attr(data-l) ": "; font-weight: 700; }
+  .tc-plan td[data-l]::before { content: attr(data-l) ": "; font-weight: 700; }
   .tc-plan tr.total td { display: inline-block; margin-right: 16px; }
 }
 
@@ -2054,3 +2043,15 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .bd-poll-who li em { color: var(--moon-2); }
 .bd-poll-who li.is-mine { border-color: var(--mint); }
 .bd-right { max-width: 420px; }
+
+/* Teacher sign-in at the foot of the question boards */
+.bd-tk { margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--night-line); }
+.bd-tk summary { list-style: none; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; font-size: .8rem; font-weight: 700; color: var(--moon-2); }
+.bd-tk summary::-webkit-details-marker { display: none; }
+.bd-tk summary:hover { color: var(--mint); }
+.bd-tk summary .ic { width: 15px; height: 15px; }
+.bd-tkf { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+.bd-tkf .bd-input { width: auto; flex: 1 1 180px; max-width: 260px; }
+.bd-tkmsg { margin: 8px 0 0; font-size: .84rem; color: var(--mint); }
+.bd-tkmsg:empty { display: none; }
+.bd-tk .bd-fine { display: block; margin-top: 6px; }

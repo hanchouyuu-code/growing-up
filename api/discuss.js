@@ -5,7 +5,7 @@
                      { action: "like",   board, postId, id, on: true|false }
                      { action: "delete", board, postId, key }            (teacher moderation; key = TEACHER_KEY)
                      { action: "delete-reply", board, postId, index, key }
-                     { action: "check-key", board, key }                (Teacher's Corner: confirms the key)
+                     { action: "check-key", board, key }                (question boards: confirms the teacher key)
    Needs Upstash Redis (same variables as the leaderboard). */
 const crypto = require("crypto");
 const { configured, pipeline } = require("./_redis");

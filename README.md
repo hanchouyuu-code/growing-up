@@ -17,7 +17,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 | Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（朗诵音频可调速 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 15 分钟（视频 7 + 诗歌 8） | 已完成（班级讨论需连接 Upstash） |
 | Lesson 3 | Understanding Ideas: The Age of Majority：导入（成年权利勾选）、课文录音与 transcript（人物卡片、逐句翻译、key expressions）、课文精讲视频 + 笔记 + 师生问答区、文本分析（标题选择、文本类型、三人信息填表、事实与观点） | 40 分钟 | 已完成（问答区需连接 Upstash） |
 | Lesson 4 | Writing：Pre-writing（课本 Think & Share 两个开放问题 + 班级讨论与投票）；Guided Writing（高考应用文格式的 80 词短文 Me at Eighteen，旁边有语言库；写完后 AI 评分与润色，教师问答区和班级习作展示同时开放） | 15 分钟（思考 5 + 写作 10） | 已完成（AI 评价需 AI 密钥，问答区和展示区需连接 Upstash） |
-| Teacher Resources | About this unit 介绍语；课程安排与单词表 PDF；Starting Out 背景信息；Understanding Ideas 长难句讲解；Writing 写作指导；Lesson 2–4 参考答案；学生提问、讨论服务与管理 | — | 已完成 |
+| Teacher Resources | About this unit 介绍语；按课提供教师资源：Lesson 1 单词表 PDF、Lesson 2 背景信息、Lesson 3 长难句讲解、Lesson 4 写作指导 | — | 已完成 |
 
 ## 需要你在 Vercel 上做的设置
 
@@ -44,7 +44,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 ### 3. 讨论区管理密钥（可选，Lesson 3 / Lesson 4 问答区教师回复需要）
 
-在 **Environment Variables** 添加 `TEACHER_KEY` =（自己设定的一串密码），Redeploy。之后在网站 Teacher Resources → Class Management → Discussion Moderation 输入这串密码，本设备上的讨论区会出现 **Remove** 按钮，可以删除不当的帖子或回复。
+在 **Environment Variables** 添加 `TEACHER_KEY` =（自己设定的一串密码），Redeploy。之后在任一问答区（Lesson 3 Video Lecture 或 Lesson 4 Guided Writing 的 Questions and Answers）底部点 For teachers 输入这串密码，本设备上的讨论区会出现 **Remove** 按钮，可以删除不当的帖子或回复。
 
 ## 介绍视频
 
@@ -86,14 +86,14 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 ## Teacher Resources 说明
 
-内容在 `js/teacher-data.js`（`GU.TR`），页面在 `js/view-other.js`。页面顶部是 About this unit 介绍语和六个资源入口，点击跳到对应部分：
+内容在 `js/teacher-data.js`（`GU.TR`），页面在 `js/view-other.js`。页面顶部是 About this unit 介绍语和四个资源入口（每课一项），点击跳到对应部分：
 
-- **Course Schedule**：四课时长（共 90 分钟）和单词表 PDF。
-- **Background Information**（Lesson 2）：教师用书的三则背景信息（中国拟推行的标准成人礼、古代的“字”、吉卜林），每则附一条课堂使用建议。
-- **Difficult Sentences**（Lesson 3）：教师用书的五个长难句讲解（Paraphrase、句子结构、语言点与例句），可展开或收起，旁边是说话人的头像。
-- **Writing Guide**（Lesson 4）：80 词三段式结构表、高考应用文评分原则（15 分五档；少于 60 词或多于 100 词扣 2 分等）、课文中可借用的好词好句（按开头、理由、责任、结尾分组，每条附课文原句和作文例句）、范文逐句标注、常见错误。
-- **Answer Keys**：Lesson 2–4 参考答案、写作题目和范文。
-- **Class Management**：学生提问列表、讨论服务连接状态、教师密钥。
+- **Word List**（Lesson 1）：单词表 PDF。
+- **Background Information**（Lesson 2）：三则背景信息（中国拟推行的标准成人礼、古代的“字”、吉卜林），每则附一条课堂使用建议。
+- **Difficult Sentences**（Lesson 3）：五个长难句（Paraphrase、句子结构、语言点与例句），可展开或收起，旁边是说话人的头像。
+- **Writing Guide**（Lesson 4）：80 词三段式结构表、高考应用文评分原则（15 分五档；少于 60 词或多于 100 词扣 2 分等）、课文中可借用的好词好句（按开头、理由、责任、结尾分组，每条附课文原句和作文例句）。
+
+教师密钥不再放在这个页面：在问答区底部的 For teachers 输入一次，本设备上就能以教师身份回答问题，并在所有讨论区显示 Remove 按钮。
 
 ## 文件结构
 
