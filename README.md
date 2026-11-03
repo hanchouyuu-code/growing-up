@@ -54,7 +54,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 ## Lesson 2 说明
 
 - **学习路径**：学生在 Lesson 2 首页选择路径，可随时更改；进度和奖章（Branching Out）按所选路径计算。路径以外的活动在左侧导航标注 Optional，仍可完成。
-- **先发后看**：三个讨论区都要求学生先发表自己的回答，才能看到同学的回答、点赞和回复；发帖后会出现 Teacher’s Example。讨论区沿用 Word Battle 和 AI Tutor 的深绿配色，便于识别。
+- **先发后看**：三个讨论区都要求学生先发表自己的回答，才能看到同学的回答、点赞和回复；发帖后会出现 Teacher’s Example。有选项的讨论区（包括 Lesson 4 第一题）发帖后，题目下方有 Review the Question，可展开查看原来的选项和自己的回答。讨论区沿用 Word Battle 和 AI Tutor 的深绿配色，便于识别。
 - **视频**：嵌入 B 站 BV1zL7a6PEhg（外研社 Starting out 视频），旁边有“Open the Video on Bilibili”链接备用。
 - **诗歌朗诵**：纯音频 `assets/audio/if-poem.m4a`（约 1 分 46 秒），按诗节男女声交替：第 1、3 节女声，第 2、4 节男声（课本节选第 1、4 节同样是一女一男）。播放条可拖动，可调速（0.75× / 1× / 1.25×），逐行高亮；点行号只播放这一行；选 Textbook Excerpt 时自动跳过第 2、3 节。
   - 录音用开源语音模型 Kokoro（Apache 2.0）在本地生成，英式女声 bf_emma、男声 bm_george。重新生成：`python3 tools/make-poem-audio.py poem.json <模型目录> assets/audio/if-poem.m4a`，把输出的 cues 填进 `js/data.js` 的 `GU.L2.poem.recording.cues`。

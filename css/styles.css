@@ -2025,3 +2025,18 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
   .tc-plan td[data-l]::before, .tc-err td[data-l]::before { content: attr(data-l) ": "; font-weight: 700; }
   .tc-plan tr.total td { display: inline-block; margin-right: 16px; }
 }
+
+/* Discussion boards: the question, its options and the student's answer remain available after posting */
+.bd-review { margin: 0 0 18px; }
+.bd-review summary { list-style: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; color: var(--mint); font-weight: 700; font-size: .92rem; }
+.bd-review summary::-webkit-details-marker { display: none; }
+.bd-review summary .ic { width: 18px; height: 18px; }
+.bd-review summary:hover { text-decoration: underline; text-underline-offset: 3px; }
+.bd-review-b { margin-top: 12px; padding: 16px 18px; border-radius: var(--r); background: rgba(255, 255, 255, .05); border: 1px solid var(--night-line); display: flex; flex-direction: column; gap: 8px; }
+.bd-review-b .bd-label { margin: 0; }
+.bd-review-b .bd-label ~ .bd-label { margin-top: 8px; }
+.bd-review-b .bd-ref-note { margin-top: 2px; }
+.bd-review-b .bd-ref-note b { color: var(--moon); font-style: normal; }
+.bd-ref-list li.is-mine { border-style: solid; border-color: var(--mint); color: #fff; display: inline-flex; align-items: center; gap: 6px; }
+.bd-ref-list li.is-mine .ic { width: 14px; height: 14px; color: var(--mint); }
+.bd-review-a { margin: 0; color: var(--moon); line-height: 1.6; white-space: pre-wrap; }

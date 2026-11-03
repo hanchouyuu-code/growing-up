@@ -69,6 +69,23 @@
           '<span class="bd-fine">' + (p.name ? "Posting as <b>" + ui.esc(p.name) + "</b>. " : "") + "Use a nickname, not your full name.</span></div>" +
           '<p class="bd-msg" aria-live="polite"></p></form>';
 
+        /* After posting, the options (or the rights listed for reference) and the student's own answer stay available. */
+        var review = "";
+        if (posted && !qa && o.choices) {
+          var mine = store.answer("post:" + board) || {};
+          var picked = mine.choices || [];
+          var list = o.classify ? o.reference.items : o.choices;
+          var wasOpen = !!(el.querySelector(".bd-review") || {}).open;
+          review = '<details class="bd-review"' + (wasOpen ? " open" : "") + "><summary>" + ui.icon("eye") + "Review the Question</summary><div class=\"bd-review-b\">" +
+            '<p class="bd-label">' + (o.classify ? (o.reference.title || "For reference") : max > 1 ? "Options (up to " + max + ")" : "Options") + "</p>" +
+            '<ul class="bd-ref-list">' + list.map(function (c) {
+              var on = picked.indexOf(c) >= 0;
+              return "<li" + (on ? ' class="is-mine"' : "") + ">" + (on ? ui.icon("check") : "") + ui.esc(c) + "</li>";
+            }).join("") + "</ul>" +
+            (o.classify ? '<p class="bd-ref-note">' + o.reference.note + (picked[0] ? " Your answer is counted under <b>" + ui.esc(picked[0]) + "</b>." : "") + "</p>" : "") +
+            (mine.text ? '<p class="bd-label">Your answer</p><p class="bd-review-a">' + ui.esc(mine.text) + "</p>" : "") +
+            "</div></details>";
+        }
         var body;
         if (!posted) {
           body = '<p class="bd-gate">' + ui.icon("lock") + (L.gate || "Post your own answer first. Your classmates’ answers will then appear here, and you can reply to them or like them.") + "</p>";
@@ -88,7 +105,7 @@
           '<div class="bd-head"><span class="zone-tag">' + ui.icon(qa ? "chat" : "users") + (L.tag || (qa ? "Questions and Answers" : "Class Discussion")) + "</span>" +
           '<span class="bd-live' + (live ? " is-live" : "") + '">' + (live ? "<i></i>Live" : "This device only") + "</span></div>" +
           (o.prompts ? '<ol class="bd-prompts">' + o.prompts.map(function (q) { return "<li>" + q + "</li>"; }).join("") + "</ol>" : "") +
-          form + body + "</section>";
+          review + form + body + "</section>";
         var ta = el.querySelector(".bd-text"); if (ta && keepText && !justPosted) ta.value = keepText;
         else if (ta && !ta.value && o.prefill) ta.value = o.prefill() || "";
         justPosted = false;
