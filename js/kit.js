@@ -85,10 +85,13 @@
 
     function sync(justDone) {
       var allBefore = true, prevOpen = true, gate = 0;
+      /* With the teacher key saved on this device, every step is open, so the teacher can reach the
+         question boards without doing the activity first. */
+      var staff = false; try { staff = !!localStorage.getItem("gu-teacher-key"); } catch (e) {}
       var nextSec = justDone != null ? page.querySelector('[data-step="' + (justDone + 1) + '"]') : null;
       var nextWasLocked = !!nextSec && nextSec.classList.contains("is-locked");
       steps.forEach(function (s, i) {
-        var unlocked = s.together && i ? prevOpen : allBefore;
+        var unlocked = staff || (s.together && i ? prevOpen : allBefore);
         if (!(s.together && i)) gate = i;
         prevOpen = unlocked;
         var sec = page.querySelector('[data-step="' + i + '"]');
