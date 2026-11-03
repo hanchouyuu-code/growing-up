@@ -64,17 +64,70 @@
     var startHref = store.get().overview ? GU.resumeHref() : "#/lesson-1";
     var startLabel = store.get().overview ? "Continue the Course" : "Begin the Course";
 
+    /* Course Structure, laid out like a course page on Khan Academy: one card per lesson, its activities as
+       groups, and every step listed with an icon for its type. The course's interactive features are marked. */
+    var FX = {
+      battle: ["trophy", "Word Battle", "A timed vocabulary contest with a class leaderboard"],
+      tutor: ["chat", "AI Tutor", "Answers questions on words and the passage at any time"],
+      discuss: ["users", "Class Discussion", "Post first, then read, like and reply to classmates"],
+      qa: ["teacher", "Teacher Q&A", "Questions answered by the teacher within three days"],
+      feedback: ["sparkle", "AI Writing Feedback", "Gaokao-band marking, corrections and a polished version"]
+    };
+    function fx(k) { return '<span class="fx fx-' + k + '">' + ui.icon(FX[k][0]) + FX[k][1] + "</span>"; }
+    var TYPE = { words: "book", listen: "speaker", video: "play", practice: "pen", write: "pen", discuss: "users", qa: "chat", tool: "sparkle", battle: "trophy", tutor: "chat" };
+    /* [step key or activity id, title, type, feature] */
+    var S = {
+      "l2-video": [["l2v-warm", "Warm-Up Discussion", "discuss", "discuss"], ["l2v-watch", "Video Viewing", "video"], ["l2v-q1", "Comprehension Question", "practice"], ["l2v-q2", "Personal Response", "discuss", "discuss"]],
+      "l2-poem": [["l2p-listen", "Listening and Reading", "listen"], ["l2p-q1", "The Theme of the Poem", "practice"], ["l2p-q2", "The Qualities in the Poem", "practice"], ["l2p-q3", "Personal Response", "discuss", "discuss"]],
+      "l3-lead": [["l3a-rights", "Legal Ages for Adult Rights", "practice"], ["l3a-type", "Text Structure", "practice"]],
+      "l3-read": [["l3b-listen", "Listening and Reading", "listen"], ["l3b-expr", "Key Expression Review", "practice"]],
+      "l3-video": [["l3c-watch", "Video Lecture", "video"], ["l3c-qa", "Questions and Answers", "qa", "qa"]],
+      "l3-text": [["l3d-title", "Title Selection", "practice"], ["l3d-detail", "Detailed Reading", "practice"], ["l3d-fact", "Fact and Opinion", "practice"]],
+      "l4-think": [["l4t-right", "Rights in Adulthood", "discuss", "discuss"], ["l4t-adult", "Responsible Adulthood", "discuss", "discuss"]],
+      "l4-write": [["l4w-draft", "Writing Task", "write"], ["l4w-feedback", "Feedback and Revision", "tool", "feedback"], ["l4w-qa", "Questions and Answers", "qa", "qa"], ["l4w-share", "Writing Showcase", "discuss", "discuss"]]
+    };
+    function item(href, title, type, feature, done, extra) {
+      return '<li><a class="cs-item' + (done ? " is-done" : "") + '" href="' + href + '"><span class="cs-ic">' + ui.icon(done ? "check" : TYPE[type]) + "</span>" +
+        '<span class="cs-t">' + title + (extra || "") + "</span>" + (feature ? fx(feature) : "") + "</a></li>";
+    }
+    function group(head, meta, items) {
+      return '<div class="cs-group"><h4>' + head + (meta ? "<small>" + meta + "</small>" : "") + '</h4><ul class="cs-list">' + items + "</ul></div>";
+    }
+    function practice(l, P) {
+      return group("Further Practice", "", item(P.battle, "Timed Word Contest", "battle", "battle", false) +
+        item(P.tutor, l.n === 1 ? "Questions on Words and Usage" : "Questions on the Passage", "tutor", "tutor", false));
+    }
     var lessons = GU.LESSONS.map(function (l) {
       var lp = store.lessonProgress(l);
-      var status = l.soon ? '<span class="pill pill-soon">Forthcoming</span>' :
-        lp.done >= lp.total ? '<span class="pill pill-done">' + ui.icon("check") + "Completed</span>" :
-        '<span class="pill">' + lp.done + " of " + lp.total + " completed</span>";
-      return '<li><a class="route-item" href="#/' + l.id + '">' +
-        '<span class="route-n">' + l.n + "</span>" +
-        '<span class="route-body"><span class="route-title"><b>Lesson ' + l.n + ": " + l.title + '</b><span class="route-min">' + l.minutes + " minutes</span></span>" +
-        '<span class="route-blurb">' + l.blurb + "</span></span>" +
-        status + "</a></li>";
-    }).join("");
+      var status = lp.done >= lp.total ? '<span class="pill pill-done">' + ui.icon("check") + "Completed</span>" : '<span class="pill">' + lp.done + " of " + lp.total + " completed</span>";
+      var groups;
+      if (l.n === 1) {
+        var sets = l.activities.filter(function (a) { return a.kind === "group"; });
+        var drills = l.activities.filter(function (a) { return a.kind !== "group"; });
+        groups = group("Word Sets", "Listening, pronunciation, spelling and read-along", sets.map(function (a) {
+            return item("#/lesson-1/" + a.id, a.title, "words", "", store.isDone(a.id), ' <small class="cs-sub">' + a.range + "</small>");
+          }).join("")) +
+          group("Vocabulary Practice", "", drills.map(function (a) {
+            return item("#/lesson-1/" + a.id, a.title, "practice", "", store.isDone(a.id), a.bonus ? ' <em class="tag-bonus">Bonus</em>' : "");
+          }).join("")) +
+          practice(l, GU.PRACTICE["lesson-1"]);
+      } else {
+        groups = l.activities.map(function (a) {
+          return group(a.label + " · " + a.short, a.minutes + " min", S[a.id].map(function (st) {
+            return item("#/" + l.id + "/" + a.id, st[1], st[2], st[3], store.step(st[0]));
+          }).join(""));
+        }).join("") + (GU.PRACTICE[l.id] ? practice(l, GU.PRACTICE[l.id]) : "");
+      }
+      return '<li class="cs-lesson"><header class="cs-head"><a href="#/' + l.id + '"><span class="cs-k">Lesson ' + l.n + "</span><h3>" + l.title + "</h3></a>" +
+        '<span class="cs-meta">' + ui.icon("clock") + l.minutes + " min" + (l.paths ? " · three learning paths" : "") + status + "</span></header>" +
+        '<div class="cs-groups">' + groups + "</div></li>";
+    }).join("") +
+      '<li class="cs-lesson cs-teacher"><header class="cs-head"><a href="#/teacher"><span class="cs-k">For Teachers</span><h3>' + GU.TEACHER.title + '</h3></a></header>' +
+      '<div class="cs-groups">' + group("Resources for Each Lesson", "", [["download", "Lesson 1 · Word List"], ["book", "Lesson 2 · Background Information"], ["eye", "Lesson 3 · Difficult Sentences"], ["pen", "Lesson 4 · Writing Guide"]].map(function (r) {
+        return '<li><a class="cs-item" href="#/teacher"><span class="cs-ic">' + ui.icon(r[0]) + '</span><span class="cs-t">' + r[1] + "</span></a></li>";
+      }).join("")) + "</div></li>";
+
+    var features = Object.keys(FX).map(function (k) { return "<li>" + fx(k) + "<span>" + FX[k][2] + "</span></li>"; }).join("");
 
     var badges = GU.BADGES.map(function (b) {
       return '<li title="' + ui.esc(b.name + ": " + b.desc) + '">' + ui.medal(b, store.hasBadge(b.id)) + "<span>" + ui.esc(b.name) + "</span></li>";
@@ -104,12 +157,8 @@
 
       '<section class="ov-sec ov-route" aria-labelledby="cs-h">' +
       '<div class="sec-head"><h2 id="cs-h">Course Structure</h2><span class="sec-meta">' + ui.icon("clock") + GU.totalMinutes() + " minutes in total</span></div>" +
-      '<ol class="route">' + lessons + "</ol>" +
-      '<div class="route-extra">' +
-      '<a class="route-community" href="#/community/battle">' + ui.icon("trophy") + "<span><b>Word Battle</b>Timed questions on the thirty words, with a class leaderboard.</span></a>" +
-      '<a class="route-community" href="#/community/tutor">' + ui.icon("chat") + "<span><b>AI Tutor</b>Questions on word forms, collocations, phrases and usage.</span></a>" +
-      '<a class="route-teacher" href="#/teacher">' + ui.icon("teacher") + "<span><b>" + GU.TEACHER.title + "</b>" + GU.TEACHER.blurb + "</span></a>" +
-      "</div></section>" +
+      '<div class="cs-fx"><p class="cs-fx-h">Course Features <span>Marked in each lesson below</span></p><ul>' + features + "</ul></div>" +
+      '<ol class="cs-lessons">' + lessons + "</ol></section>" +
 
       '<section class="ov-sec ov-badges" aria-labelledby="ab-h">' +
       '<div class="sec-head"><h2 id="ab-h">Achievement Badges</h2></div>' +

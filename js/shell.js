@@ -30,8 +30,8 @@
     })[0];
     document.getElementById("topbar").innerHTML =
       '<button class="icon-btn menu-btn" id="menu-btn" aria-label="Course menu" aria-controls="sidebar">' + ui.icon("menu") + "</button>" +
-      '<a class="brand" href="#/overview" aria-label="Growing up, course home"><span class="brand-mark">18</span>' +
-      '<span class="brand-text"><b>Growing up</b><span>Unit 1 Online Course</span></span></a>' +
+      '<a class="brand" href="#/overview" aria-label="Unit 1, Growing up: course home"><span class="brand-mark">18</span>' +
+      '<span class="brand-text"><b><small class="brand-unit">Unit 1</small>Growing up</b></span></a>' +
       '<div class="topbar-right">' +
       '<button class="medal-meter" id="medal-meter" aria-label="Badges: ' + earned + " of " + total + ' earned. Show all badges.">' +
       ui.medal(lastEarned || GU.BADGES[0], !!lastEarned) +

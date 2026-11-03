@@ -11,7 +11,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 | 部分 | 内容 | 时长 | 状态 |
 |---|---|---|---|
-| Course Overview | 教材名称（中英）、Unit Overview、Introduction Video、课程结构、奖章 | — | 已完成 |
+| Course Overview | 教材名称（中英）、Unit Overview、Introduction Video、课程结构（仿可汗学院课程页：每课一张卡片，按活动分组列出每一步，并用彩色标签标出 Word Battle、AI Tutor、Class Discussion、Teacher Q&A、AI Writing Feedback）、奖章 | — | 已完成 |
 | Lesson 1 | Vocabulary：30 个单词（minimum 之前），3 组，每组含 Set Read-Along | 20 分钟 | 已完成 |
 | Word Battle / AI Tutor | 位于 Vocabulary 下方：单词对战排行榜、AI 答疑 | — | 已完成（需在 Vercel 连接两项服务） |
 | Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（朗诵音频可调速 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 15 分钟（视频 7 + 诗歌 8） | 已完成（班级讨论需连接 Upstash） |

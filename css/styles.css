@@ -2058,3 +2058,56 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .bd-tkmsg { margin: 8px 0 0; font-size: .84rem; color: var(--mint); }
 .bd-tkmsg:empty { display: none; }
 .bd-tk .bd-fine { display: block; margin-top: 6px; }
+
+/* Brand: Unit 1 Growing up on one line */
+.brand-text b { display: inline-flex; align-items: baseline; gap: 7px; }
+.brand-unit { font: inherit; color: var(--taupe-2); }
+
+/* Course Structure, in the manner of a Khan Academy course page */
+.cs-fx { margin: 4px 0 24px; padding: 16px 18px; border-radius: var(--r); background: var(--sky); }
+.cs-fx-h { margin: 0 0 12px; font-weight: 700; color: var(--ink); font-size: .95rem; }
+.cs-fx-h span { margin-left: 8px; font-weight: 400; font-size: .82rem; color: var(--taupe); }
+.cs-fx ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.cs-fx li { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; font-size: .8rem; line-height: 1.4; color: var(--taupe); }
+.fx { flex: none; display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px 3px 8px; border-radius: 999px; font-size: .74rem; font-weight: 700; white-space: nowrap; line-height: 1.5; }
+.fx .ic { width: 14px; height: 14px; stroke-width: 2.2; }
+.fx-battle { background: #FBE9C2; color: #8A5A0B; }
+.fx-tutor { background: #1E3A2F; color: #F4DFA8; }
+.fx-discuss { background: #DDEBE1; color: #275640; }
+.fx-qa { background: #F7DED3; color: #964127; }
+.fx-feedback { background: #E9E0F0; color: #5F3A74; }
+
+.cs-lessons { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.cs-lesson { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--paper); padding: 20px clamp(18px, 3vw, 26px) 22px; }
+.cs-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; padding-bottom: 14px; margin-bottom: 16px; border-bottom: 1px solid var(--line); }
+.cs-head a { text-decoration: none; color: var(--ink); }
+.cs-head a:hover h3 { color: var(--violet); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.cs-k { display: block; font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--taupe-2); margin-bottom: 2px; }
+.cs-head h3 { margin: 0; font-size: 1.25rem; }
+.cs-meta { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; font-weight: 700; color: var(--taupe); }
+.cs-meta .ic { width: 15px; height: 15px; }
+.cs-meta .pill { margin-left: 8px; }
+.cs-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 36px; }
+.cs-group h4 { margin: 0 0 8px; font-size: 1rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.cs-group h4 small { font: 600 .78rem var(--f-body); color: var(--taupe-2); }
+.cs-list { list-style: none; margin: 0; padding: 0; }
+.cs-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; text-decoration: none; color: var(--ink-2); font-size: .95rem; }
+.cs-item:hover .cs-t { color: var(--violet); text-decoration: underline; text-underline-offset: 3px; }
+.cs-ic { flex: none; width: 28px; height: 28px; display: grid; place-items: center; border: 1.5px solid #CFC6B5; border-radius: 7px; color: var(--ink); background: var(--paper); }
+.cs-ic .ic { width: 15px; height: 15px; stroke-width: 2; }
+.cs-item.is-done .cs-ic { background: var(--violet); border-color: var(--violet); color: #fff; }
+.cs-item .fx { margin-left: auto; }
+.cs-item.is-done .cs-ic .ic { stroke-width: 2.6; }
+.cs-t { flex: 1; min-width: 0; }
+.cs-sub { margin-left: 4px; font-size: .78rem; color: var(--taupe-2); }
+.cs-teacher { background: var(--sky); border-color: transparent; }
+.cs-teacher .cs-groups { grid-template-columns: 1fr; }
+.cs-teacher .cs-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 36px; }
+
+@media (max-width: 1100px) { .cs-fx ul { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .cs-groups, .cs-teacher .cs-list { grid-template-columns: 1fr; }
+  .cs-fx ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cs-item { flex-wrap: wrap; }
+  .cs-item .fx { margin-left: 38px; }
+}
