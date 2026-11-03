@@ -348,6 +348,21 @@
         api.send(body).then(load).catch(function (e) { ui.toast(e.message || "Removal failed."); });
       }
 
+      /* Answers and questions written while the class service was not connected are published once it is. */
+      function syncLocal(list) {
+        var pl = me();
+        if (!pl || !pl.name || !store.step(postedKey) && !o.qa) return;
+        var key = o.qa ? "posts:" + board : "post:" + board;
+        var saved = o.qa ? (store.answer(key) || []) : (store.answer(key) ? [store.answer(key)] : []);
+        var todo = saved.filter(function (x) { return x && x.pid === "local" && !x.synced; })[0];
+        if (!todo || (!o.qa && list.some(function (x) { return x.pid === myHash; }))) return;
+        todo.synced = true;
+        store.answer(key, o.qa ? saved : todo);
+        api.send({ action: "post", board: board, id: pl.id, name: pl.name, text: todo.text, choices: todo.choices || [] })
+          .then(function () { load(); })
+          .catch(function () { todo.synced = false; store.answer(key, o.qa ? saved : todo); });
+      }
+
       function load() {
         var p = me();
         (p ? hashId(p.id) : Promise.resolve(null)).then(function (h) {
@@ -355,6 +370,7 @@
           return api.list(board, h);
         }).then(function (list) {
           live = true; posts = list;
+          syncLocal(list);
           if (!store.step(postedKey) && myHash && list.some(function (x) { return x.pid === myHash; })) { store.setStep(postedKey); if (o.onPosted) o.onPosted(); }
           render();
         }).catch(function () {
