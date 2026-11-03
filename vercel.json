@@ -10,6 +10,9 @@
     "api/discuss.js": {
       "maxDuration": 10
     },
+    "api/support.js": {
+      "maxDuration": 10
+    },
     "api/feedback.js": {
       "maxDuration": 30,
       "includeFiles": "js/data.js"

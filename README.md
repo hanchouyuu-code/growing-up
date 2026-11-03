@@ -51,6 +51,13 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 老师录制的介绍视频在 `assets/video/intro.mp4`（已裁掉录屏边缘、统一音量、压缩为网页格式）。页面上可以调节播放速度（0.75×–1.5×）。
 要替换视频：把新文件放进 `assets/video/`，再修改 `js/data.js` 里 `GU.INTRO_VIDEO` 的 `src` 和 `poster`。
 
+## 导航与 Help and Support
+
+- **左侧导航自动定位**：打开任何页面，左侧导航会自动滚动到当前课和当前活动，不用手动拖动。
+- **导航里的特色入口**（深绿色区块）：Vocabulary 下有 Word Battle、AI Tutor；Understanding Ideas 下有 Word Battle、AI Tutor、Teacher Q&A；Writing 下有 AI Writing Feedback、Teacher Q&A。Teacher Q&A 和 AI Writing Feedback 直接跳到活动里对应的那一步（链接形如 `#/lesson-4/l4-write/l4w-feedback`）。
+- **Help and Support**（右上角）：三栏，Common Questions（常见问题、重置进度）、Contact Us（学生填写昵称、班级、问题类型和描述，自动附上所在页面）、My Messages（学生自己发过的消息和课程团队的回复；有新回复时按钮上会出现红点）。
+- **Support Inbox**（`#/support`，Help and Support 底部有入口 For course staff）：输入 `TEACHER_KEY` 后查看所有学生消息，可回复、标记已回答、重新打开、删除。服务在 `api/support.js`，使用同一个 Upstash 连接；每个网络连接每 20 秒最多发 1 条、每小时最多 8 条；收件箱保留最近 400 条。
+
 ## Lesson 2 说明
 
 - **学习路径**：学生在 Lesson 2 首页选择路径，可随时更改；进度和奖章（Branching Out）按所选路径计算。路径以外的活动在左侧导航标注 Optional，仍可完成。
@@ -108,12 +115,14 @@ js/audio.js                发音、跟读录音
 js/ui.js                   图标、奖章、弹窗、图片
 js/shell.js                左侧导航、右上角奖章进度条、页面切换、AI Tutor 按钮
 js/discuss.js              班级讨论区（先发后看、点赞、回复、投票统计）
+js/support.js              Help and Support 对话框和 Support Inbox
 js/kit.js                  活动页通用组件（分步解锁、完成提示、开放题、讨论步骤）
 js/view-*.js               各个页面（view-lesson2.js 为 Starting Out，view-lesson3.js 为 Understanding Ideas，view-lesson4.js 为 Writing）
 api/leaderboard.js         排行榜服务（Vercel 函数）
 api/tutor.js               AI Tutor 服务（Vercel 函数）
 api/discuss.js             班级讨论服务（Vercel 函数）
 api/feedback.js            Lesson 4 作文 AI 评价（Vercel 函数）
+api/support.js             Help and Support 留言与回复（Vercel 函数）
 assets/img/                首页小树苗（取自课本 Starting Out 页）、左侧导航的课本封面 cover.jpg
 assets/emoji/              Twemoji 图片（CC BY 4.0）
 assets/video/              介绍视频

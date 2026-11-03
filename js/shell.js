@@ -37,17 +37,17 @@
       ui.medal(lastEarned || GU.BADGES[0], !!lastEarned) +
       '<span class="mm-body"><span class="mm-label"><b>' + earned + '</b><span class="mm-of"> of ' + total + '</span><span class="mm-word"> badges</span></span><span class="mm-segs">' + segs + "</span></span>" +
       "</button>" +
-      '<button class="icon-btn help-btn" id="help-btn" aria-label="Help and support">' + ui.icon("help") + "</button>" +
+      '<button class="help-btn' + (GU.support && GU.support.replyDot ? " has-reply" : "") + '" id="help-btn" aria-label="Help and Support">' + ui.icon("help") + "<span>Help and Support</span></button>" +
       "</div>";
     document.getElementById("menu-btn").addEventListener("click", toggleNav);
     document.getElementById("medal-meter").addEventListener("click", showBadges);
-    document.getElementById("help-btn").addEventListener("click", showHelp);
+    document.getElementById("help-btn").addEventListener("click", function () { GU.support.open(); });
   }
 
   function renderSidebar() {
     var p = store.progress();
     var route = location.hash || "#/overview";
-    function cur(href) { return route === href ? ' aria-current="page"' : ""; }
+    function cur(href, deep) { return route === href || (deep && route.indexOf(href + "/") === 0) ? ' aria-current="page"' : ""; }
 
     var lessons = GU.LESSONS.map(function (l) {
       var lp = store.lessonProgress(l);
@@ -62,21 +62,26 @@
         items = '<ul class="nl-items">' + l.activities.map(function (a) {
           var href = "#/" + l.id + "/" + a.id;
           var opt = l.paths && onPath.indexOf(a) < 0;
-          return '<li><a href="' + href + '"' + cur(href) + ">" + statusDot(activityState(a)) +
+          return '<li><a href="' + href + '"' + cur(href, true) + ">" + statusDot(activityState(a)) +
             "<span>" + a.title + (a.range ? ' <small class="nl-range">' + a.range + "</small>" : "") + (a.bonus ? ' <em class="tag-bonus">Bonus</em>' : "") + (opt ? ' <em class="tag-opt">Optional</em>' : "") + "</span></a></li>";
         }).join("") + "</ul>";
-        /* Word Battle and the AI Tutor sit under the vocabulary and reading lessons, in their own visual zone. */
-        var P = GU.PRACTICE[l.id];
-        if (P) {
-          items += '<div class="nav-community">' +
-            '<a class="nc-item" href="' + P.battle + '"' + cur(P.battle) + ">" + ui.icon("trophy") + "<span>Word Battle</span></a>" +
-            '<a class="nc-item" href="' + P.tutor + '"' + cur(P.tutor) + ">" + ui.icon("chat") + "<span>AI Tutor</span></a>" +
-            "</div>";
+        /* The course's features sit under the lessons that use them, in their own visual zone:
+           Word Battle and the AI Tutor (Lessons 1 and 3), Teacher Q&A (Lessons 3 and 4), AI Writing Feedback (Lesson 4). */
+        var P = GU.PRACTICE[l.id], F = [];
+        if (P) F.push([P.battle, "trophy", "Word Battle"], [P.tutor, "chat", "AI Tutor"]);
+        if (l.id === "lesson-3") F.push(["#/lesson-3/l3-video/l3c-qa", "teacher", "Teacher Q&amp;A"]);
+        if (l.id === "lesson-4") F.push(["#/lesson-4/l4-write/l4w-feedback", "sparkle", "AI Writing Feedback"], ["#/lesson-4/l4-write/l4w-qa", "teacher", "Teacher Q&amp;A"]);
+        if (F.length) {
+          items += '<div class="nav-community">' + F.map(function (f) {
+            return '<a class="nc-item" href="' + f[0] + '"' + cur(f[0]) + ">" + ui.icon(f[1]) + "<span>" + f[2] + "</span></a>";
+          }).join("") + "</div>";
         }
       }
       return '<div class="nl">' + head + items + "</div>";
     }).join("");
 
+    var oldScroll = document.querySelector("#sidebar .sb-scroll");
+    var keepTop = oldScroll ? oldScroll.scrollTop : 0;
     document.getElementById("sidebar").innerHTML =
       '<div class="sb-scroll">' +
       '<div class="book">' +
@@ -95,9 +100,30 @@
       "</nav></div>" +
       '<button class="sb-collapse" id="sb-collapse">' + ui.icon("left") + "<span>Collapse Menu</span></button>";
     document.getElementById("sb-collapse").addEventListener("click", function () { setNav(false); });
+    followCurrent(keepTop);
     document.querySelectorAll("#sidebar a").forEach(function (a) {
       a.addEventListener("click", function () { if (!WIDE.matches) setNav(false); });
     });
+  }
+
+  /* The menu follows the learner: the item for the current page is brought into view, so the menu never
+     has to be scrolled by hand. A deep link (a step, Word Battle) wins over its activity. */
+  function followCurrent(keepTop) {
+    var box = document.querySelector("#sidebar .sb-scroll");
+    if (!box) return;
+    box.scrollTop = keepTop;
+    var all = box.querySelectorAll('[aria-current="page"]');
+    var el = all[all.length - 1];
+    if (!el) {
+      var lesson = (location.hash.match(/^#\/(lesson-\d)/) || [])[1];
+      el = lesson ? box.querySelector('a.nl-head[href="#/' + lesson + '"]') : null;
+    }
+    if (!el) return;
+    var br = box.getBoundingClientRect(), er = el.getBoundingClientRect();
+    if (!br.height) return;
+    var top = er.top - br.top + box.scrollTop;
+    if (er.top >= br.top + 60 && er.bottom <= br.bottom - 40) return;
+    box.scrollTo({ top: Math.max(0, top - br.height * 0.3), behavior: keepTop ? "smooth" : "auto" });
   }
 
   function setNav(open) {
@@ -116,28 +142,6 @@
           (b.soon && !got ? "Forthcoming" : ui.esc(b.desc)) + "</span></li>";
       }).join("") + "</ul>";
     ui.modal(html, { cls: "modal-badges", label: "Achievement badges" });
-  }
-
-  function showHelp() {
-    var html = '<h2 class="modal-title">Help and Support</h2>' +
-      '<dl class="help-list">' +
-      "<dt>Progress storage</dt><dd>Progress is saved in this browser on this device. A different device or cleared browser data starts the course again.</dd>" +
-      "<dt>No sound</dt><dd>Turn off silent mode, raise the volume and select the speaker button again. The Slow button plays the word at a lower speed.</dd>" +
-      "<dt>Recording problems</dt><dd>Allow microphone access when the browser asks. If recording still fails, say the word aloud three times and select <b>I Said It</b>.</dd>" +
-      "<dt>AI Tutor</dt><dd>The AI Tutor answers questions about the unit’s words. If the AI service is unavailable, it shows hints prepared by the teacher.</dd>" +
-      "<dt>Other problems</dt><dd>Take a screenshot and send it to your teacher.</dd>" +
-      "</dl>" +
-      '<div class="help-reset"><button class="btn btn-ghost btn-danger" id="reset-btn">Reset My Progress</button></div>';
-    ui.modal(html, { label: "Help and support", onOpen: function (m, close) {
-      var btn = m.querySelector("#reset-btn");
-      btn.addEventListener("click", function () {
-        if (btn.dataset.confirm) {
-          store.reset(); close(); location.hash = "#/overview"; ui.toast("Your progress has been reset.");
-        } else {
-          btn.dataset.confirm = "1"; btn.textContent = "Select again to delete all progress";
-        }
-      });
-    } });
   }
 
   /* Floating AI Tutor button: available throughout the vocabulary module and the community. */
@@ -180,8 +184,11 @@
       else { location.replace("#/" + L.id); return; }
     }
     else if (parts[0] === "teacher") view = "teacher";
+    else if (parts[0] === "support") view = "support";
     else { location.replace("#/overview"); return; }
 
+    /* A third part names a step to open at, e.g. #/lesson-4/l4-write/l4w-feedback */
+    GU.focusStep = /^lesson-[234]$/.test(parts[0]) && parts[2] ? parts[2] : null;
     /* Which lesson the Word Battle and AI Tutor belong to on this page */
     GU.practiceId = GU.PRACTICE[parts[0]] ? parts[0] : "lesson-1";
     page.innerHTML = "";
@@ -199,6 +206,7 @@
 
   function init() {
     renderTopbar();
+    GU.support.checkReplies();
     var open = WIDE.matches ? !store.ui("navClosed") : false;
     document.body.classList.toggle("nav-open", open);
     document.getElementById("scrim").addEventListener("click", function () { setNav(false); });

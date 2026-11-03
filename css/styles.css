@@ -2111,3 +2111,58 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
   .cs-item { flex-wrap: wrap; }
   .cs-item .fx { margin-left: 38px; }
 }
+
+/* Help and Support button (top right) */
+.help-btn { position: relative; display: inline-flex; align-items: center; gap: 7px; margin-left: 6px; padding: 7px 14px 7px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); color: var(--ink); font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: border-color .15s, background .15s; }
+.help-btn:hover { border-color: var(--sage); background: var(--sky); }
+.help-btn .ic { width: 20px; height: 20px; }
+.help-btn.has-reply::after { content: ""; position: absolute; top: 3px; right: 6px; width: 9px; height: 9px; border-radius: 50%; background: #D9572B; box-shadow: 0 0 0 2px var(--paper); }
+@media (max-width: 760px) {
+  .help-btn { padding: 8px; border-color: transparent; background: transparent; }
+  .help-btn span { display: none; }
+  .help-btn .ic { width: 24px; height: 24px; }
+  .help-btn.has-reply::after { top: 4px; right: 4px; }
+}
+
+/* Help and Support dialog */
+.modal-help { max-width: 640px; }
+.hs-tabs { margin: 10px 0 18px; }
+.hs-pane[hidden] { display: none; }
+.hs-form { display: grid; gap: 12px; }
+.hs-form label { display: grid; gap: 5px; font-size: .84rem; font-weight: 700; color: var(--ink-2); }
+.hs-form label small { font-weight: 400; color: var(--taupe-2); }
+.hs-form .spell-in { width: 100%; max-width: none; font: inherit; font-size: .95rem; }
+.hs-form textarea.spell-in { resize: vertical; min-height: 110px; line-height: 1.5; }
+.hs-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.hs-msg { margin: 6px 0 0; font-size: .9rem; color: var(--ink-2); }
+.hs-msg .ic { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; color: var(--green); }
+.hs-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.hs-list > li, .si-item { padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--paper); }
+.hs-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 0 0 6px; font-size: .8rem; color: var(--taupe); }
+.hs-meta a { color: var(--violet); }
+.hs-topic { padding: 2px 9px; border-radius: 999px; background: var(--sky); color: var(--ink-2); font-weight: 700; }
+.hs-st { margin-left: auto; font-weight: 700; color: #964127; }
+.hs-st.is-done { color: var(--green); }
+.hs-text { margin: 0; color: var(--ink); line-height: 1.55; white-space: pre-wrap; }
+.hs-reply { margin-top: 10px; padding: 10px 12px; border-left: 3px solid var(--sage); background: var(--sky); border-radius: 0 10px 10px 0; font-size: .92rem; }
+.hs-reply b { color: var(--violet); margin-right: 8px; }
+.hs-reply span { font-size: .78rem; color: var(--taupe-2); }
+.hs-reply p { margin: 4px 0 0; color: var(--ink-2); white-space: pre-wrap; }
+.hs-staff { margin: 22px 0 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: .8rem; text-align: right; }
+.hs-staff a { color: var(--taupe); }
+@media (max-width: 560px) { .hs-row { grid-template-columns: 1fr; } }
+
+/* Support inbox (course staff) */
+.si-key { margin-bottom: 18px; }
+.si-key .tkey-msg .ic { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; color: var(--green); }
+.si-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.si-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.si-item.is-done { opacity: .85; }
+.si-reply { margin-top: 12px; display: grid; gap: 8px; }
+.si-reply .spell-in { width: 100%; max-width: none; font: inherit; font-size: .92rem; }
+.si-reply .q-actions { margin: 0; }
+.hs-msg .ic, .si-key .tkey-msg .ic { display: inline-block; }
+.hs-form .spell-in, .si-reply .spell-in { font-weight: 400; letter-spacing: 0; }
+.hs-tabs { display: flex; }
+.hs-tabs button { flex: 1; white-space: nowrap; }
+@media (max-width: 480px) { .hs-tabs button { font-size: .78rem; padding: 7px 6px; } }

@@ -130,6 +130,14 @@
       if (first && !checkLesson(lesson, false)) completedPrompt(lesson, a, n);
     }
     sync(null);
+    /* Opened at a step (from the menu or the course structure): go straight to it. */
+    var fi = steps.map(function (s) { return s.key; }).indexOf(GU.focusStep);
+    if (fi >= 0) {
+      setTimeout(function () {
+        var sec = page.querySelector('[data-step="' + fi + '"]');
+        if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300);
+    }
     return function () { cleanups.forEach(function (c) { try { c(); } catch (e) {} }); };
   }
 
