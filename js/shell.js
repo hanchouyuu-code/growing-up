@@ -144,6 +144,50 @@
     ui.modal(html, { cls: "modal-badges", label: "Achievement badges" });
   }
 
+  /* Previous and next section, at the foot of every lesson page, practice page and activity.
+     The order follows the course: each lesson's landing page, then its activities (Lesson 2: those on the
+     chosen path), then the next lesson. Lesson 1 continues to its Word Battle and AI Tutor. */
+  function courseSequence(allPaths) {
+    var out = [{ href: "#/overview", title: "Course Overview" }];
+    GU.LESSONS.forEach(function (l) {
+      out.push({ href: "#/" + l.id, title: "Lesson " + l.n + " · " + l.short, lesson: l });
+      var acts = allPaths || !l.paths ? l.activities : store.lessonActs(l);
+      acts.forEach(function (a) {
+        out.push({ href: "#/" + l.id + "/" + a.id, title: l.n === 1 ? a.title : a.label + " · " + a.short, act: a });
+      });
+      if (l.n === 1) out.push({ href: "#/community/battle", title: "Word Battle" }, { href: "#/community/tutor", title: "AI Tutor" });
+    });
+    out.push({ href: "#/overview", title: "Course Overview" });
+    return out;
+  }
+  function findIn(seq, href) { return seq.map(function (x) { return x.href; }).indexOf(href); }
+  function renderPager(view) {
+    var nav = document.getElementById("pager");
+    var href = "#/" + (location.hash.replace(/^#\/?/, "") || "overview").split("/").slice(0, 2).join("/");
+    if (/^(overview|teacher|support|group)$/.test(view) || !view) { nav.hidden = true; nav.innerHTML = ""; return; }
+    var seq = courseSequence(false), i = findIn(seq, href), prev, next, cur = null;
+    if (i < 0) { seq = courseSequence(true); i = findIn(seq, href); }
+    if (i >= 0) {
+      cur = seq[i]; prev = seq[i - 1]; next = seq[i + 1];
+      /* An activity outside the chosen Lesson 2 path leads on to the next lesson. */
+      if (cur.act && GU.LESSONS[1].activities.indexOf(cur.act) >= 0 && store.lessonActs(GU.LESSONS[1]).indexOf(cur.act) < 0) {
+        next = courseSequence(false)[findIn(courseSequence(false), "#/lesson-3")];
+      }
+    } else if (href === "#/lesson-3/battle" || href === "#/lesson-3/tutor") {
+      /* Further practice for Lesson 3 sits between the reading activities and Lesson 4. */
+      var s2 = courseSequence(true);
+      prev = href === "#/lesson-3/battle" ? s2[findIn(s2, "#/lesson-3/l3-text")] : { href: "#/lesson-3/battle", title: "Word Battle" };
+      next = href === "#/lesson-3/battle" ? { href: "#/lesson-3/tutor", title: "AI Tutor" } : s2[findIn(s2, "#/lesson-4")];
+    } else { nav.hidden = true; nav.innerHTML = ""; return; }
+    /* The next button is the main action once the activity on this page is completed, or on pages without one. */
+    var strong = !cur || !cur.act || store.isDone(cur.act.id);
+    nav.style.maxWidth = getComputedStyle(document.getElementById("page")).maxWidth;
+    nav.innerHTML =
+      (prev ? '<a class="pg-prev" href="' + prev.href + '">' + ui.icon("left") + "<span><small>Previous</small>" + prev.title + "</span></a>" : "<span></span>") +
+      (next ? '<a class="pg-next btn ' + (strong ? "btn-primary" : "btn-ghost") + '" href="' + next.href + '"><span><small>Next</small>' + next.title + "</span>" + ui.icon("right") + "</a>" : "");
+    nav.hidden = false;
+  }
+
   /* Floating AI Tutor button: available throughout the vocabulary module and the community. */
   function renderFab(view) {
     var fab = document.getElementById("tutor-fab");
@@ -197,6 +241,7 @@
     cleanup = GU.views[view](page, params) || null;
     renderSidebar();
     renderFab(view);
+    renderPager(view);
     window.scrollTo(0, 0);
     var h1 = page.querySelector("h1");
     if (h1) { h1.setAttribute("tabindex", "-1"); h1.focus({ preventScroll: true }); }
@@ -211,7 +256,7 @@
     document.body.classList.toggle("nav-open", open);
     document.getElementById("scrim").addEventListener("click", function () { setNav(false); });
     if (WIDE.addEventListener) WIDE.addEventListener("change", function () { document.body.classList.toggle("nav-open", WIDE.matches && !store.ui("navClosed")); });
-    store.onChange(function () { renderTopbar(); renderSidebar(); });
+    store.onChange(function () { renderTopbar(); renderSidebar(); renderPager(document.body.dataset.view); });
     window.addEventListener("hashchange", route);
     route();
   }

@@ -78,8 +78,7 @@
           '<header class="step-h"><div class="step-ht"><p class="step-k">Step ' + (i + 1) + " of " + steps.length + (s.optional ? ' <span class="tag-opt">Optional</span>' : "") + "</p>" +
           '<h2 id="sh-' + i + '">' + s.title + '</h2></div><span class="step-st"></span></header>' +
           '<div class="step-body"></div></section>';
-      }).join("") +
-      '<div class="act-end" hidden></div>';
+      }).join("");
 
     var mounted = [];
     var cleanups = [];
@@ -117,10 +116,6 @@
       if (!steps.every(function (s) { return s.optional || store.step(s.key); })) return;
       var first = store.complete(a.id);
       var n = nextAfter(lesson, a);
-      var end = page.querySelector(".act-end");
-      end.hidden = false;
-      end.innerHTML = '<span class="tag-done">' + ui.icon("check") + a.label + " completed</span>" +
-        '<div class="act-end-go">' + nextButtons(n) + "</div>";
       /* Once finished, the step line gives way to the one next action. */
       var ban = page.querySelector(".act-banner");
       page.querySelector(".step-track").hidden = true;

@@ -2166,3 +2166,20 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .hs-tabs { display: flex; }
 .hs-tabs button { flex: 1; white-space: nowrap; }
 @media (max-width: 480px) { .hs-tabs button { font-size: .78rem; padding: 7px 6px; } }
+
+/* Previous / next section, at the foot of each page */
+.pager { margin: 40px auto 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.pager[hidden] { display: none; }
+.pg-prev { display: inline-flex; align-items: center; gap: 8px; min-width: 0; text-decoration: none; color: var(--taupe); font-size: .9rem; }
+.pg-prev:hover { color: var(--violet); }
+.pg-prev .ic { width: 18px; height: 18px; flex: none; }
+.pg-prev span, .pg-next span { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.pg-prev small, .pg-next small { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
+.pg-prev span { font-weight: 600; }
+.pg-next.btn { height: auto; min-height: 54px; padding: 8px 18px 8px 22px; gap: 12px; text-align: left; margin-left: auto; }
+.pg-next .ic { width: 20px; height: 20px; flex: none; }
+@media (max-width: 560px) {
+  .pager { flex-direction: column-reverse; align-items: stretch; }
+  .pg-next.btn { justify-content: space-between; margin-left: 0; }
+  .pg-prev { justify-content: center; }
+}

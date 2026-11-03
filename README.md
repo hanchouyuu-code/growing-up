@@ -53,6 +53,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 ## 导航与 Help and Support
 
+- **上一节 / 下一节**：每课首页、每个活动页、Word–Meaning Matching、Dictation Challenge、Word Battle 和 AI Tutor 页面底部都有 Previous（左）和 Next（右下角）。顺序与课程一致：每课首页 → 各活动（Lesson 2 按所选路径）→ 下一课；Lesson 1 的 Dictation Challenge 之后是 Word Battle 和 AI Tutor。当前活动完成后，Next 变为深绿色主按钮。单词组页面沿用 Next Word，读完 Set Read-Along 后进入下一组。
 - **左侧导航自动定位**：打开任何页面，左侧导航会自动滚动到当前课和当前活动，不用手动拖动。
 - **导航里的特色入口**（深绿色区块）：Vocabulary 下有 Word Battle、AI Tutor；Understanding Ideas 下有 Word Battle、AI Tutor、Teacher Q&A；Writing 下有 AI Writing Feedback、Teacher Q&A。Teacher Q&A 和 AI Writing Feedback 直接跳到活动里对应的那一步（链接形如 `#/lesson-4/l4-write/l4w-feedback`）。
 - **Help and Support**（右上角）：三栏，Common Questions（常见问题、重置进度）、Contact Us（学生填写昵称、班级、问题类型和描述，自动附上所在页面）、My Messages（学生自己发过的消息和课程团队的回复；有新回复时按钮上会出现红点）。
