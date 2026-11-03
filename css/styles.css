@@ -2183,3 +2183,14 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
   .pg-next.btn { justify-content: space-between; margin-left: 0; }
   .pg-prev { justify-content: center; }
 }
+
+/* Sidebar: the course features continue the lesson's own list (no separate dark card), set apart by their
+   icons and a warm amber type. */
+.course-nav .nav-community { margin: -10px 0 10px 22px; padding: 2px 0 0 12px; border-left: 1px solid var(--line); border-radius: 0; background: none; }
+.course-nav .nav-community a { gap: 10px; padding: 9px 10px; border-radius: 9px; font-size: .84rem; font-weight: 650; line-height: 1.4; color: #A9661A; }
+.course-nav .nav-community a + a { margin-top: 2px; }
+.course-nav .nav-community a .ic { width: 18px; height: 18px; color: #D99A2B; stroke-width: 2; }
+.course-nav .nav-community a:hover { background: #FBF0DC; color: #8A5212; }
+.course-nav .nav-community a[aria-current="page"] { background: #F8E8C9; color: #7E4A0F; }
+.course-nav .nav-community a[aria-current="page"] span { color: inherit; }
+.course-nav .nav-community a[aria-current="page"] .ic { color: #C2841F; }
