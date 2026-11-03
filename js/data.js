@@ -133,8 +133,8 @@ GU.COMMUNITY = {
 };
 
 GU.TEACHER = {
-  id: "teacher", title: "Teacher’s Corner",
-  blurb: "Lesson plans, answer keys and supplementary resources for teachers."
+  id: "teacher", title: "Teacher Resources",
+  blurb: "Background notes, sentence analyses, a writing guide and answer keys for teachers."
 };
 
 /* Badges: a growth sequence from seed to coming of age. */
