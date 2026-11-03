@@ -79,7 +79,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 - **Activity 1 Pre-writing（5 分钟）**：课本 Think & Share 的第 2、3 题（What right are you most looking forward to having as an adult? Why? / What do you think it means to be a responsible adult?）。两题都是先发后看的班级讨论，有句子开头提示，发帖后显示参考回答。第一题列出五项权利供参考（不需要选择，也可以写其他权利）；发帖后的 Class Poll 按回答里提到的第一项权利自动统计，没提到的计入 Other rights（关键词在 `GU.L4.right.rights` 中修改）。Writing 部分不设 Word Battle 和 AI Tutor。
 - **Activity 2 Guided Writing（10 分钟）**：
-  - **Essay Draft**：高考应用文格式的中文题目（不用“假定你是李华”，请学生畅想自己的十八岁：“我的十八岁”征文，三个要点，80 词左右），附英文要点。编辑器自动保存，显示词数（80 词标记）和三个要点的完成情况，至少 50 词才能提交，可下载。右侧语言库分三栏：Words（Vocabulary 30 词）、Expressions（Lesson 3 的 key expressions）、Patterns（开头、理由、责任、结尾句型），点击插入到光标处，已用到的会打勾。
+  - **Writing Task**：高考应用文格式的中文题目（不用“假定你是李华”，请学生结合自己的期待与思考写“Me at Eighteen”征文，三个要点，词数 80 左右，标题已给出）。编辑器自动保存，显示词数（80 词标记）和三个要点的完成情况，至少 50 词才能提交，可下载。右侧语言库分三栏：Words（Vocabulary 30 词）、Expressions（Lesson 3 的 key expressions）、Patterns（开头、理由、责任、结尾句型），点击插入到光标处，已用到的会打勾。
   - **Feedback and Revision**：AI 按高考应用文 15 分五档评分，给出优点、改进建议、语言错误（在原文中标出）和润色后的版本对照。没有 AI 密钥时显示本地估分。可返回编辑器修改后重新评价，可展开范文。
   - **Questions and Answers** 与 **Writing Showcase**：完成 AI 评价后两步同时开放。问答区为可选步骤（教师回复需 `TEACHER_KEY`），随时可以提问；展示区自动填入学生的作文，先发后看，发帖后显示范文。分享作文即完成本活动。
 - 题目、要点、范文（83 词）、语言库和评分档次都在 `js/data.js` 的 `GU.L4` 中修改。

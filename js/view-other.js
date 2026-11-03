@@ -72,7 +72,7 @@
       '<section class="plan"><h2>Lesson 4 Reference Answers</h2><dl class="keys">' +
       "<dt>Activity 1, Rights in Adulthood (sample answer)</dt><dd><i>" + ui.esc(GU.L4.right.prompt) + "</i><br>" + ui.esc(GU.L4.right.example) + "</dd>" +
       "<dt>Activity 1, Responsible Adulthood (sample answer)</dt><dd><i>" + ui.esc(GU.L4.adult.prompt) + "</i><br>" + ui.esc(GU.L4.adult.example) + "</dd>" +
-      "<dt>Activity 2, Writing Task</dt><dd lang=\"zh-CN\">" + GU.L4.task.zh.map(ui.esc).join("<br>") + "</dd>" +
+      "<dt>Activity 2, Writing Task</dt><dd lang=\"zh-CN\">" + GU.L4.task.zh.concat(GU.L4.task.note).map(ui.esc).join("<br>") + "</dd>" +
       "<dt>Activity 2, Model Essay (" + GU.L4.task.model.split(/\s+/).length + " words)</dt><dd><b>" + GU.L4.task.title + "</b><br>" + ui.esc(GU.L4.task.model) + "</dd>" +
       "<dt>Marking</dt><dd>Gaokao applied writing, 15 marks: " + GU.L4.bands.map(function (b) { return b[2] + " (" + b[0] + "–" + b[1] + ")"; }).join(", ") + ". The AI feedback uses these bands; without the AI service, students receive an automatic estimate.</dd>" +
       "</dl></section>" +

@@ -743,13 +743,12 @@ GU.L4 = {
   task: {
     title: "Me at Eighteen",
     zh: [
-      "你即将迎来自己的十八岁。你校英文报 “Growing Up” 栏目正在开展以“我的十八岁”（Me at Eighteen）为题的征文活动。请你畅想自己的十八岁，写一篇短文投稿，内容包括：",
-      "1. 成年后你最希望拥有的一项权利；",
-      "2. 你希望拥有这项权利的理由；",
-      "3. 你对这项权利所对应责任的理解。",
-      "注意：1. 写作词数应为 80 左右；2. 短文的题目已为你写好。"
+      "你即将年满十八岁，步入成年。校英文报正在举办以“Me at Eighteen”（我的十八岁）为主题的征文活动。请你结合自己的期待与思考，写一篇短文投稿，内容包括：",
+      "1. 成年后，你最希望享有的一项权利；",
+      "2. 你希望享有这项权利的原因；",
+      "3. 你对行使这项权利所承担的责任的理解。"
     ],
-    en: "You will soon turn 18. Imagine your own eighteenth year and write about 80 words for the school English newspaper: the right you most want to have as an adult, why you want it, and the responsibility that comes with it.",
+    note: ["注意：", "1. 词数80左右；", "2. 短文标题已给出，不计入总词数。"],
     points: [
       { id: "right", label: "The right you most want to have", any: ["right", "vote", "voting", "licence", "license", "drive", "driving", "credit card", "loan", "job", "work", "rent", "apartment", "sign", "decide", "decision", "travel"] },
       { id: "reason", label: "Your reason for wanting it", any: ["because", "since", "as ", "so that", "so i", "reason", "in order to", "which means", "will be able to", "allow me", "allows me", "give me", "help me"] },

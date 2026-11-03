@@ -1807,9 +1807,7 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .wr-task { position: relative; padding: 22px 26px 18px; margin-bottom: 26px; border-radius: 14px; background: #FFFDF6;
   border: 1px solid #EADFC6; box-shadow: inset 0 0 0 5px #FFFDF6, inset 0 0 0 6px #EFE5CF; font-family: "Songti SC", "STSong", "SimSun", var(--f-zh); color: var(--ink); line-height: 1.85; }
 .wr-task p { margin: 0; }
-.wr-task-k { font-family: var(--f-body); font-size: .72rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--taupe-2); margin-bottom: 8px !important; }
-.wr-task .wr-note { margin-top: 6px; color: var(--ink-2); }
-.wr-task-en { margin-top: 12px !important; padding-top: 10px; border-top: 1px dashed #E3D7BC; font-family: var(--f-body); font-size: .86rem; color: var(--taupe); line-height: 1.6; }
+.wr-task .wr-note { margin-top: 12px; color: var(--ink-2); }
 
 .wr-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 22px; align-items: start; }
 .wr-editor { min-width: 0; }

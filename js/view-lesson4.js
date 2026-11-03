@@ -107,8 +107,8 @@
     var B = bankItems();
     var tab = store.ui("l4bank") || "unit";
     el.innerHTML =
-      '<div class="wr-task" lang="zh-CN"><p class="wr-task-k" lang="en">Writing Task</p>' + T.zh.map(function (l, i) { return "<p" + (i === T.zh.length - 1 ? ' class="wr-note"' : "") + ">" + esc(l) + "</p>"; }).join("") +
-      '<p class="wr-task-en" lang="en">' + esc(T.en) + "</p></div>" +
+      '<div class="wr-task" lang="zh-CN">' + T.zh.map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") +
+      '<div class="wr-note">' + T.note.map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + "</div></div>" +
       '<div class="wr-grid">' +
       '<div class="wr-editor">' +
       '<p class="wr-title">' + T.title + "</p>" +
@@ -317,7 +317,7 @@
     var a = act("l4-write");
     var editor = null;
     var steps = [
-      { key: "l4w-draft", title: "Essay Draft", mount: function (el, done) { editor = editorStep(el, done); } },
+      { key: "l4w-draft", title: "Writing Task", mount: function (el, done) { editor = editorStep(el, done); } },
       { key: "l4w-feedback", title: "Feedback and Revision", mount: function (el, done) { feedbackStep(el, done, { focus: function () { editor.focus(); } }); } },
       /* Steps 3 and 4 open together: students may ask the teacher and share their essays in either order. */
       { key: "l4w-qa", title: "Questions and Answers", optional: true, mount: function (el, done) {
