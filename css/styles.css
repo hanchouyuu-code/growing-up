@@ -2040,3 +2040,17 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .bd-ref-list li.is-mine { border-style: solid; border-color: var(--mint); color: #fff; display: inline-flex; align-items: center; gap: 6px; }
 .bd-ref-list li.is-mine .ic { width: 14px; height: 14px; color: var(--mint); }
 .bd-review-a { margin: 0; color: var(--moon); line-height: 1.6; white-space: pre-wrap; }
+
+/* Class poll rows that open to show each classmate's right, in their own words */
+.bd-polld > summary { list-style: none; cursor: pointer; border-radius: 8px; }
+.bd-polld > summary::-webkit-details-marker { display: none; }
+.bd-polld > summary:hover .bd-poll-l { color: #fff; }
+.bd-poll-l small { margin-left: 4px; font-size: .74rem; font-weight: 700; color: var(--moon-2); }
+.bd-poll-l .ic { display: inline-block; width: 13px; height: 13px; margin-left: 4px; vertical-align: -1px; color: var(--mint); transition: transform .2s; }
+.bd-polld[open] .bd-poll-l .ic { transform: rotate(90deg); }
+.bd-poll-who { list-style: none; margin: 4px 0 10px; padding: 10px 12px; border-radius: 10px; background: rgba(255, 255, 255, .05); display: flex; flex-wrap: wrap; gap: 6px; }
+.bd-poll-who li { display: inline-flex; gap: 6px; align-items: baseline; padding: 4px 11px; border-radius: 999px; background: rgba(232, 182, 90, .1); border: 1px solid transparent; font-size: .82rem; color: var(--moon); }
+.bd-poll-who li b { color: var(--mint); font-weight: 700; white-space: nowrap; }
+.bd-poll-who li em { color: var(--moon-2); }
+.bd-poll-who li.is-mine { border-color: var(--mint); }
+.bd-right { max-width: 420px; }

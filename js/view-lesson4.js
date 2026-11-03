@@ -64,7 +64,8 @@
         return GU.discuss.mount(el.querySelector(".disc-slot"), {
           board: "l4-right", prompts: [D.right.prompt], choices: POLL, classify: classifyRight,
           reference: { title: "Rights for Reference", items: D.right.rights.map(function (r) { return r[0]; }), note: "You may also write about any other right." },
-          pollNote: "Each answer is counted under the right it names.",
+          nameField: { label: "The right you write about", reviewLabel: "The right you wrote about", placeholder: "e.g. voting in elections, or travelling abroad on my own" },
+          pollNote: "Each answer is counted under the right it names. Select a row to see the rights your classmates wrote about.",
           starters: D.right.starters, example: D.right.example, onPosted: done
         });
       } },

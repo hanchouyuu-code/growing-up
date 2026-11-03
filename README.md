@@ -77,7 +77,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 ## Lesson 4 说明
 
-- **Activity 1 Pre-writing（5 分钟）**：课本 Think & Share 的第 2、3 题（What right are you most looking forward to having as an adult? Why? / What do you think it means to be a responsible adult?）。两题都是先发后看的班级讨论，有句子开头提示，发帖后显示参考回答。第一题列出五项权利供参考（不需要选择，也可以写其他权利）；发帖后的 Class Poll 按回答里提到的第一项权利自动统计，没提到的计入 Other rights（关键词在 `GU.L4.right.rights` 中修改）。Writing 部分不设 Word Battle 和 AI Tutor。
+- **Activity 1 Pre-writing（5 分钟）**：课本 Think & Share 的第 2、3 题（What right are you most looking forward to having as an adult? Why? / What do you think it means to be a responsible adult?）。两题都是先发后看的班级讨论，有句子开头提示，发帖后显示参考回答。第一题列出五项权利供参考（不需要选择，也可以写其他权利）。学生用自己的话填写 The right you write about，Class Poll 按这一栏自动归类到五项权利或 Other rights（关键词在 `GU.L4.right.rights` 中修改）。点击投票的任一行可展开，看到同学各自写的权利（标出自己的那条）；帖子标签和 Review the Question 中也显示自己写的权利。Writing 部分不设 Word Battle 和 AI Tutor。
 - **Activity 2 Guided Writing（10 分钟）**：
   - **Writing Task**：高考应用文格式的中文题目（不用“假定你是李华”，请学生结合自己的期待与思考写“Me at Eighteen”征文，三个要点，词数 80 左右，标题已给出）。编辑器自动保存，显示词数（80 词标记）和三个要点的完成情况，至少 50 词才能提交，可下载。右侧语言库分三栏：Words（Vocabulary 30 词）、Expressions（Lesson 3 的 key expressions）、Patterns（开头、理由、责任、结尾句型），点击插入到光标处，已用到的会打勾。
   - **Feedback and Revision**：AI 按高考应用文 15 分五档评分，给出优点、改进建议、语言错误（在原文中标出）和润色后的版本对照。没有 AI 密钥时显示本地估分。可返回编辑器修改后重新评价，可展开范文。
