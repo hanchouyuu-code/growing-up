@@ -31,6 +31,8 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 同一个数据库同时用于 Word Battle 排行榜、Lesson 2–4 的所有讨论区、问答区和习作展示区。
 
+Upstash 免费数据库连续 30 天以上没有访问会被归档。`vercel.json` 里设置了每天一次的定时任务（Vercel Cron，调用 `api/keepalive.js` 写入一个时间戳），保证课程链接在一年内讨论区等功能都能正常使用。
+
 ### 2. AI Tutor（需要一个 AI 接口密钥）
 
 在 Vercel 项目 → **Settings** → **Environment Variables** 添加其中一组，然后 Redeploy：

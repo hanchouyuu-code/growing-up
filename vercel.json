@@ -16,6 +16,15 @@
     "api/feedback.js": {
       "maxDuration": 30,
       "includeFiles": "js/data.js"
+    },
+    "api/keepalive.js": {
+      "maxDuration": 10
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/keepalive",
+      "schedule": "17 3 * * *"
+    }
+  ]
 }
