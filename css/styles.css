@@ -2095,9 +2095,7 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .cs-item:hover .cs-t { color: var(--violet); text-decoration: underline; text-underline-offset: 3px; }
 .cs-ic { flex: none; width: 28px; height: 28px; display: grid; place-items: center; border: 1.5px solid #CFC6B5; border-radius: 7px; color: var(--ink); background: var(--paper); }
 .cs-ic .ic { width: 15px; height: 15px; stroke-width: 2; }
-.cs-item.is-done .cs-ic { background: var(--violet); border-color: var(--violet); color: #fff; }
 .cs-item .fx { margin-left: auto; }
-.cs-item.is-done .cs-ic .ic { stroke-width: 2.6; }
 .cs-t { flex: 1; min-width: 0; }
 .cs-sub { margin-left: 4px; font-size: .78rem; color: var(--taupe-2); }
 .cs-teacher { background: var(--sky); border-color: transparent; }

@@ -73,7 +73,12 @@
 
       var rb = m.querySelector("#reset-btn");
       rb.addEventListener("click", function () {
-        if (rb.dataset.confirm) { store.reset(); close(); location.hash = "#/overview"; ui.toast("Your progress has been reset."); }
+        if (rb.dataset.confirm) {
+          store.reset(); close();
+          /* Draw the page again from the cleared progress, even when it is already the overview. */
+          if ((location.hash || "#/overview") === "#/overview") GU.shell.route(); else location.hash = "#/overview";
+          ui.toast("Your progress has been reset.");
+        }
         else { rb.dataset.confirm = "1"; rb.textContent = "Select again to delete all progress"; }
       });
 

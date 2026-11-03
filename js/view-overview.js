@@ -86,8 +86,9 @@
       "l4-think": [["l4t-right", "Rights in Adulthood", "discuss", "discuss"], ["l4t-adult", "Responsible Adulthood", "discuss", "discuss"]],
       "l4-write": [["l4w-draft", "Writing Task", "write"], ["l4w-feedback", "Feedback and Revision", "tool", "feedback"], ["l4w-qa", "Questions and Answers", "qa", "qa"], ["l4w-share", "Writing Showcase", "discuss", "discuss"]]
     };
+    /* The icon shows the kind of step only; progress is shown by the lesson's completion count. */
     function item(href, title, type, feature, done, extra) {
-      return '<li><a class="cs-item' + (done ? " is-done" : "") + '" href="' + href + '"><span class="cs-ic">' + ui.icon(done ? "check" : TYPE[type]) + "</span>" +
+      return '<li><a class="cs-item" href="' + href + '"><span class="cs-ic">' + ui.icon(TYPE[type]) + "</span>" +
         '<span class="cs-t">' + title + (extra || "") + "</span>" + (feature ? fx(feature) : "") + "</a></li>";
     }
     function group(head, meta, items) {

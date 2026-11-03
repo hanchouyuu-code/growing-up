@@ -247,7 +247,7 @@
     if (h1) { h1.setAttribute("tabindex", "-1"); h1.focus({ preventScroll: true }); }
   }
 
-  GU.shell = { renderSidebar: renderSidebar, statusDot: statusDot, activityState: activityState };
+  GU.shell = { renderSidebar: renderSidebar, statusDot: statusDot, activityState: activityState, route: route };
 
   function init() {
     renderTopbar();
