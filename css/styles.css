@@ -1201,11 +1201,14 @@ input.bd-input { max-width: 260px; }
 .bd-tags span { font-size: .76rem; font-weight: 700; color: var(--mint); background: rgba(232, 182, 90, .12); padding: 2px 9px; border-radius: 999px; }
 .bd-acts { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
 .bd-acts:empty { display: none; }
-.bd-like { display: inline-flex; align-items: center; gap: 6px; border: 0; background: transparent; color: var(--moon-2); font-weight: 700; font-size: .86rem; cursor: pointer; padding: 6px 2px; }
-.bd-like svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; transition: transform .2s; }
-.bd-like:hover { color: #F2A88E; }
-.bd-like.is-on { color: #EE8A68; }
+.bd-like { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255, 255, 255, .2); background: transparent; color: var(--moon); font: inherit; font-weight: 700; font-size: .84rem; cursor: pointer; padding: 5px 12px 5px 10px; border-radius: 999px; transition: border-color .15s, background .15s, color .15s; }
+.bd-like svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform .2s; }
+.bd-like-n { padding-left: 6px; margin-left: 2px; border-left: 1px solid rgba(255, 255, 255, .2); color: var(--moon-2); }
+.bd-like:hover { color: #F2A88E; border-color: rgba(242, 168, 142, .6); }
+.bd-like.is-on { color: #EE8A68; border-color: rgba(238, 138, 104, .7); background: rgba(238, 138, 104, .12); }
 .bd-like.is-on svg { fill: currentColor; transform: scale(1.1); }
+.bd-like.is-on .bd-like-n { color: #F2A88E; border-color: rgba(238, 138, 104, .45); }
+.bd-like.is-own { cursor: default; border-color: transparent; padding-left: 0; color: var(--moon-2); font-weight: 600; }
 .bd-replies { list-style: none; margin: 10px 0 0; padding: 0 0 0 14px; border-left: 2px solid var(--night-line); display: grid; gap: 8px; }
 .bd-replies li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; font-size: .88rem; }
 .bd-replies b { color: #fff; }

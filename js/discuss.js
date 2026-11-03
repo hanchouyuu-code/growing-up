@@ -24,6 +24,7 @@
     if (s < 86400) return Math.round(s / 3600) + " h ago";
     return new Date(t).toLocaleDateString([], { month: "short", day: "numeric" });
   }
+  var HEART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>';
   function teacherKey() { try { return localStorage.getItem("gu-teacher-key") || ""; } catch (e) { return ""; } }
   function setTeacherKey(k) { try { if (k) localStorage.setItem("gu-teacher-key", k); else localStorage.removeItem("gu-teacher-key"); } catch (e) {} }
 
@@ -100,7 +101,7 @@
             '<div class="bd-bar"><div class="seg seg-dark" role="radiogroup" aria-label="Sort"><button role="radio" aria-checked="' + (sort === "new") + '" data-sort="new">Newest</button>' +
             (qa ? '<button role="radio" aria-checked="' + (sort === "open") + '" data-sort="open">Awaiting Answers</button>' : '<button role="radio" aria-checked="' + (sort === "top") + '" data-sort="top">Most Liked</button>') + "</div>" +
             '<button class="link-btn bd-refresh" type="button">' + ui.icon("redo") + "Refresh</button></div>" +
-            (live ? "" : '<p class="bd-note">' + (qa ? "The class Q&amp;A is not connected yet, so only your own questions, saved on this device, are shown." : "The class discussion is not connected yet, so only your own answer, saved on this device, is shown.") + "</p>") +
+            (live ? "" : '<p class="bd-note">' + (qa ? "The class Q&amp;A is not connected yet, so only your own questions, saved on this device, are shown. Classmates’ questions and the teacher’s answers appear once the teacher connects the class service." : "The class discussion is not connected yet, so only your own answer, saved on this device, is shown. Classmates’ answers, likes and replies appear once the teacher connects the class service.") + "</p>") +
             (qa && live && !posts.length ? '<p class="bd-gate">' + ui.icon("chat") + "No questions yet. Be the first to ask.</p>" : "") +
             (o.example ? '<article class="bd-post bd-teacher"><div class="bd-meta"><span class="bd-avatar t">T</span><b>' + (L.example || "Teacher’s Example") + "</b></div><p>" + ui.esc(o.example) + "</p></article>" : "") +
             '<ul class="bd-posts">' + sorted().map(postHtml).join("") + "</ul>";
@@ -208,8 +209,11 @@
           (tagsOf(p).length ? '<div class="bd-tags">' + tagsOf(p).map(function (c) { return "<span>" + ui.esc(c) + "</span>"; }).join("") + "</div>" : "") +
           "<p>" + ui.esc(p.text) + "</p>" +
           '<div class="bd-acts">' +
-          (live ? '<button class="bd-like' + (p.liked ? " is-on" : "") + '" data-like="' + ui.esc(p.id) + '" aria-pressed="' + !!p.liked + '" aria-label="Like">' +
-            '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>' + (p.likes || 0) + "</span></button>" +
+          (live ? (mine
+            /* Students cannot like their own post; they see how many classmates did. */
+            ? '<span class="bd-like is-own">' + HEART + "<span>" + (p.likes || 0) + (p.likes === 1 ? " like" : " likes") + "</span></span>"
+            : '<button type="button" class="bd-like' + (p.liked ? " is-on" : "") + '" data-like="' + ui.esc(p.id) + '" aria-pressed="' + !!p.liked + '" aria-label="Like ' + ui.esc(p.name) + '’s post">' +
+              HEART + '<span class="bd-like-l">' + (p.liked ? "Liked" : "Like") + '</span><span class="bd-like-n">' + (p.likes || 0) + "</span></button>") +
             '<button class="link-btn" data-reply="' + ui.esc(p.id) + '">' + ui.icon("chat") + (qa ? (tk ? "Answer as Teacher" : "Answer") : "Reply") + (p.replies.length ? " (" + p.replies.length + ")" : "") + "</button>" : "") +
           "</div>" +
           (p.replies.length ? '<ul class="bd-replies">' + p.replies.map(function (r, i) {
