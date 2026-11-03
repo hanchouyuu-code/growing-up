@@ -229,7 +229,8 @@
         '<p class="ra-status" id="ra-status" aria-live="polite">' + (store.readAlongDone(g) ? ui.icon("check") + "Read-along completed. Repeat it at a faster speed for extra practice." : "Select a word to hear it on its own.") + "</p>" +
         "</section>" +
         '<nav class="wc-nav" aria-label="Words"><button class="btn btn-ghost" data-act="prev">' + ui.icon("left") + "Previous Word</button>" +
-        '<a class="btn ' + (store.isDone(act.id) ? "btn-primary" : "btn-ghost") + '" href="#/lesson-1">Return to Lesson 1' + ui.icon("right") + "</a></nav>";
+        /* After the read-along, the learner moves on to the next word set (or the next activity). */
+        '<a class="btn ' + (store.isDone(act.id) ? "btn-primary" : "btn-ghost") + '" href="' + nextOf(act).href + '">' + nextOf(act).label + ui.icon("right") + "</a></nav>";
 
       page.querySelectorAll("[data-go]").forEach(function (b) { b.addEventListener("click", function () { go(+b.dataset.go); }); });
       page.querySelector('[data-act="prev"]').addEventListener("click", function () { go(9); });
