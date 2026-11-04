@@ -64,8 +64,9 @@
     var opt = !inPath(lesson, a);
     page.innerHTML =
       '<header class="act-hero">' +
-      '<div class="act-meta"><a class="crumb" href="#/' + lesson.id + '">' + ui.icon("left") + "Lesson " + lesson.n + "</a>" +
-      "<span>" + a.label + "</span><span>" + a.minutes + " min</span>" + (opt ? '<span class="tag-opt">Optional</span>' : "") + "</div>" +
+      /* A lesson with a menu name (Lesson 5, "End-of-Course") shows only that name above its activity. */
+      '<div class="act-meta"><a class="crumb" href="#/' + lesson.id + '">' + ui.icon("left") + (lesson.nav || "Lesson " + lesson.n) + "</a>" +
+      (lesson.nav ? "" : "<span>" + a.label + "</span><span>" + a.minutes + " min</span>") + (opt ? '<span class="tag-opt">Optional</span>' : "") + "</div>" +
       "<h1>" + a.title + "</h1>" +
       '<p class="lede is-clamped" tabindex="0">' + intro + "</p>" +
       '<ol class="step-track" aria-label="Steps">' + steps.map(function (s, i) {

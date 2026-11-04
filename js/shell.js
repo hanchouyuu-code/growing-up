@@ -150,10 +150,10 @@
   function courseSequence(allPaths) {
     var out = [{ href: "#/overview", title: "Course Overview" }];
     GU.LESSONS.forEach(function (l) {
-      out.push({ href: "#/" + l.id, title: "Lesson " + l.n + " · " + l.short, lesson: l });
+      out.push({ href: "#/" + l.id, title: l.nav || "Lesson " + l.n + " · " + l.short, lesson: l });
       var acts = allPaths || !l.paths ? l.activities : store.lessonActs(l);
       acts.forEach(function (a) {
-        out.push({ href: "#/" + l.id + "/" + a.id, title: l.n === 1 ? a.title : a.label + " · " + a.short, act: a });
+        out.push({ href: "#/" + l.id + "/" + a.id, title: l.n === 1 || l.nav ? a.title : a.label + " · " + a.short, act: a });
       });
       if (l.n === 1) out.push({ href: "#/community/battle", title: "Word Battle" }, { href: "#/community/tutor", title: "AI Tutor" });
     });
