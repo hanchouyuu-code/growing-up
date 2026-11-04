@@ -53,7 +53,7 @@
       var lp = store.lessonProgress(l);
       var head = '<a class="nl-head' + (l.soon ? " is-soon" : "") + '" href="#/' + l.id + '"' + cur("#/" + l.id) + '>' +
         '<span class="nl-num">' + l.n + "</span>" +
-        '<span class="nl-text"><b>' + l.title.replace(/:.*/, "") + "</b><small>" + l.minutes + " minutes" + (l.soon ? ", forthcoming" : "") + "</small></span>" +
+        '<span class="nl-text"><b>' + (l.nav || l.title.replace(/:.*/, "")) + "</b>" + (l.navNoTime ? "" : "<small>" + l.minutes + " minutes" + (l.soon ? ", forthcoming" : "") + "</small>") + "</span>" +
         (l.activities ? '<span class="nl-count">' + lp.done + "/" + lp.total + "</span>" : statusDot("soon")) +
         "</a>";
       var items = "";

@@ -87,6 +87,8 @@ GU.LESSONS = [
   },
   {
     id: "lesson-5", n: 5, title: "End-of-Course Self-Reflection", short: "Self-Reflection", minutes: 5,
+    /* In the menu the lesson reads "End-of-Course", with its one activity, Self-Reflection, beneath it. */
+    nav: "End-of-Course", navNoTime: true,
     blurb: "A self-assessment against the three learning objectives, and three questions on what the unit means as you turn 18.",
     activities: [
       { id: "l5-reflect", title: "Self-Reflection", short: "Self-Reflection", kind: "l5reflect", minutes: 5, label: "Activity 1", steps: ["l5-check", "l5-questions", "l5-record"] }
