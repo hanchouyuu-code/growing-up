@@ -218,7 +218,7 @@
     else if (parts[0] === "community" && parts[1] === "battle") view = "battle";
     else if (parts[0] === "community" && parts[1] === "tutor") view = "tutorPage";
     else if (GU.PRACTICE[parts[0]] && (parts[1] === "battle" || parts[1] === "tutor")) view = parts[1] === "battle" ? "battle" : "tutorPage";
-    else if (/^lesson-[234]$/.test(parts[0])) {
+    else if (/^lesson-[2-5]$/.test(parts[0])) {
       /* Lessons 2–4: a landing page, then one page per activity (the view is named after the activity kind). */
       var L = GU.LESSONS.filter(function (x) { return x.id === parts[0]; })[0];
       var A = L.activities && parts[1] ? L.activities.filter(function (x) { return x.id === parts[1]; })[0] : null;
@@ -232,7 +232,7 @@
     else { location.replace("#/overview"); return; }
 
     /* A third part names a step to open at, e.g. #/lesson-4/l4-write/l4w-feedback */
-    GU.focusStep = /^lesson-[234]$/.test(parts[0]) && parts[2] ? parts[2] : null;
+    GU.focusStep = /^lesson-[2-5]$/.test(parts[0]) && parts[2] ? parts[2] : null;
     /* Which lesson the Word Battle and AI Tutor belong to on this page */
     GU.practiceId = GU.PRACTICE[parts[0]] ? parts[0] : "lesson-1";
     page.innerHTML = "";

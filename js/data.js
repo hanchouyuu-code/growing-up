@@ -17,7 +17,7 @@ GU.BOOK = {
 };
 
 GU.OVERVIEW = {
-  lede: "An online course in four lessons on the age of majority: the milestone that marks the start of adulthood, and the new freedoms and responsibilities it brings.",
+  lede: "An online course in five lessons on the age of majority: the milestone that marks the start of adulthood, and the new freedoms and responsibilities it brings.",
   theme: "People and Self",
   themeZh: "人与自我",
   themeParts: ["Knowing Yourself", "Enriching Yourself", "Improving Yourself"],
@@ -84,6 +84,13 @@ GU.LESSONS = [
       { id: "l4-think", title: "Pre-writing", short: "Pre-writing", kind: "l4think", minutes: 5, label: "Activity 1", steps: ["l4t-right", "l4t-adult"] },
       { id: "l4-write", title: "Guided Writing", short: "Guided Writing", kind: "l4write", minutes: 10, label: "Activity 2", steps: ["l4w-draft", "l4w-feedback", "l4w-share"] }
     ]
+  },
+  {
+    id: "lesson-5", n: 5, title: "End-of-Course Self-Reflection", short: "Self-Reflection", minutes: 5,
+    blurb: "A self-assessment against the three learning objectives, and three questions on what the unit means as you turn 18.",
+    activities: [
+      { id: "l5-reflect", title: "Self-Reflection", short: "Self-Reflection", kind: "l5reflect", minutes: 5, label: "Activity 1", steps: ["l5-check", "l5-questions", "l5-record"] }
+    ]
   }
 ];
 
@@ -148,7 +155,8 @@ GU.BADGES = [
   { id: "battle", name: "Word Champion", desc: "Bonus: Completion of a Word Battle", icon: "trophy", bonus: true },
   { id: "lesson-2", name: "Branching Out", desc: "Completion of the chosen path in Lesson 2", icon: "sun" },
   { id: "lesson-3", name: "In Full Leaf", desc: "Completion of Lesson 3", icon: "book" },
-  { id: "lesson-4", name: "Coming of Age", desc: "Completion of Lesson 4", icon: "pen" }
+  { id: "lesson-4", name: "Coming of Age", desc: "Completion of Lesson 4", icon: "pen" },
+  { id: "lesson-5", name: "Looking Ahead", desc: "Completion of the End-of-Course Self-Reflection", icon: "steps" }
 ];
 
 var OALD = "Oxford Advanced Learner’s Dictionary";
@@ -768,4 +776,39 @@ GU.L4 = {
 
   /* Gaokao applied writing: 15 marks in five bands. */
   bands: [[13, 15, "Band 5", "第五档"], [10, 12, "Band 4", "第四档"], [7, 9, "Band 3", "第三档"], [4, 6, "Band 2", "第二档"], [1, 3, "Band 1", "第一档"]]
+};
+
+/* ---------- Lesson 5: End-of-Course Self-Reflection ---------- */
+GU.L5 = {
+  /* The three learning objectives of the course, as statements students rate themselves against.
+     Each lists where it was practised: [link, step key, title]. */
+  objectives: [
+    { title: "Text Structure and Meaning",
+      objective: "Work out the structure of the passage and find out the meaning of “the age of majority”.",
+      can: "I can work out the structure of the passage and explain what “the age of majority” means.",
+      practised: [["#/lesson-3/l3-lead/l3a-type", "l3a-type", "Text Structure"], ["#/lesson-3/l3-read", "l3b-listen", "Listening and Reading"], ["#/lesson-3/l3-text/l3d-title", "l3d-title", "Title Selection"]] },
+    { title: "Feelings and Reasons",
+      objective: "Get the detailed information by focusing on the speakers’ feelings and the reasons behind them.",
+      can: "I can find detailed information about how each speaker feels about turning 18, and the reasons behind it.",
+      practised: [["#/lesson-3/l3-video", "l3c-watch", "Video Lecture"], ["#/lesson-3/l3-text/l3d-detail", "l3d-detail", "Detailed Reading"], ["#/lesson-3/l3-text/l3d-fact", "l3d-fact", "Fact and Opinion"]] },
+    { title: "Responsibility and an Open, Critical Mind",
+      objective: "Be more responsible about the age of majority, and more open-minded and critical about life at eighteen.",
+      can: "I can think about turning 18 responsibly, weighing its rights against its responsibilities with an open and critical mind.",
+      practised: [["#/lesson-4/l4-think", "l4t-right", "Rights in Adulthood"], ["#/lesson-4/l4-think/l4t-adult", "l4t-adult", "Responsible Adulthood"], ["#/lesson-4/l4-write", "l4w-draft", "Me at Eighteen"]] }
+  ],
+  scale: [
+    ["notyet", "Not Yet", "Go back to the activities above, or ask about this part in Teacher Q&A."],
+    ["partly", "Partly", "Look again at one of the activities above to make this secure."],
+    ["confident", "Confidently", "Well done. You can help a classmate with this part."]
+  ],
+  /* Reflection questions: what the unit means now, what is still difficult, and what changes from today. */
+  questions: [
+    { id: "l5-q1", prompt: "What does “the age of majority” mean to you now, and whose experience of turning 18, Bethany’s, Lin Ning’s or Morgan’s, do you expect yours to be most like?",
+      starters: ["To me, the age of majority now means …", "I expect my experience to be most like …’s, because …"] },
+    { id: "l5-q2", prompt: "What do you still find difficult in this unit, and what will you do about it?",
+      starters: ["I still find … difficult.", "To improve, I will …"],
+      hint: "A word, a sentence in the passage, or a skill such as telling facts from opinions. You can ask the AI Tutor or post a question in Teacher Q&A." },
+    { id: "l5-q3", prompt: "Morgan says that “some responsibilities are more about attitude than age.” What is one responsibility you will start taking now, before you turn 18?",
+      starters: ["One responsibility I will start taking now is …", "I will show it by …"] }
+  ]
 };

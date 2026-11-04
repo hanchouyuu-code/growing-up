@@ -74,7 +74,7 @@
       feedback: ["sparkle", "AI Writing Feedback", "Gaokao-band marking, corrections and a polished version"]
     };
     function fx(k) { return '<span class="fx fx-' + k + '">' + ui.icon(FX[k][0]) + FX[k][1] + "</span>"; }
-    var TYPE = { words: "book", listen: "speaker", video: "play", practice: "pen", write: "pen", discuss: "users", qa: "chat", tool: "sparkle", battle: "trophy", tutor: "chat" };
+    var TYPE = { words: "book", listen: "speaker", video: "play", practice: "pen", write: "pen", discuss: "users", qa: "chat", tool: "sparkle", battle: "trophy", tutor: "chat", check: "check", record: "download" };
     /* [step key or activity id, title, type, feature] */
     var S = {
       "l2-video": [["l2v-warm", "Warm-Up Discussion", "discuss", "discuss"], ["l2v-watch", "Video Viewing", "video"], ["l2v-q1", "Comprehension Question", "practice"], ["l2v-q2", "Personal Response", "discuss", "discuss"]],
@@ -84,7 +84,8 @@
       "l3-video": [["l3c-watch", "Video Lecture", "video"], ["l3c-qa", "Questions and Answers", "qa", "qa"]],
       "l3-text": [["l3d-title", "Title Selection", "practice"], ["l3d-detail", "Detailed Reading", "practice"], ["l3d-fact", "Fact and Opinion", "practice"]],
       "l4-think": [["l4t-right", "Rights in Adulthood", "discuss", "discuss"], ["l4t-adult", "Responsible Adulthood", "discuss", "discuss"]],
-      "l4-write": [["l4w-draft", "Writing Task", "write"], ["l4w-feedback", "Feedback and Revision", "tool", "feedback"], ["l4w-qa", "Questions and Answers", "qa", "qa"], ["l4w-share", "Writing Showcase", "discuss", "discuss"]]
+      "l4-write": [["l4w-draft", "Writing Task", "write"], ["l4w-feedback", "Feedback and Revision", "tool", "feedback"], ["l4w-qa", "Questions and Answers", "qa", "qa"], ["l4w-share", "Writing Showcase", "discuss", "discuss"]],
+      "l5-reflect": [["l5-check", "Self-Assessment Checklist", "check"], ["l5-questions", "Reflection Questions", "write"], ["l5-record", "My Learning Record", "record"]]
     };
     /* The icon shows the kind of step only; progress is shown by the lesson's completion count. */
     function item(href, title, type, feature, done, extra) {
@@ -142,7 +143,7 @@
       '<h1 class="ov-title"><span class="ov-unit">Unit 1</span>Growing up</h1>' +
       '<p class="ov-lede">' + GU.OVERVIEW.lede + "</p>" +
       '<div class="ov-cta"><a class="btn btn-primary btn-lg js-start" href="' + startHref + '">' + startLabel + "</a>" +
-      '<span class="ov-time">' + ui.icon("clock") + GU.totalMinutes() + " minutes, four lessons</span></div>" +
+      '<span class="ov-time">' + ui.icon("clock") + GU.totalMinutes() + " minutes, " + ["one", "two", "three", "four", "five", "six"][GU.LESSONS.length - 1] + " lessons</span></div>" +
       "</div>" + growth() +
       "</section>" +
 

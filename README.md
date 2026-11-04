@@ -7,7 +7,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 
 线上地址：https://growing-up-five.vercel.app
 
-## 课程结构（共 90 分钟）
+## 课程结构（共 95 分钟）
 
 | 部分 | 内容 | 时长 | 状态 |
 |---|---|---|---|
@@ -17,6 +17,7 @@ MLT908 / EDTM902 期末项目（个人部分）的互动学习网站。
 | Lesson 2 | Starting Out：三种学习路径（只做 Activity 1 / 只做 Activity 2 / 两个都做）。Activity 1 Video Time（图片 + 班级讨论、B 站视频、填表理解题、个人观点投票讨论）；Activity 2 Poetry Reading（朗诵音频可调速 + 中英对照 + 笔记栏、主旨题、勾选题、个人观点讨论） | 15 分钟（视频 7 + 诗歌 8） | 已完成（班级讨论需连接 Upstash） |
 | Lesson 3 | Understanding Ideas: The Age of Majority：导入（成年权利勾选）、课文录音与 transcript（人物卡片、逐句翻译、key expressions）、课文精讲视频 + 笔记 + 师生问答区、文本分析（标题选择、文本类型、三人信息填表、事实与观点） | 40 分钟 | 已完成（问答区需连接 Upstash） |
 | Lesson 4 | Writing：Pre-writing（课本 Think & Share 两个开放问题 + 班级讨论与投票）；Guided Writing（高考应用文格式的 80 词短文 Me at Eighteen，旁边有语言库；写完后 AI 评分与润色，教师问答区和班级习作展示同时开放） | 15 分钟（思考 5 + 写作 10） | 已完成（AI 评价需 AI 密钥，问答区和展示区需连接 Upstash） |
+| Lesson 5 | End-of-Course Self-Reflection：自评清单（对应三条学习目标，Not Yet / Partly / Confidently，附各目标练习过的活动链接）、三个反思问题（年满十八岁的含义与最接近哪位说话人；仍觉得难的地方及改进办法；现在就开始承担的一项责任）、学习记录（进度、自评、反思，可下载）；完成获得 Looking Ahead 奖章 | 5 分钟 | 已完成 |
 | Teacher Resources | About this unit 介绍语；按课提供教师资源：Lesson 1 单词表 PDF、Lesson 2 背景信息、Lesson 3 长难句讲解、Lesson 4 写作指导 | — | 已完成 |
 
 ## 需要你在 Vercel 上做的设置
@@ -83,7 +84,7 @@ Upstash 免费数据库连续 30 天以上没有访问会被归档。`vercel.jso
 - **Activity 4 Reading Comprehension**：Title Selection、Detailed Reading（三人信息填表）、Fact and Opinion。
 - **Word Battle 与 AI Tutor**：左侧导航在 Vocabulary 和 Understanding Ideas 下各有一组入口（`#/community/...` 与 `#/lesson-3/battle`、`#/lesson-3/tutor`）。同一个排行榜；AI Tutor 在 Lesson 3 中以课文和 key expressions 为重点，提示问题、开场白和教师提示模式都按课分别设置（`GU.PRACTICE`），两课的对话记录分开保存。
 - **人物照片**：`assets/img/speakers/`，取自课本页面截图。重新生成录音：`python3 tools/make-passage-audio.py passage.json <模型目录> assets/audio/age-of-majority.m4a`，把输出的 cues 填回 `GU.L3.passage.cues`。
-- **课程总时长**：20 + 15 + 40 + 15 = 90 分钟。
+- **课程总时长**：20 + 15 + 40 + 15 + 5 = 95 分钟。
 
 ## Lesson 4 说明
 
@@ -122,7 +123,7 @@ js/shell.js                左侧导航、右上角奖章进度条、页面切�
 js/discuss.js              班级讨论区（先发后看、点赞、回复、投票统计）
 js/support.js              Help and Support 对话框和 Support Inbox
 js/kit.js                  活动页通用组件（分步解锁、完成提示、开放题、讨论步骤）
-js/view-*.js               各个页面（view-lesson2.js 为 Starting Out，view-lesson3.js 为 Understanding Ideas，view-lesson4.js 为 Writing）
+js/view-*.js               各个页面（view-lesson2.js 为 Starting Out，view-lesson3.js 为 Understanding Ideas，view-lesson4.js 为 Writing，view-lesson5.js 为 Self-Reflection）
 api/leaderboard.js         排行榜服务（Vercel 函数）
 api/tutor.js               AI Tutor 服务（Vercel 函数）
 api/discuss.js             班级讨论服务（Vercel 函数）

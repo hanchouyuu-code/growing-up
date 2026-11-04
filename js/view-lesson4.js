@@ -41,7 +41,7 @@
       '<p class="wr-len">' + ui.icon("pen") + "About 80 words, in the format of the gaokao applied writing task</p></div>" +
       '<div class="path-go" style="margin-top:24px">' + (first
         ? '<a class="btn btn-primary btn-lg" href="' + K.actHref(L4, first) + '">' + (first.steps.some(store.step) ? "Continue with " : "Begin with ") + first.short + ui.icon("right") + "</a>"
-        : '<p class="path-done">' + ui.icon("check") + 'All activities are completed.</p><a class="btn btn-ghost" href="#/overview">Return to the Course Overview</a>') + "</div></section>" +
+        : '<p class="path-done">' + ui.icon("check") + 'All activities are completed.</p><a class="btn btn-ghost" href="#/lesson-5">Proceed to Lesson 5</a>') + "</div></section>" +
       '<section aria-labelledby="act-h"><h2 id="act-h" class="block-h">Learning Activities</h2><ul class="acts">' + acts + "</ul></section>";
   };
 
