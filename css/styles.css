@@ -2251,3 +2251,4 @@ button.link-quiet:hover { color: var(--violet); border-bottom-color: var(--viole
 .lr-qp { margin: 0 0 4px; font-size: .86rem; font-weight: 700; color: var(--taupe); line-height: 1.45; }
 .lr-q p:last-child { margin: 0; color: var(--ink); line-height: 1.6; white-space: pre-wrap; }
 @media (max-width: 560px) { .lr-stats { grid-template-columns: 1fr; } .sa-item { padding: 16px; } }
+.nl-num.nl-num-ic .ic { width: 15px; height: 15px; }

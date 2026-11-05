@@ -52,7 +52,7 @@
     var lessons = GU.LESSONS.map(function (l) {
       var lp = store.lessonProgress(l);
       var head = '<a class="nl-head' + (l.soon ? " is-soon" : "") + '" href="#/' + l.id + '"' + cur("#/" + l.id) + '>' +
-        '<span class="nl-num">' + l.n + "</span>" +
+        '<span class="nl-num' + (l.nav ? " nl-num-ic" : "") + '">' + (l.nav ? ui.icon("bulb") : l.n) + "</span>" +
         '<span class="nl-text"><b>' + (l.nav || l.title.replace(/:.*/, "")) + "</b>" + (l.navNoTime ? "" : "<small>" + l.minutes + " minutes" + (l.soon ? ", forthcoming" : "") + "</small>") + "</span>" +
         (l.activities ? '<span class="nl-count">' + lp.done + "/" + lp.total + "</span>" : statusDot("soon")) +
         "</a>";

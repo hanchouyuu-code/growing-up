@@ -151,7 +151,7 @@
       '<h1 class="ov-title"><span class="ov-unit">Unit 1</span>Growing up</h1>' +
       '<p class="ov-lede">' + GU.OVERVIEW.lede + "</p>" +
       '<div class="ov-cta"><a class="btn btn-primary btn-lg js-start" href="' + startHref + '">' + startLabel + "</a>" +
-      '<span class="ov-time">' + ui.icon("clock") + GU.totalMinutes() + " minutes, " + ["one", "two", "three", "four", "five", "six"][GU.LESSONS.length - 1] + " lessons</span></div>" +
+      '<span class="ov-time">' + ui.icon("clock") + GU.totalMinutes() + " minutes, " + ["one", "two", "three", "four", "five", "six"][GU.mainLessons().length - 1] + " lessons</span></div>" +
       "</div>" + growth() +
       "</section>" +
 

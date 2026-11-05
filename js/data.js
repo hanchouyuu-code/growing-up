@@ -17,7 +17,7 @@ GU.BOOK = {
 };
 
 GU.OVERVIEW = {
-  lede: "An online course in five lessons on the age of majority: the milestone that marks the start of adulthood, and the new freedoms and responsibilities it brings.",
+  lede: "An online course in four lessons on the age of majority: the milestone that marks the start of adulthood, and the new freedoms and responsibilities it brings.",
   theme: "People and Self",
   themeZh: "人与自我",
   themeParts: ["Knowing Yourself", "Enriching Yourself", "Improving Yourself"],
@@ -130,7 +130,9 @@ GU.PRACTICE = {
 GU.practiceId = "lesson-1";
 GU.practice = function () { return GU.PRACTICE[GU.practiceId] || GU.PRACTICE["lesson-1"]; };
 
-GU.totalMinutes = function () { return GU.LESSONS.reduce(function (t, l) { return t + l.minutes; }, 0); };
+/* The course is four lessons and 90 minutes; the End-of-Course reflection (a lesson with a menu name) is not counted. */
+GU.mainLessons = function () { return GU.LESSONS.filter(function (l) { return !l.nav; }); };
+GU.totalMinutes = function () { return GU.mainLessons().reduce(function (t, l) { return t + l.minutes; }, 0); };
 
 GU.COMMUNITY = {
   title: "Learning Community",

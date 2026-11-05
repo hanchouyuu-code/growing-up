@@ -17,7 +17,7 @@
     page.innerHTML =
       '<header class="lesson-head">' +
       '<a class="crumb" href="#/overview">' + ui.icon("left") + "Course Overview</a>" +
-      '<p class="lesson-kicker">Lesson 5 <span>' + L5.minutes + " minutes</span></p>" +
+      '<p class="lesson-kicker">' + L5.nav + "</p>" +
       "<h1>" + L5.title + "</h1>" +
       '<p class="lede">You have read what turning 18 means to Bethany, Lin Ning and Morgan, and written about what it will mean to you. Now look back on the unit: check yourself against its three learning objectives, then reflect on what you have learned.</p>' +
       "</header>" +

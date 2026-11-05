@@ -9,7 +9,7 @@
   function inPath(lesson, a) { return store.lessonActs(lesson).indexOf(a) >= 0; }
   function nextLesson(lesson) {
     var nx = GU.LESSONS[lesson.n];
-    return nx ? { href: "#/" + nx.id, label: "Proceed to Lesson " + nx.n } : { href: "#/overview", label: "Return to the Course Overview" };
+    return nx ? { href: "#/" + nx.id, label: nx.nav ? "Proceed to the " + nx.title : "Proceed to Lesson " + nx.n } : { href: "#/overview", label: "Return to the Course Overview" };
   }
 
   /* Award the lesson badge once every activity on the lesson's path is complete. */
