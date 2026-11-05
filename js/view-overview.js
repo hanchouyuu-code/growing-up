@@ -5,7 +5,9 @@
   /* Hero: the sapling from the textbook's Starting Out page grows with each lesson, ending at 18. */
   function growth() {
     var scales = [0.34, 0.5, 0.66, 0.82];
-    var stages = GU.LESSONS.map(function (l, i) {
+    /* Four stages of growth, one for each of Lessons 1–4; the end-of-course reflection has no tree of its own. */
+    var grow = GU.LESSONS.filter(function (l) { return l.n <= scales.length; });
+    var stages = grow.map(function (l, i) {
       var lp = store.lessonProgress(l);
       var done = !l.soon && lp.done >= lp.total;
       var started = lp.done > 0;
@@ -13,7 +15,7 @@
         '<span class="stage-plant"><img src="assets/img/sapling.png" alt=""></span>' +
         '<span class="stage-label"><b>Lesson ' + l.n + "</b><span>" + ui.esc(l.short) + "</span></span></a>";
     }).join("");
-    var allDone = GU.LESSONS.every(function (l) { return !l.soon && store.lessonProgress(l).done >= store.lessonProgress(l).total; });
+    var allDone = grow.every(function (l) { return !l.soon && store.lessonProgress(l).done >= store.lessonProgress(l).total; });
     return '<div class="growth" role="img" aria-label="A sapling that grows taller with each lesson and becomes a tree at the age of eighteen">' +
       '<div class="growth-row">' + stages +
       '<span class="stage stage-final' + (allDone ? " is-grown" : "") + '" style="--s:1.12"><span class="stage-plant"><span class="growth-sun" aria-hidden="true"><span>18</span></span><img src="assets/img/sapling.png" alt=""></span>' +
@@ -93,6 +95,7 @@
         '<span class="cs-t">' + title + (extra || "") + "</span>" + (feature ? fx(feature) : "") + "</a></li>";
     }
     function group(head, meta, items) {
+      if (!head) return '<div class="cs-group"><ul class="cs-list">' + items + "</ul></div>";
       return '<div class="cs-group"><h4>' + head + (meta ? "<small>" + meta + "</small>" : "") + '</h4><ul class="cs-list">' + items + "</ul></div>";
     }
     function practice(l, P) {
@@ -113,6 +116,11 @@
             return item("#/lesson-1/" + a.id, a.title, "practice", "", store.isDone(a.id), a.bonus ? ' <em class="tag-bonus">Bonus</em>' : "");
           }).join("")) +
           practice(l, GU.PRACTICE["lesson-1"]);
+      } else if (l.nav) {
+        /* End-of-Course: only what it contains, without a lesson number, times or progress. */
+        groups = l.activities.map(function (a) {
+          return group("", "", S[a.id].map(function (st) { return item("#/" + l.id + "/" + a.id, st[1], st[2], st[3]); }).join(""));
+        }).join("");
       } else {
         groups = l.activities.map(function (a) {
           return group(a.label + " · " + a.short, a.minutes + " min", S[a.id].map(function (st) {
@@ -120,8 +128,8 @@
           }).join(""));
         }).join("") + (GU.PRACTICE[l.id] ? practice(l, GU.PRACTICE[l.id]) : "");
       }
-      return '<li class="cs-lesson"><header class="cs-head"><a href="#/' + l.id + '"><span class="cs-k">Lesson ' + l.n + "</span><h3>" + l.title + "</h3></a>" +
-        '<span class="cs-meta">' + ui.icon("clock") + l.minutes + " min" + (l.paths ? " · three learning paths" : "") + status + "</span></header>" +
+      return '<li class="cs-lesson"><header class="cs-head"><a href="#/' + l.id + '">' + (l.nav ? "" : '<span class="cs-k">Lesson ' + l.n + "</span>") + "<h3>" + l.title + "</h3></a>" +
+        (l.nav ? "" : '<span class="cs-meta">' + ui.icon("clock") + l.minutes + " min" + (l.paths ? " · three learning paths" : "") + status + "</span>") + "</header>" +
         '<div class="cs-groups">' + groups + "</div></li>";
     }).join("") +
       '<li class="cs-lesson cs-teacher"><header class="cs-head"><a href="#/teacher"><span class="cs-k">For Teachers</span><h3>' + GU.TEACHER.title + '</h3></a></header>' +
